@@ -7,6 +7,7 @@ import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { wagmiConfig } from "@/lib/wagmi";
 import { Toaster } from "@/components/ui/sonner";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 /**
  * Client-only providers (Wagmi + RainbowKit + React Query + Toaster).
@@ -28,20 +29,22 @@ export function AppProviders({ children }: { children: ReactNode }) {
   const [config] = useState(() => wagmiConfig);
 
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider
-          theme={darkTheme({
-            accentColor: "oklch(0.62 0.22 295)",
-            accentColorForeground: "white",
-            borderRadius: "large",
-            overlayBlur: "small",
-          })}
-        >
-          {children}
-          <Toaster richColors theme="dark" position="top-center" />
-        </RainbowKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+    <ErrorBoundary>
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <RainbowKitProvider
+            theme={darkTheme({
+              accentColor: "oklch(0.62 0.22 295)",
+              accentColorForeground: "white",
+              borderRadius: "large",
+              overlayBlur: "small",
+            })}
+          >
+            {children}
+            <Toaster richColors theme="dark" position="top-center" />
+          </RainbowKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </ErrorBoundary>
   );
 }

@@ -17,7 +17,7 @@ export function useJoinWaitlist() {
   return useMutation({
     mutationFn: async (input: WaitlistInput) => {
       await new Promise((r) => setTimeout(r, 600));
-      if (typeof window !== "undefined") {
+      if (typeof window !== "undefined" && process.env.NODE_ENV !== "production") {
         // eslint-disable-next-line no-console
         console.info("[waitlist:stub]", input);
       }

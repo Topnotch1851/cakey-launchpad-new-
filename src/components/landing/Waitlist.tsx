@@ -10,7 +10,7 @@ import { useAnalytics } from "@/hooks/useAnalytics";
 
 export function Waitlist() {
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState<"investor" | "team" | "other">("investor");
+  const [role, setRole] = useState<"investor" | "team">("investor");
   const { address } = useAccount();
   const wallet = address ?? "";
   const [submitted, setSubmitted] = useState(false);
@@ -41,7 +41,10 @@ export function Waitlist() {
         setError(res.error);
       }
     } catch (err) {
-      console.error(err);
+      if (process.env.NODE_ENV !== "production") {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      }
       setError("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
@@ -67,9 +70,9 @@ export function Waitlist() {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-accent backdrop-blur">
-            <Sparkles className="h-3 w-3" />
-            Early access — 500 spots
+          <span className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-accent backdrop-blur sm:text-xs sm:tracking-[0.2em]">
+            <Sparkles className="h-3 w-3 shrink-0" />
+            <span className="whitespace-nowrap">Early access — 500 spots</span>
           </span>
           <h2 className="mt-6 text-balance font-display text-4xl font-semibold leading-[1.05] sm:text-5xl lg:text-6xl">
             Join the{" "}
@@ -117,6 +120,24 @@ export function Waitlist() {
               onSubmit={onSubmit}
               className="relative flex flex-col gap-4 rounded-2xl border border-border bg-card/40 p-5 backdrop-blur-xl sm:p-6"
             >
+              {/* Role pills */}
+              <div className="flex flex-wrap items-center gap-2">
+                {(["investor", "team"] as const).map((r) => (
+                  <button
+                    key={r}
+                    type="button"
+                    onClick={() => setRole(r)}
+                    className={`rounded-full border px-3 py-1 text-xs font-medium capitalize transition-colors ${
+                      role === r
+                        ? "border-accent/50 bg-accent/10 text-accent"
+                        : "border-border bg-background/40 text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {r === "team" ? "Project team" : r}
+                  </button>
+                ))}
+              </div>
+
               {/* Email + submit */}
               <div className="flex flex-col gap-3 sm:flex-row">
                 <input
@@ -142,27 +163,6 @@ export function Waitlist() {
                     </>
                   )}
                 </button>
-              </div>
-
-              {/* Role pills */}
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                  I&apos;m a
-                </span>
-                {(["investor", "team", "other"] as const).map((r) => (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => setRole(r)}
-                    className={`rounded-full border px-3 py-1 text-xs font-medium capitalize transition-colors ${
-                      role === r
-                        ? "border-accent/50 bg-accent/10 text-accent"
-                        : "border-border bg-background/40 text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {r === "team" ? "Project team" : r}
-                  </button>
-                ))}
               </div>
 
               {/* Wallet row */}

@@ -125,10 +125,6 @@ export default function AuthPage() {
                 {mode === "signin" ? "Sign in" : "Create account"}
               </button>
             </form>
-
-            <p className="mt-6 text-xs text-muted-foreground">
-              Admin access is granted manually. Sign up first, then ask an existing admin to elevate your role.
-            </p>
           </div>
         </div>
       </section>

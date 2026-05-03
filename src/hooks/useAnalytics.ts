@@ -9,7 +9,9 @@ import { useCallback } from "react";
 export function useAnalytics() {
   return useCallback((eventName: string, properties?: Record<string, unknown>) => {
     if (typeof window === "undefined") return;
-    // eslint-disable-next-line no-console
-    console.info("[analytics:stub]", eventName, properties);
+    if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.info("[analytics:stub]", eventName, properties);
+    }
   }, []);
 }
