@@ -78,10 +78,10 @@ export function Nav() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div
           className={cn(
-            "flex items-center justify-between rounded-2xl px-4 py-2.5 transition-all duration-300",
+            "flex items-center justify-between rounded-2xl border px-4 py-2.5 backdrop-blur-[20px] saturate-[150%] transition-all duration-300",
             scrolled || open
-              ? "bg-gradient-to-b from-white/[0.12] to-white/[0.06] backdrop-blur-[24px] saturate-[150%] border-white/[0.08] shadow-[0_8px_30px_-12px_oklch(0_0_0/0.6)]"
-              : "border border-transparent",
+              ? "border-white/[0.10] bg-gradient-to-b from-white/[0.14] to-white/[0.07] shadow-[0_8px_30px_-12px_oklch(0_0_0/0.6)]"
+              : "border-white/[0.06] bg-gradient-to-b from-white/[0.07] to-white/[0.03] shadow-[0_4px_20px_-12px_oklch(0_0_0/0.4)]",
           )}
         >
           <a href="/" className="flex items-center gap-2.5">

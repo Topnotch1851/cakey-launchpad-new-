@@ -33,7 +33,7 @@ export function Problem() {
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
           <div className="max-w-xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-warn/30 bg-warn/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-warn backdrop-blur">
+            <span className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-warn/30 bg-warn/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-warn backdrop-blur sm:w-auto sm:justify-start">
               <span className="h-1.5 w-1.5 rounded-full bg-warn shadow-[0_0_12px_var(--warn)]" />
               The trust crisis
             </span>

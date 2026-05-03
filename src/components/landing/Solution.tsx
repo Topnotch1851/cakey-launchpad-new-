@@ -40,7 +40,7 @@ export function Solution() {
     <section id="solution" className="relative py-24 sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
         <div className="flex max-w-3xl flex-col items-start gap-5 text-left">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent backdrop-blur">
+          <span className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent backdrop-blur sm:w-auto sm:justify-start">
             <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_12px_var(--cyan)]" />
             The Cakey approach
           </span>

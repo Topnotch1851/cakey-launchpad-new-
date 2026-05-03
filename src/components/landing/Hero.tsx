@@ -62,7 +62,7 @@ export function Hero() {
             <a
               href="#waitlist"
               onClick={() => track("hero_cta_click", { target: "waitlist" })}
-              className="group relative inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-8 py-4 text-base font-semibold text-primary-foreground shadow-[0_20px_60px_-20px_var(--primary)] transition-transform hover:scale-[1.02]"
+              className="group relative inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-8 py-4 text-base font-semibold text-primary-foreground shadow-[0_20px_60px_-20px_var(--primary)] transition-transform hover:scale-[1.02] sm:w-auto"
             >
               Join the waitlist
               <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
