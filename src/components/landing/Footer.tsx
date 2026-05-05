@@ -31,6 +31,7 @@ const chains: { name: string; color: string }[] = [
   { name: "Solana", color: "#14F195" },
   { name: "Arbitrum", color: "#28A0F0" },
   { name: "Polygon", color: "#8247E5" },
+  { name: "BNB", color: "#F3BA2F" },
 ];
 
 export function Footer() {

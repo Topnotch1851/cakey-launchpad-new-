@@ -117,10 +117,10 @@ export function HowItWorks() {
             return (
               <div
                 key={s.n}
-                className="flex flex-col gap-5 px-6 py-10 lg:px-8 lg:py-12"
+                className="group flex flex-col gap-5 px-6 py-10 transition-transform duration-300 hover:-translate-y-1 lg:px-8 lg:py-12"
               >
                 <div className="flex items-center justify-between">
-                  <Icon className="size-10 text-accent" strokeWidth={1.5} />
+                  <Icon className="size-10 text-accent transition-transform duration-300 group-hover:scale-[1.03]" strokeWidth={1.5} />
                   <span className="font-display text-xs tracking-[0.25em] text-muted-foreground">
                     STEP {s.n}
                   </span>

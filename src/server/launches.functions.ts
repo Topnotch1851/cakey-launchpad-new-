@@ -100,6 +100,12 @@ export async function listLaunches(args?: {
 export type LaunchDetail = LaunchSummary & {
   description?: string | null;
   long_description?: string | null;
+  total_supply?: number | null;
+  sale_supply?: number | null;
+  website?: string | null;
+  twitter?: string | null;
+  telegram?: string | null;
+  whitepaper_url?: string | null;
   team?: { name: string; role: string }[] | null;
   links?: { label: string; url: string }[] | null;
   risk_breakdown?: Record<string, number> | null;

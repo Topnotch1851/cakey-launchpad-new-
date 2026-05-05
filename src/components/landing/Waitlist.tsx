@@ -38,7 +38,7 @@ export function Waitlist() {
         setSubmitted(true);
         track("waitlist_form_submit", { role });
       } else {
-        setError(res.error);
+        setError("error" in res ? String((res as { error?: unknown }).error) : "Submission failed.");
       }
     } catch (err) {
       if (process.env.NODE_ENV !== "production") {
@@ -58,7 +58,7 @@ export function Waitlist() {
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(50% 60% at 50% 30%, oklch(0.62 0.22 295 / 0.25), transparent 70%)",
+            "radial-gradient(50% 60% at 50% 30%, oklch(0.72 0.18 75 / 0.22), transparent 70%)",
         }}
       />
 
@@ -97,7 +97,7 @@ export function Waitlist() {
             className="pointer-events-none absolute inset-0 rounded-2xl p-px"
             style={{
               background:
-                "linear-gradient(135deg, oklch(0.62 0.22 295 / 0.6), oklch(0.82 0.16 210 / 0.4), transparent 60%)",
+                "linear-gradient(135deg, oklch(0.72 0.18 75 / 0.6), oklch(0.82 0.16 80 / 0.4), transparent 60%)",
               WebkitMask:
                 "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
               WebkitMaskComposite: "xor",

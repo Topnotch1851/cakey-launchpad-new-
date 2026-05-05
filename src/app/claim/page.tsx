@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -103,7 +103,7 @@ const EMPTY: FormState = {
   txHashes: [""],
 };
 
-export default function ClaimPage() {
+function ClaimPageInner() {
   const params = useSearchParams();
   const initialCode = params.get("code") ?? "";
   const initialTab = params.get("tab");
@@ -216,7 +216,7 @@ function SubmitFlow({ onTrack }: { onTrack: () => void }) {
         },
       });
       if (!res.ok) {
-        setError("error" in res ? res.error : "Submission failed.");
+        setError("error" in res ? String(res.error) : "Submission failed.");
       } else {
         setTrackingCode(res.trackingCode);
       }
@@ -670,5 +670,13 @@ function TrackFlow({ initialCode }: { initialCode: string }) {
         Lost your code? Email <a className="underline" href="mailto:claims@cakey.ai">claims@cakey.ai</a>.
       </p>
     </div>
+  );
+}
+
+export default function ClaimPage() {
+  return (
+    <Suspense fallback={null}>
+      <ClaimPageInner />
+    </Suspense>
   );
 }

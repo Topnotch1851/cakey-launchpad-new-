@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
+  poweredByHeader: false,
+  compress: true,
   // Browser preview / cross-origin dev (Cascade proxy)
   allowedDevOrigins: ["127.0.0.1", "localhost"],
   // Security headers (production)

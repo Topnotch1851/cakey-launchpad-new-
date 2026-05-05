@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Search, Loader2, CheckCircle2, Clock, XCircle, FileSearch } from "lucide-react";
 import { getApplicationStatus, type ApplicationStatusRow } from "@/server/applications.functions";
@@ -25,7 +25,7 @@ const STEPS: StatusKey[] = ["submitted", "under_review", "approved"];
 
 type StatusResp = Awaited<ReturnType<typeof getApplicationStatus>>;
 
-export default function StatusPage() {
+function StatusPageInner() {
   const params = useSearchParams();
   const initialCode = params.get("code") ?? "";
   const [code, setCode] = useState(initialCode);
@@ -41,7 +41,7 @@ export default function StatusPage() {
     setError(null);
     try {
       const res = await getApplicationStatus({ data: { code: c } });
-      if (!res.ok) setError(("error" in res ? res.error : null) ?? "Lookup failed");
+      if (!res.ok) setError(("error" in res ? String((res as { error?: unknown }).error) : null) ?? "Lookup failed");
       setData(res);
     } catch {
       setError("Something went wrong.");
@@ -210,5 +210,13 @@ export default function StatusPage() {
       </section>
       <Footer />
     </main>
+  );
+}
+
+export default function StatusPage() {
+  return (
+    <Suspense fallback={null}>
+      <StatusPageInner />
+    </Suspense>
   );
 }

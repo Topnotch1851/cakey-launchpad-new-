@@ -24,7 +24,7 @@ const fsSource = `
   const float minorLineFrequency = 1.0;
   const vec4 gridColor = vec4(0.5);
   const float scale = 5.0;
-  const vec4 lineColor = vec4(0.4, 0.2, 0.8, 1.0);
+  const vec4 lineColor = vec4(0.85, 0.65, 0.15, 1.0);
   const float minLineWidth = 0.01;
   const float maxLineWidth = 0.2;
   const float lineSpeed = 1.0 * overallSpeed;
@@ -65,8 +65,8 @@ const fsSource = `
     space.x += random(space.y * warpFrequency + iTime * warpSpeed + 2.0) * warpAmplitude * horizontalFade;
 
     vec4 lines = vec4(0.0);
-    vec4 bgColor1 = vec4(0.1, 0.1, 0.3, 1.0);
-    vec4 bgColor2 = vec4(0.3, 0.1, 0.5, 1.0);
+    vec4 bgColor1 = vec4(0.12, 0.08, 0.03, 1.0);
+    vec4 bgColor2 = vec4(0.22, 0.14, 0.04, 1.0);
 
     for(int l = 0; l < linesPerGroup; l++) {
       float normalizedLineIndex = float(l) / float(linesPerGroup);
@@ -157,12 +157,28 @@ export default function ShaderBackground({ className, fixed = false }: ShaderBac
     const uResolution = gl.getUniformLocation(program, "iResolution");
     const uTime = gl.getUniformLocation(program, "iTime");
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // Mobile / low-power: cap to 30fps and reduce render resolution (keeps the "zoomed" look without the GPU cost)
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+    const frameInterval = isMobile ? 33 : 16; // ~30fps vs ~60fps
+    const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 2);
+    const renderScale = isMobile ? 0.6 : 1;
+    let lastW = 0;
+    let lastH = 0;
+    let resizeRaf = 0;
+
     const resize = () => {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = Math.max(1, Math.floor(rect.width * dpr));
-      canvas.height = Math.max(1, Math.floor(rect.height * dpr));
-      gl.viewport(0, 0, canvas.width, canvas.height);
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(() => {
+        const rect = canvas.getBoundingClientRect();
+        const nextW = Math.max(1, Math.floor(rect.width * dpr * renderScale));
+        const nextH = Math.max(1, Math.floor(rect.height * dpr * renderScale));
+        if (nextW === lastW && nextH === lastH) return;
+        lastW = nextW;
+        lastH = nextH;
+        canvas.width = nextW;
+        canvas.height = nextH;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+      });
     };
 
     const ro = new ResizeObserver(resize);
@@ -171,8 +187,26 @@ export default function ShaderBackground({ className, fixed = false }: ShaderBac
 
     const startTime = performance.now();
     let rafId = 0;
-    const render = () => {
-      const t = (performance.now() - startTime) / 1000;
+    let lastFrame = 0;
+    let visible = true;
+
+    const io = new IntersectionObserver(
+      ([entry]) => { visible = entry.isIntersecting; },
+      { threshold: 0 },
+    );
+    io.observe(canvas);
+
+    const render = (now: number) => {
+      if (!visible) {
+        rafId = requestAnimationFrame(render);
+        return;
+      }
+      if (now - lastFrame < frameInterval) {
+        rafId = requestAnimationFrame(render);
+        return;
+      }
+      lastFrame = now;
+      const t = (now - startTime) / 1000;
       gl.clearColor(0, 0, 0, 1);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.useProgram(program);
@@ -188,7 +222,9 @@ export default function ShaderBackground({ className, fixed = false }: ShaderBac
 
     return () => {
       cancelAnimationFrame(rafId);
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
       ro.disconnect();
+      io.disconnect();
       gl.deleteBuffer(positionBuffer);
       gl.deleteProgram(program);
     };

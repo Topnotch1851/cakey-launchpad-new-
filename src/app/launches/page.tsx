@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Search, Sparkles, ArrowRight, Star } from "lucide-react";
 import { listLaunches, type LaunchSummary } from "@/server/launches.functions";
 import { Nav } from "@/components/landing/Nav";
@@ -21,6 +21,14 @@ const STATUSES: { value: LaunchStatus; label: string }[] = [
 ];
 
 export default function LaunchesPage() {
+  return (
+    <Suspense fallback={null}>
+      <LaunchesPageInner />
+    </Suspense>
+  );
+}
+
+function LaunchesPageInner() {
   const router = useRouter();
   const params = useSearchParams();
   const status = ((params.get("status") || "all") as LaunchStatus);
