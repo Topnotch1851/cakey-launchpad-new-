@@ -12,54 +12,23 @@ interface SplineSceneProps {
   className?: string;
 }
 
-// Static, GPU-cheap fallback that holds the visual weight of the missing 3D
-// scene. Mobile / reduced-motion / save-data users see this permanently;
-// desktop users see it for the brief moment before idle-mount.
-// Two stacked radial gradients suggest depth + ambient light without
-// pretending to be content.
+// Empty placeholder shown for the brief moment between page paint and the
+// Spline runtime mounting. No decoration — the hero section's own background
+// is the only thing visible here.
 function SplineFallback({ className }: { className?: string }) {
-  return (
-    <div className={className} aria-hidden>
-      <div
-        className="relative h-full w-full"
-        style={{
-          backgroundImage: [
-            // Warm core glow where the robot would sit
-            "radial-gradient(45% 55% at 70% 55%, oklch(0.78 0.12 82 / 0.22), transparent 70%)",
-            // Cool deep falloff from the corners
-            "radial-gradient(80% 80% at 50% 50%, oklch(0.12 0 0 / 0.6), transparent 75%)",
-          ].join(", "),
-        }}
-      />
-    </div>
-  );
+  return <div className={className} aria-hidden />;
 }
 
 /**
- * Decide whether this device should run the 3D scene at all.
- *
- * Refuse when:
- *   - viewport is mobile-sized (<768px) — WebGL + a 1.3MB binary on a phone
- *     is the difference between a working site and Lighthouse timing out.
- *     Mobile users see the static gradient fallback and the headline/CTAs.
- *   - prefers-reduced-motion (accessibility contract)
- *   - Save-Data connection hint (user asked the browser to save bytes)
- *   - effectiveType is 2g/3g/slow-2g (low-bandwidth networks)
+ * The 3D scene ships to every device.  The only opt-out is the accessibility
+ * contract: when the user has explicitly told the OS they don't want motion,
+ * we honour that.  Everyone else gets the robot — idle-mounted so it can't
+ * block first paint, and with the binary prefetched from <head> so the
+ * runtime fetch hits the browser cache.
  */
 function shouldUseSpline(): boolean {
   if (typeof window === "undefined") return false;
-
-  // Mobile breakpoint matches Tailwind `md`. Phones never load the WebGL bundle.
-  if (window.matchMedia("(max-width: 767px)").matches) return false;
-
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
-
-  type ConnectionLike = { saveData?: boolean; effectiveType?: string };
-  type NavigatorWithHints = Navigator & { connection?: ConnectionLike };
-  const conn = (navigator as NavigatorWithHints).connection;
-  if (conn?.saveData === true) return false;
-  if (conn?.effectiveType && /^(slow-2g|2g|3g)$/.test(conn.effectiveType)) return false;
-
   return true;
 }
 
