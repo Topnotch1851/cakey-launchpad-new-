@@ -126,10 +126,17 @@ export function Footer() {
 
           <FooterCol title="Community">
             {socials.map((l) => (
-              <a key={l.label} href={l.href} className="footer-link inline-flex items-center gap-1">
+              <span
+                key={l.label}
+                aria-disabled="true"
+                className="footer-link inline-flex cursor-not-allowed items-center gap-1.5 opacity-60"
+                title="Coming soon"
+              >
                 {l.label}
-                <ArrowUpRight className="h-3 w-3 opacity-60" />
-              </a>
+                <span className="rounded-full border border-border/60 bg-card/40 px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-wider text-muted-foreground">
+                  Soon
+                </span>
+              </span>
             ))}
           </FooterCol>
         </div>

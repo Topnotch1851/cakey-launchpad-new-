@@ -134,17 +134,21 @@ export default function InsurancePage() {
                     Read disclosures <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                   <Link
-                    href="/claim?tab=submit"
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-primary to-accent px-4 py-2 text-sm font-semibold text-primary-foreground"
-                  >
-                    File a claim <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                  <Link
-                    href="/early-access"
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-background/40 px-4 py-2 text-sm font-medium text-foreground hover:border-accent/40 hover:text-accent"
+                    href="/waitlist"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-glow"
                   >
                     Get notified when live <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
+                  <span
+                    aria-disabled="true"
+                    className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-xl border border-border/60 bg-background/30 px-4 py-2 text-sm font-medium text-muted-foreground"
+                    title="Claims open after the protection pool launches"
+                  >
+                    File a claim
+                    <span className="rounded-full border border-border/60 bg-card/40 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                      Soon
+                    </span>
+                  </span>
                 </div>
               </div>
             </div>

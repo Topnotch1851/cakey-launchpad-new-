@@ -14,10 +14,19 @@ const emailSchema = z
   .max(254, "Email is too long.")
   .email("Enter a valid email.");
 
+// Accept EVM (`0x` + 40 hex chars) or Solana (32-byte base58, typically 32-44 chars).
+// The connect-wallet button currently autofills EVM via Wagmi, but pasting a
+// Solana address by hand is supported because the marketing copy claims Solana
+// behavioural scoring.  Casing is preserved (Solana is case-sensitive).
+const EVM_RE = /^0x[a-fA-F0-9]{40}$/u;
+const SOLANA_BASE58_RE = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/u;
+
 const walletSchema = z
   .string()
   .trim()
-  .regex(/^0x[a-fA-F0-9]{40}$/u, "Wallet must be a 0x EVM address.");
+  .refine((v) => EVM_RE.test(v) || SOLANA_BASE58_RE.test(v), {
+    message: "Wallet must be a 0x EVM address or a Solana base58 address.",
+  });
 
 const sourceSchema = z.string().trim().max(64);
 

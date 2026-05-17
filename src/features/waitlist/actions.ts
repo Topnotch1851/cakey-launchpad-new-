@@ -6,7 +6,25 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { waitlistInputSchema, type WaitlistInput, type WaitlistResult } from "./schemas";
 import { insertWaitlistSignup } from "./services/waitlist.service";
 
-const DEFAULT_SALT = "cakey-waitlist-fallback-salt";
+// Dev-only fallback so local `next dev` runs without a .env.local entry.
+// In production, missing salt throws — a deterministic constant salt would
+// make every submitter's IP hash predictable and useless for rate-limit dedup.
+const DEV_FALLBACK_SALT = "cakey-waitlist-dev-only-salt";
+
+function readSalt(): string {
+  const fromEnv = process.env.WAITLIST_IP_SALT?.trim();
+  if (fromEnv && fromEnv.length >= 16) return fromEnv;
+
+  if (process.env.NODE_ENV === "production") {
+    // Fail loud at first call rather than silently degrade.  The catch in the
+    // service layer will surface a generic error to the client; the throw is
+    // caught upstream in the server-action runtime which logs it server-side.
+    throw new Error(
+      "WAITLIST_IP_SALT is required in production. Set a 32+ byte random string in the deployment env.",
+    );
+  }
+  return DEV_FALLBACK_SALT;
+}
 
 /**
  * Server action: validate, hash submitter IP, delegate to the service.
@@ -26,8 +44,24 @@ export async function joinWaitlistAction(rawInput: WaitlistInput): Promise<Waitl
     "";
   const userAgent = reqHeaders.get("user-agent") ?? null;
 
-  const salt = process.env.WAITLIST_IP_SALT ?? DEFAULT_SALT;
-  const ipHash = ip ? createHash("sha256").update(`${ip}:${salt}`).digest("hex") : null;
+  let ipHash: string | null = null;
+  if (ip) {
+    try {
+      const salt = readSalt();
+      ipHash = createHash("sha256").update(`${ip}:${salt}`).digest("hex");
+    } catch (err) {
+      // In production, missing salt is an operator misconfiguration.  Surface
+      // a clear error message instead of letting it cascade.
+      if (process.env.NODE_ENV !== "production") {
+        // eslint-disable-next-line no-console
+        console.error("[waitlist:action] salt read failed", err);
+      }
+      return {
+        ok: false,
+        error: "Server is misconfigured. Please contact support.",
+      };
+    }
+  }
 
   const supabase = createServerSupabase();
   return insertWaitlistSignup(supabase, parsed.data, { ipHash, userAgent });

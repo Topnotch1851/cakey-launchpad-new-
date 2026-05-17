@@ -7,6 +7,19 @@ type Meta = {
 };
 
 /**
+ * Normalise a wallet for storage.
+ *   - EVM (`0x...`) is case-insensitive — lowercase for dedup.
+ *   - Solana base58 is case-sensitive — preserve casing.
+ * Returns null when there's no wallet to store.
+ */
+function normaliseWallet(wallet: string | null | undefined): string | null {
+  if (!wallet) return null;
+  const trimmed = wallet.trim();
+  if (!trimmed) return null;
+  return trimmed.startsWith("0x") ? trimmed.toLowerCase() : trimmed;
+}
+
+/**
  * Pure waitlist service: takes a Supabase client + validated input + meta, returns a result.
  *
  * The service is transport-agnostic — server actions, route handlers, edge functions,
@@ -22,7 +35,7 @@ export async function insertWaitlistSignup(
     .rpc("join_waitlist", {
       p_email: input.email,
       p_role: input.role ?? null,
-      p_wallet_address: input.walletAddress?.toLowerCase() ?? null,
+      p_wallet_address: normaliseWallet(input.walletAddress),
       p_source: input.source ?? null,
       p_ip_hash: meta.ipHash,
       p_user_agent: meta.userAgent,
