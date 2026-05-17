@@ -31,30 +31,20 @@ function SplineFallback({ className }: { className?: string }) {
 
 /**
  * Decide whether this device should run the 3D scene at all.
- * We refuse on:
- *   - viewports below the lg breakpoint (1024px) — mobile + small tablets
- *   - coarse pointers (touch) — usually correlates with weaker GPUs
- *   - prefers-reduced-motion
- *   - Save-Data hint
- *   - navigator.deviceMemory < 4 GB (Chrome / Edge only — heuristic)
+ * The 3D hero ships to every device. We only refuse when the user or
+ * the OS has explicitly opted out of heavy motion / heavy data:
+ *   - prefers-reduced-motion (accessibility contract)
+ *   - Save-Data connection hint (user asked the browser to save bytes)
  */
 function shouldUseSpline(): boolean {
   if (typeof window === "undefined") return false;
 
-  const desktop = window.matchMedia("(min-width: 1024px) and (pointer: fine)");
-  if (!desktop.matches) return false;
-
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
 
   type ConnectionLike = { saveData?: boolean };
-  type NavigatorWithHints = Navigator & {
-    deviceMemory?: number;
-    connection?: ConnectionLike;
-  };
+  type NavigatorWithHints = Navigator & { connection?: ConnectionLike };
   const nav = navigator as NavigatorWithHints;
-
   if (nav.connection?.saveData === true) return false;
-  if (typeof nav.deviceMemory === "number" && nav.deviceMemory < 4) return false;
 
   return true;
 }
