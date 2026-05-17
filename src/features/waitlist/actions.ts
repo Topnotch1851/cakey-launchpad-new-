@@ -63,6 +63,27 @@ export async function joinWaitlistAction(rawInput: WaitlistInput): Promise<Waitl
     }
   }
 
+  // Structured log so Vercel runtime logs show whether the wallet field
+  // actually arrived at the action.  Helps diagnose "I connected my wallet
+  // but it didn't save" reports.  Doesn't leak the address or the email.
+  // eslint-disable-next-line no-console
+  console.log(
+    JSON.stringify({
+      lvl: "info",
+      evt: "waitlist.submit",
+      email_domain: parsed.data.email.split("@")[1] ?? null,
+      role: parsed.data.role ?? null,
+      wallet_present: Boolean(parsed.data.walletAddress),
+      wallet_kind: parsed.data.walletAddress
+        ? parsed.data.walletAddress.startsWith("0x")
+          ? "evm"
+          : "solana"
+        : null,
+      source: parsed.data.source ?? null,
+      ip_hashed: ipHash !== null,
+    }),
+  );
+
   const supabase = createServerSupabase();
   return insertWaitlistSignup(supabase, parsed.data, { ipHash, userAgent });
 }
