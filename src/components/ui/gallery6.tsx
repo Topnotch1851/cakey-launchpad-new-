@@ -12,6 +12,8 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 
+const easeCinematic = [0.22, 1, 0.36, 1] as const;
+
 export interface GalleryItem {
   id: string;
   title: string;
@@ -115,8 +117,8 @@ export function Gallery6({
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.45 }}
+            viewport={{ once: true, margin: "-120px" }}
+            transition={{ duration: 0.7, ease: easeCinematic }}
             className="max-w-3xl text-left"
           >
             <span className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent backdrop-blur sm:w-auto sm:justify-start">
@@ -166,15 +168,15 @@ export function Gallery6({
           className="relative"
         >
           <CarouselContent className="-ml-4">
-            {items.map((item) => (
+            {items.map((item, i) => (
               <CarouselItem key={item.id} className="basis-[85%] pl-4 sm:basis-1/2 md:basis-full md:max-w-[452px]">
                 <motion.a
                   href={item.url}
-                  initial={{ opacity: 0, y: 14 }}
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-120px" }}
-                  transition={{ duration: 0.45 }}
-                  whileHover={{ y: -4 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.65, delay: i * 0.08, ease: easeCinematic }}
+                  whileHover={{ y: -3 }}
                   className="group flex flex-col"
                 >
                   <div className="flex aspect-[3/2] overflow-hidden rounded-xl border border-border bg-card">

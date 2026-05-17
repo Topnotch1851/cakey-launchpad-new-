@@ -1,7 +1,10 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { FileCheck2, ShieldCheck, Lock, Activity } from "lucide-react";
 import { Marquee } from "@/components/ui/marquee";
+
+const easeCinematic = [0.22, 1, 0.36, 1] as const;
 
 const concerns = [
   "Is this project actually legit?",
@@ -54,7 +57,13 @@ export function HowItWorks() {
   return (
     <section id="how" className="relative pt-20 sm:pt-32">
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-        <div className="flex max-w-3xl flex-col items-start space-y-5 text-left">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-120px" }}
+          transition={{ duration: 0.7, ease: easeCinematic }}
+          className="flex max-w-3xl flex-col items-start space-y-5 text-left"
+        >
           <span className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent backdrop-blur sm:w-auto sm:justify-start">
             <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_oklch(0.82_0.11_82/0.5)]" />
             How it works
@@ -66,7 +75,7 @@ export function HowItWorks() {
             Every investor asks the same questions before aping in. Cakey answers them — on-chain,
             before any project goes live.
           </p>
-        </div>
+        </motion.div>
       </div>
 
       <div className="relative mt-12 w-full overflow-hidden">
@@ -112,11 +121,15 @@ export function HowItWorks() {
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
 
         <div className="mt-16 grid grid-cols-1 divide-dashed divide-border border-t border-dashed border-border sm:grid-cols-2 sm:divide-x lg:grid-cols-4">
-          {steps.map((s) => {
+          {steps.map((s, i) => {
             const Icon = s.icon;
             return (
-              <div
+              <motion.div
                 key={s.n}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.65, delay: i * 0.09, ease: easeCinematic }}
                 className="group flex flex-col gap-5 px-6 py-10 transition-transform duration-300 hover:-translate-y-1 lg:px-8 lg:py-12"
               >
                 <div className="flex items-center justify-between">
@@ -131,7 +144,7 @@ export function HowItWorks() {
                   </h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">{s.body}</p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

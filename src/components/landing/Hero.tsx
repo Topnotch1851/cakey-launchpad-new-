@@ -5,6 +5,8 @@ import { useAnalytics } from "@/hooks/useAnalytics";
 import { Spotlight } from "@/components/ui/spotlight";
 import { SplineScene } from "@/components/ui/splite";
 
+const easeCinematic = [0.22, 1, 0.36, 1] as const;
+
 export function Hero() {
   const track = useAnalytics();
 
@@ -36,7 +38,7 @@ export function Hero() {
         "
       >
         <SplineScene
-          scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+          scene="/scene.splinecode"
           className="h-full w-full"
         />
       </div>
@@ -58,7 +60,7 @@ export function Hero() {
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15 }}
+            transition={{ duration: 0.85, delay: 0.15, ease: easeCinematic }}
             className="text-balance font-display text-[2.1rem] font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl"
           >
             Launch tokens with{" "}
@@ -68,7 +70,7 @@ export function Hero() {
           <motion.p
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.25 }}
+            transition={{ duration: 0.85, delay: 0.28, ease: easeCinematic }}
             className="mt-5 max-w-xl text-pretty text-sm text-muted-foreground sm:text-lg"
           >
             No rugs. No noise. Just launches that earn trust.
@@ -77,7 +79,7 @@ export function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.35 }}
+            transition={{ duration: 0.85, delay: 0.42, ease: easeCinematic }}
             className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
           >
             <a

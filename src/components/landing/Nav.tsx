@@ -7,21 +7,25 @@ import { cn } from "@/lib/utils";
 const logo = "/cakey-logo.png";
 
 const links = [
+  { href: "/about", label: "About" },
   { href: "/#how", label: "How it works" },
   { href: "/#features", label: "Features" },
   { href: "/#roadmap", label: "Roadmap" },
-  { href: "/#waitlist", label: "Join waitlist" },
+  { href: "/faq", label: "FAQ" },
+  { href: "/waitlist", label: "Join waitlist" },
 ];
 
 type DesktopItem = { href: string; label: string; description?: string };
 
 const desktopPrimary: DesktopItem[] = [
-  { href: "/#how", label: "How it works" },
+  { href: "/about", label: "About" },
   { href: "/#features", label: "Features" },
   { href: "/#roadmap", label: "Roadmap" },
+  { href: "/faq", label: "FAQ" },
 ];
 
 const desktopMore: DesktopItem[] = [
+  { href: "/insurance", label: "Insurance", description: "On-chain protection pool" },
   { href: "/privacy", label: "Privacy", description: "How we handle your data" },
   { href: "/terms", label: "Terms", description: "Terms of service" },
   { href: "/disclosures", label: "Disclosures", description: "Risk and regulatory disclosures" },

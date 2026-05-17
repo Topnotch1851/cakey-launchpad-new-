@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { AlertTriangle, TrendingDown, EyeOff } from "lucide-react";
 
+const easeCinematic = [0.22, 1, 0.36, 1] as const;
+
 const issues = [
   {
     idx: "01",
@@ -32,7 +34,13 @@ export function Problem() {
     <section id="problem" className="relative py-24 sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
-          <div className="max-w-xl">
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-120px" }}
+            transition={{ duration: 0.7, ease: easeCinematic }}
+            className="max-w-xl"
+          >
             <span className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-warn/30 bg-warn/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-warn backdrop-blur sm:w-auto sm:justify-start">
               <span className="h-1.5 w-1.5 rounded-full bg-warn shadow-[0_0_8px_oklch(0.7_0.16_38/0.5)]" />
               The trust crisis
@@ -48,7 +56,7 @@ export function Problem() {
               <span className="h-px w-10 bg-border" />
               By the numbers
             </div>
-          </div>
+          </motion.div>
 
           <div className="divide-y divide-border border-y border-border">
             {issues.map((it, i) => (
@@ -57,7 +65,7 @@ export function Problem() {
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
+                transition={{ duration: 0.7, delay: i * 0.1, ease: easeCinematic }}
                 className="group grid grid-cols-[auto_1fr] items-start gap-6 py-8 sm:grid-cols-[80px_1fr_auto] sm:gap-8"
               >
                 <div className="font-display text-xs tracking-[0.25em] text-muted-foreground">

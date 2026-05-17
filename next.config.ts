@@ -18,6 +18,15 @@ const nextConfig: NextConfig = {
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
         ],
       },
+      // The Spline scene is immutable — long-cache it on the CDN + browser.
+      // If you ever replace the asset, change the filename (e.g. scene-v2.splinecode) to bust caches.
+      {
+        source: "/scene.splinecode",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+          { key: "Content-Type", value: "application/octet-stream" },
+        ],
+      },
     ];
   },
 };

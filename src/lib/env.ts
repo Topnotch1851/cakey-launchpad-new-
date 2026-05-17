@@ -1,14 +1,21 @@
 import { z } from "zod";
 
 /**
+ * Treat empty strings (e.g. `FOO=` in .env.local) as "not set" so they
+ * don't trip `.min(1).optional()` validation.
+ */
+const emptyToUndefined = (v: unknown) =>
+  typeof v === "string" && v.trim() === "" ? undefined : v;
+
+/**
  * Public env (NEXT_PUBLIC_*) — ships to the browser.
  * Never put secrets here.
  */
 const publicEnvSchema = z.object({
-  NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: z.string().min(1).optional(),
-  NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
-  NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1).optional(),
+  NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: z.preprocess(emptyToUndefined, z.string().min(1).optional()),
+  NEXT_PUBLIC_SITE_URL: z.preprocess(emptyToUndefined, z.string().url().optional()),
+  NEXT_PUBLIC_SUPABASE_URL: z.preprocess(emptyToUndefined, z.string().url().optional()),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.preprocess(emptyToUndefined, z.string().min(1).optional()),
 });
 
 const parsedPublic = publicEnvSchema.safeParse({

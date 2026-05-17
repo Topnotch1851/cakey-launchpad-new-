@@ -1,4 +1,10 @@
 import type { Metadata } from "next";
+import { StructuredData } from "@/components/StructuredData";
+import {
+  breadcrumbsSchema,
+  combinedGraph,
+  webPageSchema,
+} from "@/lib/seo/structured-data";
 
 export const metadata: Metadata = {
   title: "Insurance Pool",
@@ -14,6 +20,23 @@ export const metadata: Metadata = {
   },
 };
 
+const pageSchema = combinedGraph(
+  webPageSchema({
+    name: "Insurance Pool — Cakey AI",
+    description: metadata.description as string,
+    url: "/insurance",
+  }),
+  breadcrumbsSchema([
+    { name: "Home", url: "/" },
+    { name: "Insurance", url: "/insurance" },
+  ]),
+);
+
 export default function InsuranceLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <StructuredData data={pageSchema} />
+      {children}
+    </>
+  );
 }

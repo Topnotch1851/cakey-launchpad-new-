@@ -102,6 +102,13 @@
   --gradient-brand: linear-gradient(135deg, oklch(0.72 0.14 78), oklch(0.78 0.12 82));
   --shadow-glow: 0 18px 50px -24px oklch(0.72 0.14 78 / 0.3);
   --shadow-cyan: 0 0 28px -12px oklch(0.78 0.12 82 / 0.25);
+
+  /* Premium motion tokens — reused by Tailwind arbitrary values and inline styles. */
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);   /* ease-out-quint, subtle settle */
+  --ease-soft:      cubic-bezier(0.32, 0.72, 0, 1);    /* gentle, no overshoot */
+  --dur-fast:   180ms;
+  --dur-base:   320ms;
+  --dur-slow:   600ms;
 }
 
 @keyframes fade-in {
@@ -138,6 +145,9 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    /* Cinematic anchor navigation — smooth, with clearance below the fixed nav */
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
   }
 
   body {
@@ -214,5 +224,17 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .logo-coin, .logo-coin-wrap { animation: none; }
+  }
+}
+
+/* Global accessibility guard — last in the cascade so it wins.
+   Honour users who request reduced motion: kill long animations,
+   neuter transitions, and disable smooth-scroll without breaking layout. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration:       0.001ms !important;
+    animation-iteration-count: 1     !important;
+    transition-duration:      0.001ms !important;
   }
 }

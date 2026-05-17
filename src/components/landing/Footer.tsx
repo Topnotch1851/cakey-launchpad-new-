@@ -1,14 +1,22 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { ArrowUpRight, ShieldCheck } from "lucide-react";
 import { ContractPill } from "./ContractPill";
+
+const easeCinematic = [0.22, 1, 0.36, 1] as const;
 
 const logo = "/cakey-logo.png";
 
 const explore = [
-  { label: "Join waitlist", href: "/#waitlist" },
+  { label: "About", href: "/about" },
   { label: "How it works", href: "/#how" },
   { label: "Features", href: "/#features" },
   { label: "Roadmap", href: "/#roadmap" },
+  { label: "FAQ", href: "/faq" },
+  { label: "Insurance", href: "/insurance" },
+  { label: "Join waitlist", href: "/waitlist" },
 ];
 
 const legal: { label: string; to: string }[] = [
@@ -46,7 +54,13 @@ export function Footer() {
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* CTA band */}
-        <div className="glass relative mt-12 overflow-hidden rounded-3xl p-8 sm:p-12">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.75, ease: easeCinematic }}
+          className="glass relative mt-12 overflow-hidden rounded-3xl p-8 sm:p-12"
+        >
           <div
             aria-hidden
             className="absolute -right-24 -top-24 h-72 w-72 rounded-full opacity-[0.08] blur-3xl"
@@ -73,7 +87,7 @@ export function Footer() {
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>
           </div>
-        </div>
+        </motion.div>
 
         {/* Link grid */}
         <div className="mt-16 grid grid-cols-2 gap-10 sm:grid-cols-4 lg:grid-cols-5">

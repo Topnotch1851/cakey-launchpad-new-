@@ -2,6 +2,13 @@ import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { AppProviders } from "@/providers/AppProviders";
+import { StructuredData } from "@/components/StructuredData";
+import {
+  combinedGraph,
+  organizationSchema,
+  softwareApplicationSchema,
+  webSiteSchema,
+} from "@/lib/seo/structured-data";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -53,34 +60,13 @@ export const metadata: Metadata = {
   icons: { icon: "/favicon.ico" },
 };
 
-// JSON-LD structured data — picked up by search engines + knowledge-graph features.
-// Single combined `@graph` payload so it ships in one script tag.
-const structuredData = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": `${SITE_URL}#organization`,
-      name: "Cakey AI",
-      url: SITE_URL,
-      logo: `${SITE_URL}/cakey-logo.png`,
-      description:
-        "AI-powered Web3 launchpad with behavioral trust scoring, pre-launch simulation, and an insurance pool.",
-      sameAs: [
-        "https://x.com/cakeyai",
-        "https://github.com/cakey-ai",
-      ],
-    },
-    {
-      "@type": "WebSite",
-      "@id": `${SITE_URL}#website`,
-      url: SITE_URL,
-      name: "Cakey AI Launchpad",
-      publisher: { "@id": `${SITE_URL}#organization` },
-      inLanguage: "en",
-    },
-  ],
-};
+// Global structured-data graph emitted on every page.  Page-level schemas
+// (FAQPage, BreadcrumbList, ...) are appended from each route as needed.
+const globalSchema = combinedGraph(
+  organizationSchema(),
+  webSiteSchema(),
+  softwareApplicationSchema(),
+);
 
 export default function RootLayout({
   children,
@@ -91,11 +77,7 @@ export default function RootLayout({
       className={`dark ${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <script
-          type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-        />
+        <StructuredData data={globalSchema} />
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

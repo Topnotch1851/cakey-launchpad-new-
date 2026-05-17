@@ -7,6 +7,8 @@ import { CheckCircle2, Loader2, Sparkles } from "lucide-react";
 import { useJoinWaitlist } from "@/features/waitlist/hooks/useJoinWaitlist";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
+const easeCinematic = [0.22, 1, 0.36, 1] as const;
+
 // Wallet UI is heavy (Wagmi + RainbowKit ~hundreds of KB).  Defer it so initial
 // homepage paint doesn't include any wallet bytes — fetched lazily after hydration.
 const WaitlistWalletUI = dynamic(
@@ -86,7 +88,7 @@ export function Waitlist() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.7, ease: easeCinematic }}
           className="text-center"
         >
           <span className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-accent backdrop-blur sm:text-xs sm:tracking-[0.2em]">
@@ -107,7 +109,7 @@ export function Waitlist() {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5, delay: 0.08 }}
+          transition={{ duration: 0.7, delay: 0.12, ease: easeCinematic }}
           className="relative mt-10"
         >
           {/* Gradient border frame — softened so it reads as a refined edge, not a flare */}

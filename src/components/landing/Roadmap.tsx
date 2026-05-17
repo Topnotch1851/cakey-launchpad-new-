@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { Check, Loader2, Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+const easeCinematic = [0.22, 1, 0.36, 1] as const;
+
 type MilestoneStatus = "done" | "in_progress" | "planned";
 
 type Milestone = {
@@ -69,7 +71,13 @@ export function Roadmap() {
   return (
     <section id="roadmap" className="relative py-24 sm:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-120px" }}
+          transition={{ duration: 0.7, ease: easeCinematic }}
+          className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
+        >
           <div className="max-w-3xl text-left">
             <span className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent backdrop-blur sm:w-auto sm:justify-start">
               <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_oklch(0.82_0.11_82/0.5)]" />
@@ -86,14 +94,17 @@ export function Roadmap() {
             <span className="h-2 w-2 rounded-full bg-accent shadow-[0_0_8px_oklch(0.82_0.11_82/0.5)] animate-glow-pulse" />
             Currently shipping Phase 01
           </div>
-        </div>
+        </motion.div>
 
         {/* Progress bar */}
         <div className="mt-12">
           <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-card/60">
-            <div
+            <motion.div
               className="absolute inset-y-0 left-0 rounded-full bg-primary"
-              style={{ width: `${progressPct}%` }}
+              initial={{ width: "0%" }}
+              whileInView={{ width: `${progressPct}%` }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1.1, delay: 0.2, ease: easeCinematic }}
             />
           </div>
           <div className="mt-3 grid grid-cols-3 gap-4 text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
@@ -113,7 +124,7 @@ export function Roadmap() {
                 whileInView={{ opacity: 1, y: 0 }}
                 whileHover={{ y: -4 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
+                transition={{ duration: 0.7, delay: i * 0.1, ease: easeCinematic }}
                 className={cn(
                   "relative flex flex-col rounded-3xl border p-7 backdrop-blur transition-colors",
                   isActive

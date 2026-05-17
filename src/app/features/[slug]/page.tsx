@@ -3,6 +3,12 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Check } from "lucide-react";
 import { Nav } from "@/components/landing/Nav";
 import { Footer } from "@/components/landing/Footer";
+import { StructuredData } from "@/components/StructuredData";
+import {
+  breadcrumbsSchema,
+  combinedGraph,
+  webPageSchema,
+} from "@/lib/seo/structured-data";
 
 type FeatureContent = {
   eyebrow: string;
@@ -126,8 +132,23 @@ export default async function FeaturePage({ params }: { params: Promise<{ slug: 
   const feature = FEATURES[slug];
   if (!feature) notFound();
 
+  const canonical = `/features/${slug}`;
+  const pageSchema = combinedGraph(
+    webPageSchema({
+      name: `${feature.eyebrow} — Cakey AI`,
+      description: feature.description,
+      url: canonical,
+    }),
+    breadcrumbsSchema([
+      { name: "Home", url: "/" },
+      { name: "Features", url: "/#features" },
+      { name: feature.eyebrow, url: canonical },
+    ]),
+  );
+
   return (
     <main className="relative min-h-screen overflow-hidden">
+      <StructuredData data={pageSchema} />
       <Nav />
       <section className="relative isolate pt-32 pb-20 sm:pt-40 sm:pb-28">
         <div aria-hidden className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
