@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { useAnalytics } from "@/hooks/useAnalytics";
-import { Spotlight } from "@/components/ui/spotlight";
 import { SplineScene } from "@/components/ui/splite";
 
 const easeCinematic = [0.22, 1, 0.36, 1] as const;
@@ -15,12 +14,6 @@ export function Hero() {
       id="top"
       className="relative isolate min-h-[100svh] w-full overflow-hidden bg-black/[0.96]"
     >
-      {/* 21st.dev ambient spotlight — exact original values */}
-      <Spotlight
-        className="-top-40 left-0 md:left-60 md:-top-20"
-        fill="white"
-      />
-
       {/*
         Robot canvas — one transparent layer, no wrapper background.
 

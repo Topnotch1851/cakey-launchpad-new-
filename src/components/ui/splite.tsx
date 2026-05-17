@@ -12,17 +12,23 @@ interface SplineSceneProps {
   className?: string;
 }
 
-// Static, GPU-cheap fallback that mirrors the hero's gold-glow atmosphere.
-// This is what mobile / reduced-motion / save-data users see permanently,
-// and what desktop users see for the brief moment before idle-mount.
+// Static, GPU-cheap fallback that holds the visual weight of the missing 3D
+// scene. Mobile / reduced-motion / save-data users see this permanently;
+// desktop users see it for the brief moment before idle-mount.
+// Two stacked radial gradients suggest depth + ambient light without
+// pretending to be content.
 function SplineFallback({ className }: { className?: string }) {
   return (
     <div className={className} aria-hidden>
       <div
-        className="h-full w-full"
+        className="relative h-full w-full"
         style={{
-          background:
-            "radial-gradient(60% 60% at 70% 50%, oklch(0.78 0.12 82 / 0.12), transparent 75%)",
+          backgroundImage: [
+            // Warm core glow where the robot would sit
+            "radial-gradient(45% 55% at 70% 55%, oklch(0.78 0.12 82 / 0.22), transparent 70%)",
+            // Cool deep falloff from the corners
+            "radial-gradient(80% 80% at 50% 50%, oklch(0.12 0 0 / 0.6), transparent 75%)",
+          ].join(", "),
         }}
       />
     </div>
@@ -31,20 +37,28 @@ function SplineFallback({ className }: { className?: string }) {
 
 /**
  * Decide whether this device should run the 3D scene at all.
- * The 3D hero ships to every device. We only refuse when the user or
- * the OS has explicitly opted out of heavy motion / heavy data:
+ *
+ * Refuse when:
+ *   - viewport is mobile-sized (<768px) — WebGL + a 1.3MB binary on a phone
+ *     is the difference between a working site and Lighthouse timing out.
+ *     Mobile users see the static gradient fallback and the headline/CTAs.
  *   - prefers-reduced-motion (accessibility contract)
  *   - Save-Data connection hint (user asked the browser to save bytes)
+ *   - effectiveType is 2g/3g/slow-2g (low-bandwidth networks)
  */
 function shouldUseSpline(): boolean {
   if (typeof window === "undefined") return false;
 
+  // Mobile breakpoint matches Tailwind `md`. Phones never load the WebGL bundle.
+  if (window.matchMedia("(max-width: 767px)").matches) return false;
+
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
 
-  type ConnectionLike = { saveData?: boolean };
+  type ConnectionLike = { saveData?: boolean; effectiveType?: string };
   type NavigatorWithHints = Navigator & { connection?: ConnectionLike };
-  const nav = navigator as NavigatorWithHints;
-  if (nav.connection?.saveData === true) return false;
+  const conn = (navigator as NavigatorWithHints).connection;
+  if (conn?.saveData === true) return false;
+  if (conn?.effectiveType && /^(slow-2g|2g|3g)$/.test(conn.effectiveType)) return false;
 
   return true;
 }
