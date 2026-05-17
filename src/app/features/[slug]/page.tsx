@@ -101,10 +101,23 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const f = FEATURES[slug];
-  if (!f) return { title: "Feature not found — Cakey" };
+  if (!f) return { title: "Feature not found" };
+  const canonical = `/features/${slug}`;
   return {
-    title: `${f.eyebrow} — Cakey`,
+    title: f.eyebrow,
     description: f.description,
+    alternates: { canonical },
+    openGraph: {
+      title: `${f.eyebrow} — Cakey AI`,
+      description: f.description,
+      url: canonical,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${f.eyebrow} — Cakey AI`,
+      description: f.description,
+    },
   };
 }
 

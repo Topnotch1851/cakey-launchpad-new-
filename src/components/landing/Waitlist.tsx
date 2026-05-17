@@ -1,18 +1,37 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useCallback, useState, type FormEvent } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { CheckCircle2, Loader2, Sparkles } from "lucide-react";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount } from "wagmi";
 import { useJoinWaitlist } from "@/features/waitlist/hooks/useJoinWaitlist";
 import { useAnalytics } from "@/hooks/useAnalytics";
+
+// Wallet UI is heavy (Wagmi + RainbowKit ~hundreds of KB).  Defer it so initial
+// homepage paint doesn't include any wallet bytes — fetched lazily after hydration.
+const WaitlistWalletUI = dynamic(
+  () => import("@/components/wallet/WaitlistWalletUI"),
+  {
+    ssr: false,
+    loading: () => (
+      <button
+        type="button"
+        disabled
+        className="rounded-lg border border-border bg-card/60 px-3 py-1.5 text-xs font-medium opacity-60"
+      >
+        Connect wallet
+      </button>
+    ),
+  },
+);
 
 export function Waitlist() {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<"investor" | "team">("investor");
-  const { address } = useAccount();
-  const wallet = address ?? "";
+  const [wallet, setWallet] = useState<string>("");
+  const onWalletChange = useCallback((addr: string | null) => {
+    setWallet(addr ?? "");
+  }, []);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -58,7 +77,7 @@ export function Waitlist() {
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(50% 60% at 50% 30%, oklch(0.72 0.18 75 / 0.22), transparent 70%)",
+            "radial-gradient(50% 60% at 50% 30%, oklch(0.72 0.14 78 / 0.06), transparent 78%)",
         }}
       />
 
@@ -76,7 +95,7 @@ export function Waitlist() {
           </span>
           <h2 className="mt-6 text-balance font-display text-4xl font-semibold leading-[1.05] sm:text-5xl lg:text-6xl">
             Join the{" "}
-            <span className="text-gradient">trust layer</span> waitlist.
+            <span className="text-accent">trust layer</span> waitlist.
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-pretty text-base text-muted-foreground sm:text-lg">
             Priority project access, founding-member allocation perks, and early insurance pool
@@ -91,13 +110,13 @@ export function Waitlist() {
           transition={{ duration: 0.5, delay: 0.08 }}
           className="relative mt-10"
         >
-          {/* Gradient border frame */}
+          {/* Gradient border frame — softened so it reads as a refined edge, not a flare */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 rounded-2xl p-px"
             style={{
               background:
-                "linear-gradient(135deg, oklch(0.72 0.18 75 / 0.6), oklch(0.82 0.16 80 / 0.4), transparent 60%)",
+                "linear-gradient(135deg, oklch(0.72 0.14 78 / 0.32), oklch(0.82 0.11 82 / 0.18), transparent 65%)",
               WebkitMask:
                 "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
               WebkitMaskComposite: "xor",
@@ -151,7 +170,7 @@ export function Waitlist() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_20px_60px_-20px_var(--primary)] transition-transform hover:scale-[1.02] disabled:opacity-60 disabled:hover:scale-100"
+                  className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-glow px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_14px_40px_-22px_oklch(0.72_0.14_78/0.5)] transition-transform hover:scale-[1.02] disabled:opacity-60 disabled:hover:scale-100"
                 >
                   {submitting ? (
                     <>
@@ -179,18 +198,7 @@ export function Waitlist() {
                     "Connect wallet (optional) — auto-fills your address"
                   )}
                 </div>
-                <ConnectButton.Custom>
-                  {({ openConnectModal, openAccountModal, account, mounted }) => (
-                    <button
-                      type="button"
-                      onClick={account ? openAccountModal : openConnectModal}
-                      disabled={!mounted}
-                      className="rounded-lg border border-border bg-card/60 px-3 py-1.5 text-xs font-medium hover:bg-card"
-                    >
-                      {account ? "Connected" : "Connect wallet"}
-                    </button>
-                  )}
-                </ConnectButton.Custom>
+                <WaitlistWalletUI onChange={onWalletChange} />
               </div>
 
               {error && <p className="text-xs text-destructive">{error}</p>}

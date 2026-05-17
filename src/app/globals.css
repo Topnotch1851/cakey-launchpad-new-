@@ -43,6 +43,12 @@
   --animate-float: float 8s ease-in-out infinite;
   --animate-marquee: marquee var(--duration, 40s) linear infinite;
   --animate-marquee-vertical: marquee-vertical var(--duration, 40s) linear infinite;
+  --animate-spotlight: spotlight 2s cubic-bezier(0.16, 1, 0.3, 1) 0.25s 1 forwards;
+
+  @keyframes spotlight {
+    0%   { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
+    100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
+  }
 
   @keyframes marquee {
     from { transform: translateX(0); }
@@ -54,49 +60,48 @@
   }
 }
 
-/* Dark-first Web3 palette */
+/* 21st.dev pure-black floor propagated site-wide */
 :root {
   --radius: 0.875rem;
 
-  --background: oklch(0.14 0.03 270);
-  --foreground: oklch(0.97 0.01 260);
+  /* Exact visual equivalent of `bg-black/[0.96]` over a white compositing parent — neutral, no warm tint */
+  --background: oklch(0.078 0 0);
+  --foreground: oklch(0.97 0 0);
 
-  --card: oklch(0.18 0.035 268 / 0.6);
-  --card-foreground: oklch(0.97 0.01 260);
+  --card: oklch(0.13 0 0 / 0.6);
+  --card-foreground: oklch(0.97 0 0);
 
-  --popover: oklch(0.16 0.035 268);
-  --popover-foreground: oklch(0.97 0.01 260);
+  --popover: oklch(0.12 0 0);
+  --popover-foreground: oklch(0.97 0 0);
 
-  --primary: oklch(0.72 0.18 75);
+  /* Gold accent — solid, restrained, the only chromatic note */
+  --primary: oklch(0.72 0.14 78);
   --primary-foreground: oklch(0.99 0 0);
-  --primary-glow: oklch(0.85 0.16 75);
+  --primary-glow: oklch(0.82 0.12 80);
 
-  --cyan: oklch(0.82 0.14 80);
-  --purple: oklch(0.72 0.18 75);
-  --warn: oklch(0.72 0.18 35);
+  --cyan: oklch(0.82 0.11 82);
+  --purple: oklch(0.72 0.14 78);
+  --warn: oklch(0.7 0.16 38);
 
-  --secondary: oklch(0.24 0.04 268);
-  --secondary-foreground: oklch(0.97 0.01 260);
+  --secondary: oklch(0.16 0 0);
+  --secondary-foreground: oklch(0.97 0 0);
 
-  --muted: oklch(0.22 0.035 268);
-  --muted-foreground: oklch(0.78 0.02 260);
+  --muted: oklch(0.14 0 0);
+  --muted-foreground: oklch(0.76 0 0);
 
-  --accent: oklch(0.82 0.16 80);
-  --accent-foreground: oklch(0.14 0.03 270);
+  --accent: oklch(0.78 0.12 82);
+  --accent-foreground: oklch(0.078 0 0);
 
   --destructive: oklch(0.65 0.22 27);
   --destructive-foreground: oklch(0.99 0 0);
 
-  --border: oklch(0.97 0.01 260 / 0.08);
-  --input: oklch(0.97 0.01 260 / 0.1);
-  --ring: oklch(0.72 0.18 75 / 0.6);
+  --border: oklch(0.97 0 0 / 0.06);
+  --input: oklch(0.97 0 0 / 0.075);
+  --ring: oklch(0.72 0.14 78 / 0.45);
 
-  --gradient-brand: linear-gradient(135deg, oklch(0.72 0.18 75), oklch(0.82 0.16 80));
-  --gradient-hero: radial-gradient(60% 60% at 20% 0%, oklch(0.72 0.18 75 / 0.35), transparent 60%),
-                   radial-gradient(50% 50% at 90% 20%, oklch(0.82 0.16 80 / 0.25), transparent 60%),
-                   radial-gradient(40% 40% at 50% 100%, oklch(0.65 0.16 75 / 0.25), transparent 70%);
-  --shadow-glow: 0 20px 60px -20px oklch(0.72 0.18 75 / 0.6);
-  --shadow-cyan: 0 0 40px -8px oklch(0.82 0.16 80 / 0.55);
+  --gradient-brand: linear-gradient(135deg, oklch(0.72 0.14 78), oklch(0.78 0.12 82));
+  --shadow-glow: 0 18px 50px -24px oklch(0.72 0.14 78 / 0.3);
+  --shadow-cyan: 0 0 28px -12px oklch(0.78 0.12 82 / 0.25);
 }
 
 @keyframes fade-in {
@@ -115,6 +120,19 @@
 @layer base {
   * { border-color: var(--color-border); }
 
+  /* Hide the visible scrollbar across the site — keep scrolling, drop the chrome */
+  html {
+    scrollbar-width: none;          /* Firefox */
+    -ms-overflow-style: none;       /* IE / legacy Edge */
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;                  /* Chromium / Safari */
+  }
+
   html {
     background-color: var(--color-background);
     color: var(--color-foreground);
@@ -125,49 +143,43 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    background-image:
-      radial-gradient(1200px 600px at 80% -10%, oklch(0.72 0.18 75 / 0.18), transparent 60%),
-      radial-gradient(900px 500px at -10% 10%, oklch(0.82 0.16 80 / 0.12), transparent 60%);
-    background-attachment: fixed;
-  }
-
-  @media (max-width: 768px) {
-    body { background-attachment: scroll; }
+    /* No body wash. The whole site shares the hero's pure-black floor; sections inherit it cleanly. */
   }
 
   h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
 
   .bg-grid {
     background-image:
-      linear-gradient(to right, oklch(0.97 0.01 260 / 0.04) 1px, transparent 1px),
-      linear-gradient(to bottom, oklch(0.97 0.01 260 / 0.04) 1px, transparent 1px);
+      linear-gradient(to right, oklch(0.97 0 0 / 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, oklch(0.97 0 0 / 0.03) 1px, transparent 1px);
     background-size: 56px 56px;
     mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
   }
 
   .glass {
-    background: linear-gradient(180deg, oklch(0.97 0.01 260 / 0.04), oklch(0.97 0.01 260 / 0.015));
+    background: linear-gradient(180deg, oklch(0.97 0 0 / 0.03), oklch(0.97 0 0 / 0.01));
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    border: 1px solid oklch(0.97 0.01 260 / 0.08);
+    border: 1px solid oklch(0.97 0 0 / 0.07);
   }
 
   .glass-strong {
     background: linear-gradient(
       180deg,
-      color-mix(in oklab, var(--popover) 78%, transparent),
-      color-mix(in oklab, var(--popover) 70%, transparent)
+      color-mix(in oklab, var(--popover) 82%, transparent),
+      color-mix(in oklab, var(--popover) 74%, transparent)
     );
-    backdrop-filter: blur(28px) saturate(160%);
-    -webkit-backdrop-filter: blur(28px) saturate(160%);
-    border: 1px solid oklch(0.97 0.01 260 / 0.12);
+    backdrop-filter: blur(28px) saturate(140%);
+    -webkit-backdrop-filter: blur(28px) saturate(140%);
+    border: 1px solid oklch(0.97 0 0 / 0.09);
   }
 
+  /* Per design direction: gold accents are SOLID, no gradient typography */
   .text-gradient {
-    background: var(--gradient-brand);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    color: var(--color-accent);
   }
 
   .footer-link {

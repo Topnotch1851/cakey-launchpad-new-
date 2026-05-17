@@ -1,12 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { ChevronDown, Menu, X, ShieldCheck } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/features/auth/hooks/useAuth";
-import { useIsAdmin } from "@/features/auth/hooks/useIsAdmin";
-import { useAudience } from "@/features/audience/hooks/useAudience";
 
 const logo = "/cakey-logo.png";
 
@@ -17,24 +13,18 @@ const links = [
   { href: "/#waitlist", label: "Join waitlist" },
 ];
 
-const routeLinks = [
-  { to: "/launches", label: "Browse launches" },
-  { to: "/insurance", label: "Insurance" },
-  { to: "/auth", label: "Sign in" },
-];
-
-type DesktopItem = { to?: string; href?: string; label: string; description?: string };
+type DesktopItem = { href: string; label: string; description?: string };
 
 const desktopPrimary: DesktopItem[] = [
-  { to: "/launches", label: "Browse launches" },
   { href: "/#how", label: "How it works" },
-  { to: "/insurance", label: "Insurance" },
+  { href: "/#features", label: "Features" },
+  { href: "/#roadmap", label: "Roadmap" },
 ];
 
 const desktopMore: DesktopItem[] = [
-  { href: "/#features", label: "Features", description: "What makes Cakey different" },
-  { href: "/#roadmap", label: "Roadmap", description: "What's shipping next" },
-  { to: "/apply", label: "Launch your project", description: "For founders raising on Cakey" },
+  { href: "/privacy", label: "Privacy", description: "How we handle your data" },
+  { href: "/terms", label: "Terms", description: "Terms of service" },
+  { href: "/disclosures", label: "Disclosures", description: "Risk and regulatory disclosures" },
 ];
 
 export function Nav() {
@@ -42,10 +32,6 @@ export function Nav() {
   const [open, setOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
-  const { user } = useAuth();
-  const { isAdmin } = useIsAdmin(user?.id);
-  const { audience } = useAudience();
-  const dashboardHref = audience === "founder" ? "/team" : "/portfolio";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -94,25 +80,15 @@ export function Nav() {
           </a>
 
           <nav className="hidden items-center gap-1 md:flex">
-            {desktopPrimary.map((l) =>
-              l.to ? (
-                <Link
-                  key={l.to}
-                  href={l.to as string}
-                  className="rounded-lg px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-card/60 hover:text-foreground"
-                >
-                  {l.label}
-                </Link>
-              ) : (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  className="rounded-lg px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-card/60 hover:text-foreground"
-                >
-                  {l.label}
-                </a>
-              ),
-            )}
+            {desktopPrimary.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="rounded-lg px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-card/60 hover:text-foreground"
+              >
+                {l.label}
+              </a>
+            ))}
             <div ref={moreRef} className="relative">
               <button
                 type="button"
@@ -134,59 +110,30 @@ export function Nav() {
                   role="menu"
                   className="glass-strong absolute right-0 top-[calc(100%+8px)] w-64 rounded-2xl p-2 shadow-[0_20px_60px_-12px_oklch(0_0_0/0.8)]"
                 >
-                  {desktopMore.map((l) =>
-                    l.to ? (
-                      <Link
-                        key={l.to}
-                        href={l.to as string}
-                        onClick={() => setMoreOpen(false)}
-                        className="flex flex-col rounded-lg px-3 py-2 hover:bg-card/60"
-                      >
-                        <span className="text-sm font-medium text-foreground">{l.label}</span>
-                        <span className="text-xs text-muted-foreground">{l.description}</span>
-                      </Link>
-                    ) : (
-                      <a
-                        key={l.href}
-                        href={l.href}
-                        onClick={() => setMoreOpen(false)}
-                        className="flex flex-col rounded-lg px-3 py-2 hover:bg-card/60"
-                      >
-                        <span className="text-sm font-medium text-foreground">{l.label}</span>
-                        <span className="text-xs text-muted-foreground">{l.description}</span>
-                      </a>
-                    ),
-                  )}
+                  {desktopMore.map((l) => (
+                    <a
+                      key={l.href}
+                      href={l.href}
+                      onClick={() => setMoreOpen(false)}
+                      className="flex flex-col rounded-lg px-3 py-2 hover:bg-card/60"
+                    >
+                      <span className="text-sm font-medium text-foreground">{l.label}</span>
+                      <span className="text-xs text-muted-foreground">{l.description}</span>
+                    </a>
+                  ))}
                 </div>
               )}
             </div>
           </nav>
 
           <div className="flex items-center gap-2">
-            {user && isAdmin ? (
-              <Link
-                href="/admin"
-                className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[0_8px_30px_-10px_var(--primary)] transition-transform hover:scale-[1.02]"
-              >
-                <ShieldCheck className="h-4 w-4" /> Admin
-              </Link>
-            ) : user ? (
-              <Link
-                href={dashboardHref}
-                className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_8px_30px_-10px_var(--primary)] transition-transform hover:scale-[1.02]"
-              >
-                Dashboard
-                <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
-              </Link>
-            ) : (
-              <Link
-                href="/auth"
-                className="group relative hidden sm:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_8px_30px_-10px_var(--primary)] transition-transform hover:scale-[1.02]"
-              >
-                Sign in
-                <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
-              </Link>
-            )}
+            <a
+              href="/#waitlist"
+              className="group relative hidden sm:inline-flex items-center gap-2 rounded-xl bg-primary hover:bg-primary-glow px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_6px_20px_-12px_oklch(0.72_0.14_78/0.55)] transition-transform hover:scale-[1.02]"
+            >
+              Join waitlist
+              <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+            </a>
             <button
               type="button"
               aria-label="Toggle menu"
@@ -201,17 +148,6 @@ export function Nav() {
         {open && (
           <div className="relative z-50 mt-2 rounded-2xl border border-border bg-popover p-4 shadow-[0_20px_60px_-12px_oklch(0_0_0/0.8)] md:hidden">
             <div className="flex flex-col gap-1">
-              {routeLinks.map((l) => (
-                <Link
-                  key={l.to}
-                  href={l.to}
-                  onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-card/60"
-                >
-                  {l.label}
-                </Link>
-              ))}
-              <div className="my-2 border-t border-border" />
               {links.map((l) => (
                 <a
                   key={l.href}
@@ -222,31 +158,13 @@ export function Nav() {
                   {l.label}
                 </a>
               ))}
-              {user && isAdmin ? (
-                <Link
-                  href="/admin"
-                  onClick={() => setOpen(false)}
-                  className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-4 py-3 text-sm font-semibold text-primary-foreground"
-                >
-                  <ShieldCheck className="h-4 w-4" /> Cakey admin
-                </Link>
-              ) : user ? (
-                <Link
-                  href={dashboardHref}
-                  onClick={() => setOpen(false)}
-                  className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-4 py-3 text-sm font-semibold text-primary-foreground"
-                >
-                  Open dashboard →
-                </Link>
-              ) : (
-                <Link
-                  href="/auth"
-                  onClick={() => setOpen(false)}
-                  className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-4 py-3 text-sm font-semibold text-primary-foreground"
-                >
-                  Sign in →
-                </Link>
-              )}
+              <a
+                href="/#waitlist"
+                onClick={() => setOpen(false)}
+                className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-glow px-4 py-3 text-sm font-semibold text-primary-foreground"
+              >
+                Join waitlist →
+              </a>
             </div>
           </div>
         )}

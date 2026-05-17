@@ -2,74 +2,100 @@
 
 import { motion } from "framer-motion";
 import { useAnalytics } from "@/hooks/useAnalytics";
-import ShaderBackground from "@/components/ui/shader-background";
+import { Spotlight } from "@/components/ui/spotlight";
+import { SplineScene } from "@/components/ui/splite";
 
 export function Hero() {
   const track = useAnalytics();
+
   return (
-    <section id="top" className="relative isolate flex min-h-screen flex-col justify-center overflow-hidden pt-28 pb-16 sm:pt-32 sm:pb-24">
-      {/* Background glows */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10"
-        style={{ background: "var(--gradient-hero)" }}
-      />
-      {/* Shader sits in the bottom half, softly faded at top so hero text stays readable */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[55%]"
-        style={{
-          maskImage: "linear-gradient(to bottom, transparent 0%, black 30%, black 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 30%, black 100%)",
-        }}
-      >
-        <ShaderBackground className="origin-center scale-[1.8] opacity-70 sm:scale-100" />
-      </div>
-      <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-transparent to-background" />
-      <div
-        aria-hidden
-        className="absolute left-1/2 top-0 -z-10 h-[600px] w-[1100px] -translate-x-1/2 rounded-full opacity-30 blur-3xl"
-        style={{ background: "var(--gradient-brand)" }}
+    <section
+      id="top"
+      className="relative isolate min-h-[100svh] w-full overflow-hidden bg-black/[0.96]"
+    >
+      {/* 21st.dev ambient spotlight — exact original values */}
+      <Spotlight
+        className="-top-40 left-0 md:left-60 md:-top-20"
+        fill="white"
       />
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl text-center">
+      {/*
+        Robot canvas — one transparent layer, no wrapper background.
+
+        Mobile  : canvas anchored to the bottom and extended ~22% below the viewport.
+                  Robot sits in the lower 2/3 of the screen with breathing room above for text.
+        Desktop : canvas extended ~40% past the right edge while remaining left-anchored at 0.
+                  Visible canvas spans the whole hero (so cursor events reach the robot anywhere),
+                  but the canvas-center (where the robot lives) lands at ~70% of the viewport — clearly right of the 55% text column.
+      */}
+      <div
+        className="
+          absolute z-0
+          inset-x-0 top-[6%] bottom-[-22%]
+          md:inset-y-0 md:right-[-40%]
+        "
+      >
+        <SplineScene
+          scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+          className="h-full w-full"
+        />
+      </div>
+
+      {/*
+        Text layer — sits directly on the same canvas. No background, no surface.
+        pointer-events-none allows the robot to receive cursor input through the text on desktop;
+        CTAs re-enable pointer-events to stay clickable.
+      */}
+      <div
+        className="
+          pointer-events-none relative z-10 mx-auto flex w-full max-w-7xl flex-col items-start justify-end
+          min-h-[100svh] px-6 pt-28 pb-10
+          md:px-10 md:pb-16
+          lg:px-16 lg:pb-20
+        "
+      >
+        <div className="max-w-md md:max-w-[52%]">
           <motion.h1
-            initial={{ y: 18 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="mt-6 text-balance font-display text-[3.25rem] font-semibold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl"
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="text-balance font-display text-[2.1rem] font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl"
           >
             Launch tokens with{" "}
-            <span className="text-gradient">intelligent trust.</span>
+            <span className="text-accent">intelligent trust.</span>
           </motion.h1>
 
           <motion.p
-            initial={{ y: 18 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="mx-auto mt-8 max-w-xl text-pretty text-lg text-muted-foreground sm:text-xl"
+            transition={{ duration: 0.7, delay: 0.25 }}
+            className="mt-5 max-w-xl text-pretty text-sm text-muted-foreground sm:text-lg"
           >
             No rugs. No noise. Just launches that earn trust.
           </motion.p>
 
           <motion.div
-            initial={{ y: 18 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+            transition={{ duration: 0.7, delay: 0.35 }}
+            className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
           >
             <a
               href="#waitlist"
               onClick={() => track("hero_cta_click", { target: "waitlist" })}
-              className="group relative inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-8 py-4 text-base font-semibold text-primary-foreground shadow-[0_20px_60px_-20px_var(--primary)] transition-transform hover:scale-[1.02] sm:w-auto"
+              className="pointer-events-auto group inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-glow sm:text-base"
             >
               Join the waitlist
               <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
             </a>
+            <a
+              href="#how"
+              className="pointer-events-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-5 py-3.5 text-sm font-medium text-foreground/90 backdrop-blur transition-colors hover:bg-white/[0.08] sm:text-base"
+            >
+              How it works
+            </a>
           </motion.div>
         </div>
-
       </div>
     </section>
   );

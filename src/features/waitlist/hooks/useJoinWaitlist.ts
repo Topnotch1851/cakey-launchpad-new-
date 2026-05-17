@@ -1,31 +1,21 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
+import { joinWaitlistAction } from "@/features/waitlist/actions";
+import type { WaitlistInput, WaitlistResult } from "@/features/waitlist/schemas";
 
-export type WaitlistInput = {
-  email: string;
-  role?: "investor" | "team" | "other" | null;
-  walletAddress?: string | null;
-  source?: string | null;
-};
+export type { WaitlistInput, WaitlistResult };
 
 /**
- * Frontend-only stub. Simulates a waitlist join with a delay.
- * TODO: Replace with real API call when backend is ready.
+ * Submits the waitlist form via the server action.
+ *
+ * React Query gives us loading/error state + automatic retry policy without forcing
+ * us to keep local boolean state in every form.  The server action keeps secrets
+ * (Supabase keys, IP salt) off the client.
  */
 export function useJoinWaitlist() {
-  return useMutation({
-    mutationFn: async (input: WaitlistInput) => {
-      await new Promise((r) => setTimeout(r, 600));
-      if (typeof window !== "undefined" && process.env.NODE_ENV !== "production") {
-        // eslint-disable-next-line no-console
-        console.info("[waitlist:stub]", input);
-      }
-      const result: { ok: true; id: string } | { ok: false; error: string } = {
-        ok: true,
-        id: crypto.randomUUID(),
-      };
-      return result;
-    },
+  return useMutation<WaitlistResult, Error, WaitlistInput>({
+    mutationFn: (input) => joinWaitlistAction(input),
+    retry: 0,
   });
 }

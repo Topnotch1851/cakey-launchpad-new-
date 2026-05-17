@@ -72,18 +72,18 @@ export function Roadmap() {
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl text-left">
             <span className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent backdrop-blur sm:w-auto sm:justify-start">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_12px_var(--cyan)]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_oklch(0.82_0.11_82/0.5)]" />
               Roadmap
             </span>
             <h2 className="mt-5 text-balance font-display text-4xl font-semibold leading-[1.05] sm:text-5xl lg:text-6xl">
-              Shipping the <span className="text-gradient">trust stack.</span>
+              Shipping the <span className="text-accent">trust stack.</span>
             </h2>
             <p className="mt-5 max-w-xl text-pretty text-base text-muted-foreground sm:text-lg">
               Three product phases — each backed by concrete build milestones.
             </p>
           </div>
           <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            <span className="h-2 w-2 rounded-full bg-accent shadow-[0_0_12px_var(--cyan)] animate-glow-pulse" />
+            <span className="h-2 w-2 rounded-full bg-accent shadow-[0_0_8px_oklch(0.82_0.11_82/0.5)] animate-glow-pulse" />
             Currently shipping Phase 01
           </div>
         </div>
@@ -92,7 +92,7 @@ export function Roadmap() {
         <div className="mt-12">
           <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-card/60">
             <div
-              className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary to-accent shadow-[0_0_20px_var(--cyan)]"
+              className="absolute inset-y-0 left-0 rounded-full bg-primary"
               style={{ width: `${progressPct}%` }}
             />
           </div>
@@ -117,7 +117,7 @@ export function Roadmap() {
                 className={cn(
                   "relative flex flex-col rounded-3xl border p-7 backdrop-blur transition-colors",
                   isActive
-                    ? "border-accent/40 bg-card/60 shadow-[0_0_40px_-10px_var(--cyan)]"
+                    ? "border-accent/30 bg-card/55 shadow-[0_0_0_1px_oklch(0.82_0.11_82/0.08),0_18px_50px_-30px_oklch(0.82_0.11_82/0.35)]"
                     : "border-border bg-card/30",
                 )}
               >

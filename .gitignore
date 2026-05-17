@@ -42,3 +42,9 @@ dev.log
 next-env.d.ts
 
 .vercel
+
+# local agent / skill tooling (not project code)
+.agents/
+skills/
+skills-lock.json
+.claude/

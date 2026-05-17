@@ -55,7 +55,7 @@ export function FeaturesGallery() {
       eyebrow="Capabilities"
       heading={
         <>
-          What makes Cakey <span className="text-gradient">different.</span>
+          What makes Cakey <span className="text-accent">different.</span>
         </>
       }
       description="Every system works together — intelligence, enforcement, and protection in a single launch stack."

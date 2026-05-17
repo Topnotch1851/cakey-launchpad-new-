@@ -55,7 +55,7 @@ export class ErrorBoundary extends Component<Props, State> {
             onClick={() => {
               if (typeof window !== "undefined") window.location.reload();
             }}
-            className="rounded-xl bg-gradient-to-r from-primary to-accent px-4 py-2 text-sm font-semibold text-primary-foreground"
+            className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-glow"
           >
             Reload
           </button>
