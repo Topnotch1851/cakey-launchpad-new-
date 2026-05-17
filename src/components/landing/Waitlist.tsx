@@ -43,6 +43,13 @@ export function Waitlist() {
   const track = useAnalytics();
   const joinMutation = useJoinWaitlist();
 
+  // Inline format check.  Same regexes the server uses — keeps client + server
+  // in agreement and lets the user fix a mistyped address before they submit.
+  const walletInvalid =
+    wallet.length > 0 &&
+    !/^0x[a-fA-F0-9]{40}$/u.test(wallet) &&
+    !/^[1-9A-HJ-NP-Za-km-z]{32,44}$/u.test(wallet);
+
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -162,60 +169,71 @@ export function Waitlist() {
                 ))}
               </div>
 
-              {/* Email + submit */}
-              <div className="flex flex-col gap-3 sm:flex-row">
+              {/* Email — own row, full width */}
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="email-input" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  Email
+                </label>
                 <input
+                  id="email-input"
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@protocol.xyz"
-                  className="flex-1 rounded-xl border border-border bg-background/60 px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+                  className="w-full rounded-xl border border-border bg-background/60 px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
                 />
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-glow px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_14px_40px_-22px_oklch(0.72_0.14_78/0.5)] transition-transform hover:scale-[1.02] disabled:opacity-60 disabled:hover:scale-100"
-                >
-                  {submitting ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" /> Joining…
-                    </>
-                  ) : (
-                    <>
-                      Join waitlist <span aria-hidden>→</span>
-                    </>
-                  )}
-                </button>
               </div>
 
-              {/* Wallet field — visible + editable so what's submitted is always
-                  what the user sees.  Connect button auto-fills it; user can
-                  also paste manually (EVM or Solana). */}
-              <div className="flex flex-col gap-2 rounded-xl border border-border/60 bg-background/30 px-3 py-2.5 sm:flex-row sm:items-center sm:gap-3">
-                <label
-                  htmlFor="wallet-input"
-                  className="shrink-0 text-xs font-medium uppercase tracking-wider text-muted-foreground"
-                >
-                  Wallet
+              {/* Wallet — own row, with Connect button inline.  Optional.
+                  Auto-fills from the Connect button OR accepts a manual paste.
+                  Inline format hint shows up if the entered value doesn't match
+                  either EVM or Solana before the user even hits submit. */}
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="wallet-input" className="flex items-baseline justify-between gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <span>Wallet <span className="ml-1 normal-case tracking-normal text-muted-foreground/70">(optional)</span></span>
                 </label>
-                <input
-                  id="wallet-input"
-                  type="text"
-                  inputMode="text"
-                  autoComplete="off"
-                  autoCorrect="off"
-                  autoCapitalize="off"
-                  spellCheck={false}
-                  value={wallet}
-                  onChange={(e) => setWallet(e.target.value.trim())}
-                  placeholder="0x… or Solana address (optional)"
-                  className="min-w-0 flex-1 rounded-lg border border-border/60 bg-background/60 px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground/70 focus:border-accent/40 focus:outline-none focus:ring-1 focus:ring-accent/30 sm:text-sm"
-                />
-                <WaitlistWalletUI onChange={onWalletChange} />
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-stretch">
+                  <input
+                    id="wallet-input"
+                    type="text"
+                    inputMode="text"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    autoCapitalize="off"
+                    spellCheck={false}
+                    value={wallet}
+                    onChange={(e) => setWallet(e.target.value.trim())}
+                    placeholder="0x… or Solana address"
+                    className="min-w-0 flex-1 rounded-xl border border-border bg-background/60 px-4 py-3.5 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 sm:text-sm"
+                  />
+                  <WaitlistWalletUI onChange={onWalletChange} />
+                </div>
+                {walletInvalid && (
+                  <p className="text-[11px] text-amber-400/90">
+                    Wallet format doesn&apos;t look right. Use an EVM address (0x + 40 hex chars) or a Solana base58 address (32-44 chars). Or leave blank.
+                  </p>
+                )}
               </div>
 
-              {error && <p className="text-xs text-destructive">{error}</p>}
+              {/* Single submit at the bottom — handles email-only, email+pasted-wallet, and email+connected-wallet. */}
+              <button
+                type="submit"
+                disabled={submitting}
+                className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-glow px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_14px_40px_-22px_oklch(0.72_0.14_78/0.5)] transition-colors disabled:opacity-60"
+              >
+                {submitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" /> Joining…
+                  </>
+                ) : (
+                  <>
+                    Join waitlist <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+                  </>
+                )}
+              </button>
+
+              {error && <p className="text-xs text-destructive" role="alert">{error}</p>}
 
               <p className="text-center text-[11px] text-muted-foreground">
                 No spam. Unsubscribe anytime. Wallet not required.

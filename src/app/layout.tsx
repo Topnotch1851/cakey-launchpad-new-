@@ -57,7 +57,8 @@ export const metadata: Metadata = {
     title: "Cakey AI Launchpad — Intelligent trust for token launches",
     description: "AI-powered trust for Web3 launches. Join the waitlist.",
   },
-  icons: { icon: "/favicon.ico" },
+  // Favicon + Apple touch icon come from app/icon.png + app/apple-icon.png
+  // (file-based metadata) — both generated from the Cakey brand logo.
 };
 
 // Global structured-data graph emitted on every page.  Page-level schemas
