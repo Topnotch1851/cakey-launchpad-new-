@@ -6,6 +6,20 @@ const nextConfig: NextConfig = {
   compress: true,
   // Browser preview / cross-origin dev (Cascade proxy)
   allowedDevOrigins: ["127.0.0.1", "localhost"],
+  // Dev-compile speed: only pull in the named exports actually imported
+  // from these heavy barrel packages. Massively reduces Turbopack work
+  // per HMR cycle on the landing page.
+  experimental: {
+    optimizePackageImports: [
+      "lucide-react",
+      "framer-motion",
+      "@rainbow-me/rainbowkit",
+      "wagmi",
+      "viem",
+      "@tanstack/react-query",
+      "@radix-ui/react-slot",
+    ],
+  },
   // Security headers (production)
   async headers() {
     return [
