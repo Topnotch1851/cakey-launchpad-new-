@@ -68,7 +68,7 @@ export function Nav() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div
           className={cn(
-            "flex items-center justify-between rounded-2xl px-4 py-2.5 transition-all duration-300",
+            "flex items-center justify-between rounded-full px-4 py-2.5 transition-all duration-300",
             scrolled || open
               ? "border border-white/[0.10] bg-gradient-to-b from-white/[0.14] to-white/[0.07] backdrop-blur-[20px] saturate-[150%] shadow-[0_8px_30px_-12px_oklch(0_0_0/0.6)]"
               : "border border-transparent",

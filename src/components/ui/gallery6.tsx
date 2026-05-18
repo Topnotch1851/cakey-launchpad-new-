@@ -121,8 +121,7 @@ export function Gallery6({
             transition={{ duration: 0.7, ease: easeCinematic }}
             className="max-w-3xl text-left"
           >
-            <span className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent backdrop-blur sm:w-auto sm:justify-start">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_oklch(0.82_0.11_82/0.5)]" />
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent backdrop-blur">
               {eyebrow}
             </span>
             <h2 className="mt-5 text-balance font-display text-4xl font-semibold leading-[1.05] sm:text-5xl">

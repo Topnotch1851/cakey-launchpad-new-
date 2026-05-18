@@ -41,8 +41,7 @@ export function Problem() {
             transition={{ duration: 0.7, ease: easeCinematic }}
             className="max-w-xl"
           >
-            <span className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-warn/30 bg-warn/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-warn backdrop-blur sm:w-auto sm:justify-start">
-              <span className="h-1.5 w-1.5 rounded-full bg-warn shadow-[0_0_8px_oklch(0.7_0.16_38/0.5)]" />
+            <span className="inline-flex items-center gap-2 rounded-full border border-warn/30 bg-warn/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-warn backdrop-blur">
               The trust crisis
             </span>
             <h2 className="mt-5 text-balance font-display text-4xl font-semibold leading-[1.05] sm:text-5xl lg:text-6xl">

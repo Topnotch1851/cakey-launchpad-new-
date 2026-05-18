@@ -9,6 +9,12 @@ interface Props {
   status?: string;
 }
 
+/** Display the address as `0x1234…abcd` while copying the full value. */
+function shorten(addr: string): string {
+  if (addr.length <= 12) return addr;
+  return `${addr.slice(0, 6)}…${addr.slice(-4)}`;
+}
+
 export function ContractPill({ symbol, address, status = "TBA" }: Props) {
   const [copied, setCopied] = useState(false);
 
@@ -24,9 +30,12 @@ export function ContractPill({ symbol, address, status = "TBA" }: Props) {
   };
 
   return (
-    <div className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card/50 px-3 py-2 font-mono text-[11px] text-muted-foreground backdrop-blur sm:w-auto sm:justify-start">
+    <div
+      className="mt-3 inline-flex items-center gap-2 rounded-xl border border-border bg-card/50 px-3 py-2 font-mono text-[11px] text-muted-foreground backdrop-blur"
+      title={address}
+    >
       <span className="text-accent">{symbol}</span>
-      <span>{address}</span>
+      <span>{shorten(address)}</span>
       <span className="ml-1 rounded-md border border-border px-1.5 py-0.5 text-[10px] uppercase tracking-wider">
         {status}
       </span>

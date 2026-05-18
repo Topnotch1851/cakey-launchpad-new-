@@ -59,7 +59,6 @@ export default function AboutPage() {
       <section className="relative isolate pt-32 pb-20 sm:pt-40 sm:pb-28">
         <div className="mx-auto max-w-4xl px-6 lg:px-8">
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent backdrop-blur">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_oklch(0.82_0.11_82/0.5)]" />
             About Cakey
           </span>
           <h1 className="mt-5 text-balance font-display text-4xl font-semibold leading-[1.05] sm:text-5xl lg:text-6xl">
