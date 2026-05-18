@@ -71,7 +71,7 @@ export async function joinWaitlistAction(rawInput: WaitlistInput): Promise<Waitl
     JSON.stringify({
       lvl: "info",
       evt: "waitlist.submit",
-      email_domain: parsed.data.email.split("@")[1] ?? null,
+      email_domain: parsed.data.email?.split("@")[1] ?? null,
       role: parsed.data.role ?? null,
       wallet_present: Boolean(parsed.data.walletAddress),
       wallet_kind: parsed.data.walletAddress
