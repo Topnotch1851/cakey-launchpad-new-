@@ -78,6 +78,18 @@ export default function RootLayout({
       className={`dark ${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        {/*
+          Skip-link for keyboard / screen-reader users.  Hidden visually until
+          focused, then appears as a high-contrast pill in the top-left.  The
+          hero canvas (Spline) is `aria-hidden`, so the next focus stop should
+          land on real content — the homepage exposes #top on its root section.
+        */}
+        <a
+          href="#top"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent"
+        >
+          Skip to content
+        </a>
         <StructuredData data={globalSchema} />
         <AppProviders>{children}</AppProviders>
       </body>

@@ -24,6 +24,7 @@ export function Hero() {
                   but the canvas-center (where the robot lives) lands at ~70% of the viewport — clearly right of the 55% text column.
       */}
       <div
+        aria-hidden="true"
         className="
           absolute z-0
           inset-x-0 top-[6%] bottom-[-22%]
@@ -66,7 +67,8 @@ export function Hero() {
             transition={{ duration: 0.85, delay: 0.28, ease: easeCinematic }}
             className="mt-5 max-w-xl text-pretty text-sm text-muted-foreground sm:text-lg"
           >
-            No rugs. No noise. Just launches that earn trust.
+            On-chain trust scoring, commitment locks, real-time monitoring, and
+            an insurance pool — built into every launch. No rugs. No noise.
           </motion.p>
 
           <motion.div

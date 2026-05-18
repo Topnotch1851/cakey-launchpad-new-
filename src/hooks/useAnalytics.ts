@@ -10,7 +10,7 @@ export function useAnalytics() {
   return useCallback((eventName: string, properties?: Record<string, unknown>) => {
     if (typeof window === "undefined") return;
     if (process.env.NODE_ENV !== "production") {
-      // eslint-disable-next-line no-console
+       
       console.info("[analytics:stub]", eventName, properties);
     }
   }, []);

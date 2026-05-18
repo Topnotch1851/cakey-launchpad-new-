@@ -1,20 +1,25 @@
 import { Gallery6, type GalleryItem } from "@/components/ui/gallery6";
 
+// Copy intentionally describes intent and design direction, not measured
+// production metrics.  Phase 1 of the roadmap is "landing + manual vetting",
+// so claiming live throughput / accuracy / pool size figures would be untrue
+// and create regulatory exposure.  Update with measured numbers once each
+// system is shipped (see PRD §10 success metrics).
 const items: GalleryItem[] = [
   {
     id: "trust-score",
     title: "Behavioral Trust Score",
     summary:
-      "Wallet-level reputation built from on-chain history. Detect repeat offenders before they ever list — 12k+ wallets scored with 98% detection accuracy.",
+      "Wallet-level reputation built from on-chain history. Designed to surface repeat offenders, copy-paste teams, and credible builders before a project ever lists.",
     url: "/features/trust-score",
     image:
       "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=900&q=80",
   },
   {
     id: "simulation",
-    title: "Simulation Engine",
+    title: "Pre-Launch Simulation",
     summary:
-      "Model whale behavior, slippage, and liquidity shocks before a single token moves. 10M+ scenarios run per launch across 24 risk vectors in under 2 seconds.",
+      "Models whale behavior, slippage, and liquidity shocks before a token goes live. Built to expose tokenomics weaknesses while there's still time to fix them.",
     url: "/features/simulation",
     image:
       "https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=900&q=80",
@@ -23,7 +28,7 @@ const items: GalleryItem[] = [
     id: "proof-of-commitment",
     title: "Proof of Commitment",
     summary:
-      "On-chain locks and collateral with penalty logic that punishes early exits. 100% non-custodial, zero custody breaches, up to 12-month lock windows.",
+      "On-chain liquidity locks and optional collateral staking with penalty logic for early exits. Non-custodial by design — Cakey never holds your funds.",
     url: "/features/proof-of-commitment",
     image:
       "https://images.unsplash.com/photo-1620207418302-439b387441b0?auto=format&fit=crop&w=900&q=80",
@@ -32,7 +37,7 @@ const items: GalleryItem[] = [
     id: "monitoring",
     title: "Real-time Monitoring",
     summary:
-      "Continuous surveillance of liquidity flows and suspicious wallets after launch. 24/7 cross-chain coverage with alert latency under 400ms across 5 chains.",
+      "Continuous post-launch surveillance of liquidity flows and suspicious wallet activity. Built to flag drains, dumps, and stealth transfers as they happen.",
     url: "/features/monitoring",
     image:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80",
@@ -41,7 +46,7 @@ const items: GalleryItem[] = [
     id: "insurance-pool",
     title: "Insurance Pool",
     summary:
-      "A shared safety net funded by protocol fees, with transparent on-chain claim logic. $2.4M in auto-replenishing reserves with 100% on-chain transparency.",
+      "A shared safety net funded by protocol fees, designed for partial compensation when projects fail. Structure and payout logic are being finalized with the community.",
     url: "/insurance",
     image:
       "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=900&q=80",

@@ -65,7 +65,24 @@ const statusColor: Record<MilestoneStatus, string> = {
   planned: "text-muted-foreground/70 border-border bg-background/40",
 };
 
-const progressPct = 25; // phase 01 in progress
+/**
+ * Derive a 0-100 progress percentage from milestone statuses so the bar
+ * never drifts when phases get updated.  A completed milestone counts as 1,
+ * an in-progress one as 0.5.  Keeps the visual narrative honest without
+ * requiring a manual constant.
+ */
+function computeProgressPct(allPhases: Phase[]): number {
+  const milestones = allPhases.flatMap((p) => p.milestones);
+  if (milestones.length === 0) return 0;
+  const score = milestones.reduce((sum, m) => {
+    if (m.status === "done") return sum + 1;
+    if (m.status === "in_progress") return sum + 0.5;
+    return sum;
+  }, 0);
+  return Math.round((score / milestones.length) * 100);
+}
+
+const progressPct = computeProgressPct(phases);
 
 export function Roadmap() {
   return (

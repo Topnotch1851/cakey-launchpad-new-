@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -74,24 +75,25 @@ export function Nav() {
               : "border border-transparent",
           )}
         >
-          <a href="/" className="flex items-center gap-2.5">
+          <Link href="/" className="flex items-center gap-2.5">
             <span className="logo-coin-wrap">
+              {/* eslint-disable-next-line @next/next/no-img-element -- 36×36 logo, next/image is overkill */}
               <img src={logo} alt="Cakey" className="logo-coin h-9 w-9 object-contain" />
             </span>
             <span className="font-display text-base font-semibold tracking-tight">
               Cakey<span className="text-accent">.ai</span>
             </span>
-          </a>
+          </Link>
 
           <nav className="hidden items-center gap-1 md:flex">
             {desktopPrimary.map((l) => (
-              <a
+              <Link
                 key={l.href}
                 href={l.href}
                 className="rounded-lg px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-card/60 hover:text-foreground"
               >
                 {l.label}
-              </a>
+              </Link>
             ))}
             <div ref={moreRef} className="relative">
               <button
@@ -115,7 +117,7 @@ export function Nav() {
                   className="glass-strong absolute right-0 top-[calc(100%+8px)] w-64 rounded-2xl p-2 shadow-[0_20px_60px_-12px_oklch(0_0_0/0.8)]"
                 >
                   {desktopMore.map((l) => (
-                    <a
+                    <Link
                       key={l.href}
                       href={l.href}
                       onClick={() => setMoreOpen(false)}
@@ -123,7 +125,7 @@ export function Nav() {
                     >
                       <span className="text-sm font-medium text-foreground">{l.label}</span>
                       <span className="text-xs text-muted-foreground">{l.description}</span>
-                    </a>
+                    </Link>
                   ))}
                 </div>
               )}
@@ -131,13 +133,13 @@ export function Nav() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <a
+            <Link
               href="/#waitlist"
               className="group relative hidden sm:inline-flex items-center gap-2 rounded-xl bg-primary hover:bg-primary-glow px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_6px_20px_-12px_oklch(0.72_0.14_78/0.55)] transition-transform hover:scale-[1.02]"
             >
               Join waitlist
               <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
-            </a>
+            </Link>
             <button
               type="button"
               aria-label="Toggle menu"
@@ -153,22 +155,22 @@ export function Nav() {
           <div className="relative z-50 mt-2 rounded-2xl border border-border bg-popover p-4 shadow-[0_20px_60px_-12px_oklch(0_0_0/0.8)] md:hidden">
             <div className="flex flex-col gap-1">
               {links.map((l) => (
-                <a
+                <Link
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
                   className="rounded-lg px-3 py-2.5 text-sm text-muted-foreground hover:bg-card/60 hover:text-foreground"
                 >
                   {l.label}
-                </a>
+                </Link>
               ))}
-              <a
+              <Link
                 href="/#waitlist"
                 onClick={() => setOpen(false)}
                 className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-glow px-4 py-3 text-sm font-semibold text-primary-foreground"
               >
                 Join waitlist →
-              </a>
+              </Link>
             </div>
           </div>
         )}

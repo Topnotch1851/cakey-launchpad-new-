@@ -18,13 +18,20 @@ const emailSchema = z
 // The connect-wallet button currently autofills EVM via Wagmi, but pasting a
 // Solana address by hand is supported because the marketing copy claims Solana
 // behavioural scoring.  Casing is preserved (Solana is case-sensitive).
-const EVM_RE = /^0x[a-fA-F0-9]{40}$/u;
-const SOLANA_BASE58_RE = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/u;
+//
+// Exported so the client form can validate inline without re-declaring the
+// regexes (single source of truth — server and client can never drift).
+export const EVM_ADDRESS_RE = /^0x[a-fA-F0-9]{40}$/u;
+export const SOLANA_BASE58_RE = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/u;
+
+export function isValidWalletAddress(value: string): boolean {
+  return EVM_ADDRESS_RE.test(value) || SOLANA_BASE58_RE.test(value);
+}
 
 const walletSchema = z
   .string()
   .trim()
-  .refine((v) => EVM_RE.test(v) || SOLANA_BASE58_RE.test(v), {
+  .refine(isValidWalletAddress, {
     message: "Wallet must be a 0x EVM address or a Solana base58 address.",
   });
 

@@ -77,25 +77,26 @@ export function Footer() {
                 Join early access and get priority allocation, behavioral trust scoring, and rug-pull protection from day one.
               </p>
             </div>
-            <a
+            <Link
               href="/#waitlist"
               className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-glow px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_14px_40px_-22px_oklch(0.72_0.14_78/0.5)] transition-transform hover:scale-[1.02] sm:w-auto"
             >
               Join the waitlist
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-            </a>
+            </Link>
           </div>
         </motion.div>
 
         {/* Link grid */}
         <div className="mt-16 grid grid-cols-2 gap-10 sm:grid-cols-4 lg:grid-cols-5">
           <div className="col-span-2 lg:col-span-2">
-            <a href="/" className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
+              {/* eslint-disable-next-line @next/next/no-img-element -- small static logo, next/image optimisation is overkill for a 96×96 PNG that's already in /public */}
               <img src={logo} alt="Cakey" className="h-12 w-12 object-contain" />
               <span className="font-display text-xl font-semibold tracking-tight">
                 Cakey<span className="text-accent">.ai</span>
               </span>
-            </a>
+            </Link>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
               The AI-powered Web3 launchpad ending rug pulls through behavioral trust scoring, pre-launch simulation, and a built-in insurance pool.
             </p>
@@ -103,9 +104,9 @@ export function Footer() {
 
           <FooterCol title="Explore">
             {explore.map((l) => (
-              <a key={l.href} href={l.href} className="footer-link">
+              <Link key={l.href} href={l.href} className="footer-link">
                 {l.label}
-              </a>
+              </Link>
             ))}
           </FooterCol>
 

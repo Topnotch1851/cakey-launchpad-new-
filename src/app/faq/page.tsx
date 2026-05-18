@@ -18,7 +18,7 @@ const FAQS: Array<{ question: string; answer: string }> = [
   {
     question: "How does Cakey prevent rug pulls?",
     answer:
-      "Three layers work together. (1) Behavioral Trust Score: developer wallets are scored against on-chain history, repeat offenders are flagged before they can list. (2) Simulation Engine: each launch is stress-tested across 10M+ scenarios for whale dump risk and liquidity drains. (3) Proof of Commitment: liquidity is locked on-chain with collateral that penalises early exits.",
+      "Three layers work together. (1) Behavioral Trust Score: developer wallets are scored against on-chain history, repeat offenders are flagged before they can list. (2) Pre-Launch Simulation: each launch is stress-tested across many scenarios for whale dump risk and liquidity drains. (3) Proof of Commitment: liquidity is locked on-chain with collateral that penalises early exits.",
   },
   {
     question: "What chains does Cakey support?",

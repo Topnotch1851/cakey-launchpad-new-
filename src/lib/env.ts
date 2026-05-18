@@ -26,7 +26,7 @@ const parsedPublic = publicEnvSchema.safeParse({
 });
 
 if (!parsedPublic.success) {
-  // eslint-disable-next-line no-console
+   
   console.error("[env] Invalid public env:", parsedPublic.error.flatten().fieldErrors);
   throw new Error("Invalid public environment variables. See logs.");
 }
@@ -67,7 +67,7 @@ function readServerEnv(): ServerEnv {
 
   const parsed = serverEnvSchema.safeParse(raw);
   if (!parsed.success) {
-    // eslint-disable-next-line no-console
+     
     console.error("[env] Invalid server env:", parsed.error.flatten().fieldErrors);
     throw new Error("Invalid server environment. See logs.");
   }

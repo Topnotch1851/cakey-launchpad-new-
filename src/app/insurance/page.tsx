@@ -6,10 +6,14 @@ import { ShieldCheck, Coins, FileWarning, ArrowRight, AlertCircle } from "lucide
 import { Nav } from "@/components/landing/Nav";
 import { Footer } from "@/components/landing/Footer";
 
+// Pool isn't live yet (see PRD §6.3 — design is still open).  Showing fake
+// dollar reserves with a disclaimer is still misleading.  Describe how the
+// pool is designed to work instead, and swap in real figures once the
+// contract is deployed and audited.
 const stats = [
-  { label: "Pool reserves", value: "$2.4M", trend: "Auto-replenishing" },
-  { label: "Coverage ratio", value: "1.6×", trend: "vs. live commitments" },
-  { label: "Claims paid", value: "$0", trend: "All projects healthy" },
+  { label: "Funding source", value: "Protocol fees", trend: "Auto-routed" },
+  { label: "Coverage scope", value: "Vetted launches", trend: "Per-launch caps" },
+  { label: "Payout rail", value: "On-chain", trend: "Direct to wallet" },
 ];
 
 const steps = [
@@ -76,7 +80,9 @@ export default function InsurancePage() {
               ))}
             </div>
             <p className="mt-3 text-[11px] text-muted-foreground">
-              Figures shown are illustrative until the pool launches publicly.
+              The protection pool is in design (PRD §6.3) — not yet live. Final
+              parameters, audited contract, and reserve figures will be published
+              before launch.
             </p>
           </div>
         </section>

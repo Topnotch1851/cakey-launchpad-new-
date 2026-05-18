@@ -35,18 +35,22 @@ const pageSchema = combinedGraph(
   ]),
 );
 
+// Phase 1 of the roadmap is landing + manual vetting (see PRD §7).  These
+// pillars describe the intended design of each system rather than measured
+// production performance.  Replace the qualitative descriptions with measured
+// numbers once the corresponding phase ships.
 const pillars = [
   {
     title: "Intelligence before listing",
-    body: "Every project is run through a behavioral trust pipeline before it ever reaches investors. Wallet history, developer track record, and tokenomics are scored against patterns of 12k+ historically-scored wallets.",
+    body: "Every project will be run through a behavioral trust pipeline before it reaches investors. Wallet history, developer track record, and tokenomics are scored against patterns from prior on-chain activity.",
   },
   {
     title: "Simulation before launch",
-    body: "Liquidity curves, whale concentration, vesting cliffs, and slippage are stress-tested across 10M+ scenarios per launch — the public simulation report is attached to every approved listing.",
+    body: "Liquidity curves, whale concentration, vesting cliffs, and slippage are stress-tested across many scenarios per launch — a public simulation report is attached to every approved listing.",
   },
   {
     title: "Protection after launch",
-    body: "Liquidity is locked on-chain with collateral that punishes early exits. Real-time monitoring surfaces suspicious wallet movement within 400ms. A protocol-funded insurance pool compensates investors when launches fail despite passing vetting.",
+    body: "Liquidity is locked on-chain with collateral that punishes early exits. Real-time monitoring surfaces suspicious wallet movement. A protocol-funded insurance pool is designed to compensate investors when launches fail despite passing vetting.",
   },
 ];
 

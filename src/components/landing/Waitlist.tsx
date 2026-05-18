@@ -6,12 +6,13 @@ import { motion } from "framer-motion";
 import { CheckCircle2, Loader2, Sparkles } from "lucide-react";
 import { useJoinWaitlist } from "@/features/waitlist/hooks/useJoinWaitlist";
 import { useAnalytics } from "@/hooks/useAnalytics";
-import type { WaitlistResult } from "@/features/waitlist/schemas";
+import {
+  EVM_ADDRESS_RE,
+  SOLANA_BASE58_RE,
+  type WaitlistResult,
+} from "@/features/waitlist/schemas";
 
 const easeCinematic = [0.22, 1, 0.36, 1] as const;
-
-const EVM_RE = /^0x[a-fA-F0-9]{40}$/u;
-const SOLANA_RE = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/u;
 
 // Wallet UI is heavy (Wagmi + RainbowKit ~hundreds of KB).  Defer it so the
 // initial homepage paint doesn't include any wallet bytes.
@@ -36,6 +37,7 @@ export function Waitlist() {
   const [role, setRole] = useState<"investor" | "team">("investor");
   const [wallet, setWallet] = useState<string>("");
   const [submitted, setSubmitted] = useState(false);
+  const [position, setPosition] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const track = useAnalytics();
@@ -44,7 +46,9 @@ export function Waitlist() {
   // Inline format check on the paste field — uses the same regexes as the
   // server schema so users see the mismatch before clicking submit.
   const walletInvalid =
-    wallet.length > 0 && !EVM_RE.test(wallet) && !SOLANA_RE.test(wallet);
+    wallet.length > 0 &&
+    !EVM_ADDRESS_RE.test(wallet) &&
+    !SOLANA_BASE58_RE.test(wallet);
 
   const emailLooksValid = email.length > 0 && email.includes("@");
   const canSubmit = !submitting && (emailLooksValid || (wallet.length > 0 && !walletInvalid));
@@ -52,7 +56,13 @@ export function Waitlist() {
   const finishSuccess = (result: WaitlistResult, source: string) => {
     if (result.ok) {
       setSubmitted(true);
-      track("waitlist_form_submit", { role, source });
+      // `position` is nullish in the schema — guard so we don't render "#null".
+      setPosition(typeof result.position === "number" ? result.position : null);
+      track("waitlist_form_submit", {
+        role,
+        source,
+        position: result.position ?? null,
+      });
     } else {
       setError(result.error);
     }
@@ -89,7 +99,7 @@ export function Waitlist() {
       finishSuccess(res, "form");
     } catch (err) {
       if (process.env.NODE_ENV !== "production") {
-        // eslint-disable-next-line no-console
+         
         console.error(err);
       }
       setError("Something went wrong. Please try again.");
@@ -114,7 +124,7 @@ export function Waitlist() {
         finishSuccess(res, "connect");
       } catch (err) {
         if (process.env.NODE_ENV !== "production") {
-          // eslint-disable-next-line no-console
+           
           console.error(err);
         }
         setError("Something went wrong. Please try again.");
@@ -183,9 +193,29 @@ export function Waitlist() {
                 <CheckCircle2 className="h-7 w-7 text-accent" />
               </div>
               <h3 className="mt-5 font-display text-2xl font-semibold">You&apos;re on the list</h3>
+              {position !== null && (
+                <p className="mt-3 font-display text-base text-foreground/90">
+                  You&apos;re{" "}
+                  <span className="font-display text-2xl font-semibold text-accent">
+                    #{position.toLocaleString()}
+                  </span>{" "}
+                  in the queue.
+                </p>
+              )}
               <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-                We&apos;ll be in touch. Founding members get priority.
+                We&apos;ll be in touch. Founding members get priority access and
+                early insurance-pool allocation.
               </p>
+              <a
+                href="https://twitter.com/intent/tweet?text=I%20just%20joined%20the%20%40cakey_ai%20waitlist%20%E2%80%94%20launchpad%20with%20on-chain%20trust%20scoring%2C%20commitment%20locks%2C%20and%20an%20insurance%20pool.%20Join%20me%3A&url=https%3A%2F%2Fcakey.ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => track("waitlist_share_click", { channel: "twitter" })}
+                className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background/40 px-5 py-2.5 text-xs font-medium text-foreground transition-colors hover:bg-card/60"
+              >
+                Share &amp; move up the list
+                <span aria-hidden>→</span>
+              </a>
             </div>
           ) : (
             <div className="relative flex flex-col gap-5 rounded-2xl border border-border bg-card/40 p-5 backdrop-blur-xl sm:p-6">

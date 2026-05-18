@@ -95,11 +95,20 @@ const Carousel = React.forwardRef<
       return;
     }
 
-    onSelect(api);
+    // Defer the initial sync read off the effect body so we don't trigger
+    // a cascading render in the same commit (React 19 lint rule
+    // `react-hooks/set-state-in-effect`).  The microtask runs after the
+    // current render is committed but before the browser paints, so the
+    // user sees no flicker.
+    const handle = queueMicrotask(() => onSelect(api));
     api.on("reInit", onSelect);
     api.on("select", onSelect);
 
     return () => {
+      // queueMicrotask returns void; nothing to cancel — but if the effect
+      // re-runs before the microtask fires, `onSelect` will simply read the
+      // (still valid) latest api.  The `api.off` cleanup is what matters.
+      void handle;
       api?.off("select", onSelect);
     };
   }, [api, onSelect]);

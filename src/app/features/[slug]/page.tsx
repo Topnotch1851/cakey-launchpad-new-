@@ -21,40 +21,45 @@ type FeatureContent = {
   cta?: { href: string; label: string };
 };
 
+// Highlights describe what each system is designed to do, not measured live
+// performance.  At Phase 1 (landing + manual vetting per PRD §7) we have no
+// production deployment to source real metrics from, and overstating capability
+// creates both legal exposure and brand-credibility damage when reality lands.
+// Once each system ships and runs in production, swap these for real numbers.
 const FEATURES: Record<string, FeatureContent> = {
   "trust-score": {
     eyebrow: "Behavioral Trust Score",
     title: "Wallet-level reputation,",
     titleAccent: "engineered for launches.",
     description:
-      "Every wallet on Cakey carries a quantitative trust score derived from on-chain history. Repeat offenders are flagged before they can list, and high-integrity wallets earn priority access.",
+      "Every wallet on Cakey will carry a quantitative trust score derived from on-chain history. Repeat offenders get flagged before they can list, and high-integrity wallets earn priority access.",
     hero: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1600&q=80",
     highlights: [
-      { label: "Wallets scored", value: "12k+" },
-      { label: "Detection accuracy", value: "98%" },
-      { label: "Risk vectors", value: "24" },
+      { label: "Signal source", value: "On-chain" },
+      { label: "Approach", value: "Behavioral" },
+      { label: "Coverage", value: "Multi-chain" },
     ],
     bullets: [
-      "On-chain history analyzed across Ethereum, Base, Arbitrum, Polygon and Solana",
-      "Composite score combining liquidity behavior, holding patterns, and rug history",
-      "Score updates in real-time as wallets move funds",
-      "Public scorecard available for every project team wallet",
+      "On-chain history analyzed across major EVM chains and Solana",
+      "Composite score combining liquidity behavior, holding patterns, and prior project history",
+      "Score updates as wallets move funds — not a one-time snapshot",
+      "Public scorecard planned for every project team wallet",
     ],
   },
   simulation: {
-    eyebrow: "Simulation Engine",
+    eyebrow: "Pre-Launch Simulation",
     title: "Stress-test launches",
     titleAccent: "before any token moves.",
     description:
-      "Our simulation engine models whale behavior, slippage shocks, and liquidity drains across thousands of scenarios — exposing fragile launches before they go live.",
+      "The simulation engine models whale behavior, slippage shocks, and liquidity drains across many scenarios — surfacing fragile launches before they go live.",
     hero: "https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=1600&q=80",
     highlights: [
-      { label: "Scenarios per launch", value: "10M+" },
-      { label: "Risk vectors", value: "24" },
-      { label: "Run time", value: "<2s" },
+      { label: "Method", value: "Scenario-based" },
+      { label: "Focus", value: "Liquidity & whales" },
+      { label: "Output", value: "Risk report" },
     ],
     bullets: [
-      "Whale concentration and dump simulations across 30 days",
+      "Whale concentration and dump scenarios over a multi-week horizon",
       "Liquidity curve stress tests under extreme volume",
       "Vesting cliff risk scoring against historical post-launch behavior",
       "Public simulation report attached to every approved launch",
@@ -68,34 +73,34 @@ const FEATURES: Record<string, FeatureContent> = {
       "Project teams commit collateral and accept lock periods enforced by smart contracts. Early exits trigger automatic penalties — making rug pulls financially irrational.",
     hero: "https://images.unsplash.com/photo-1620207418302-439b387441b0?auto=format&fit=crop&w=1600&q=80",
     highlights: [
-      { label: "Custody breaches", value: "0" },
-      { label: "Non-custodial", value: "100%" },
-      { label: "Lock window", value: "Up to 12mo" },
+      { label: "Custody", value: "Non-custodial" },
+      { label: "Enforcement", value: "Smart contract" },
+      { label: "Lock window", value: "Configurable" },
     ],
     bullets: [
       "Smart contract escrow with transparent on-chain proof",
-      "Configurable lock windows from 30 days to 12 months",
+      "Configurable lock windows tuned per project",
       "Automatic slashing on early exit attempts",
       "Public dashboard tracking every team's lock status",
     ],
   },
   monitoring: {
     eyebrow: "Real-time Monitoring",
-    title: "24/7 cross-chain",
+    title: "Cross-chain",
     titleAccent: "post-launch surveillance.",
     description:
-      "After launch, Cakey continuously watches liquidity flows and suspicious wallet activity. Anomalies trigger alerts within milliseconds — giving investors a real chance to react.",
+      "After launch, Cakey watches liquidity flows and suspicious wallet activity. Anomalies are designed to surface fast — giving investors a real chance to react.",
     hero: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80",
     highlights: [
-      { label: "Chains covered", value: "5" },
-      { label: "Alert latency", value: "<400ms" },
-      { label: "Coverage", value: "24/7" },
+      { label: "Mode", value: "Continuous" },
+      { label: "Scope", value: "Liquidity & wallets" },
+      { label: "Output", value: "Live alerts" },
     ],
     bullets: [
-      "Liquidity drain detection with millisecond alerting",
+      "Liquidity drain detection with low-latency alerting",
       "Suspicious wallet clustering across post-launch trades",
       "Live anomaly feed visible to every project investor",
-      "Automated insurance pool triggers on confirmed exploits",
+      "Designed to feed the insurance pool decision system on confirmed exploits",
     ],
   },
 };
@@ -210,13 +215,13 @@ export default async function FeaturePage({ params }: { params: Promise<{ slug: 
           </div>
 
           <div className="mt-14 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
-            <a
+            <Link
               href="/#waitlist"
               className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_20px_60px_-20px_var(--primary)] transition-transform hover:scale-[1.02] sm:w-auto"
             >
               Join the waitlist
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-            </a>
+            </Link>
             <Link
               href="/#features"
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-3.5 text-sm font-medium text-foreground hover:bg-card/60 sm:w-auto"

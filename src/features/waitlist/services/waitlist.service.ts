@@ -78,7 +78,7 @@ export async function insertWaitlistSignup(
   }
 
   if (process.env.NODE_ENV !== "production") {
-    // eslint-disable-next-line no-console
+     
     console.error("[waitlist:service] insert failed", error);
   }
   return { ok: false, error: "Couldn't join the waitlist. Please try again." };
