@@ -33,7 +33,7 @@ export async function insertWaitlistSignup(
   // Prefer the RPC: it does the insert and returns the queue position in one round-trip.
   const { data, error } = await supabase
     .rpc("join_waitlist", {
-      p_email: input.email,
+      p_email: input.email ?? null,
       p_role: input.role ?? null,
       p_wallet_address: normaliseWallet(input.walletAddress),
       p_source: input.source ?? null,
@@ -46,20 +46,35 @@ export async function insertWaitlistSignup(
     return { ok: true, id: data.id, position: data.queue_position };
   }
 
-  // Postgres exposes both a numeric `code` (sqlstate) and a `message`.
-  // 23505 = unique_violation (duplicate email).
-  // P0001 = our custom rate-limit signal raised inside join_waitlist().
-  const code = (error as { code?: string } | null)?.code ?? "";
-  const message = (error as { message?: string } | null)?.message ?? "";
+  // Postgres surfaces both `code` (sqlstate) and `message`.  Map each known
+  // error path to a clear, user-facing message; map unknown ones to a generic.
+  //   23505 = unique_violation.  Disambiguate email vs wallet via the failing
+  //           constraint name in `details`/`message`.
+  //   P0001 = our custom rate-limit signal raised inside join_waitlist().
+  //   22023 = "email_or_wallet_required" — should be caught client-side first,
+  //           but surfaced cleanly if the form somehow lets a blank through.
+  const err = error as
+    | { code?: string; message?: string; details?: string; hint?: string }
+    | null;
+  const code = err?.code ?? "";
+  const message = err?.message ?? "";
+  const details = err?.details ?? "";
+  const haystack = `${code} ${message} ${details}`.toLowerCase();
 
-  if (code === "23505" || message.includes("23505")) {
+  if (code === "23505" || haystack.includes("23505")) {
+    if (haystack.includes("wallet")) {
+      return { ok: false, error: "This wallet is already on the waitlist." };
+    }
     return { ok: false, error: "This email is already on the waitlist." };
   }
-  if (code === "P0001" || message.includes("rate_limit_exceeded")) {
+  if (code === "P0001" || haystack.includes("rate_limit_exceeded")) {
     return {
       ok: false,
       error: "Too many signup attempts. Please try again later.",
     };
+  }
+  if (code === "22023" || haystack.includes("email_or_wallet_required")) {
+    return { ok: false, error: "Enter an email, or connect / paste a wallet." };
   }
 
   if (process.env.NODE_ENV !== "production") {

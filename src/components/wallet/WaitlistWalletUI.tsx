@@ -1,51 +1,107 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { WagmiProvider, useAccount } from "wagmi";
-import { RainbowKitProvider, ConnectButton, darkTheme } from "@rainbow-me/rainbowkit";
+import {
+  RainbowKitProvider,
+  darkTheme,
+  useConnectModal,
+} from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
+import { Loader2 } from "lucide-react";
 import { wagmiConfig } from "@/lib/wagmi";
 
 /**
- * Self-contained wallet island.
+ * Self-contained wallet "Connect & Join" button.
  *
- * Mounts its own Wagmi + RainbowKit providers so the wallet bundle (heavy:
- * ~hundreds of KB combined) doesn't ship with marketing pages that never
- * render this component.  Loaded via `next/dynamic({ ssr: false })` from the
- * waitlist form.
+ * Lives BELOW the main waitlist form as a separate one-click signup path.
+ * The main form (email + pasted wallet) is unrelated — they share no state.
  *
- * Reuses the QueryClient from the parent provider tree — wagmi v2 will pick it up.
+ * Heavy deps (Wagmi + RainbowKit, ~hundreds of KB) are owned by this island
+ * so marketing pages that don't render `<Waitlist>` still ship zero wallet
+ * bytes; the wallet bundle only fetches on routes that render this.
  */
 
-type Props = {
-  /** Called whenever the connected address changes (including null on disconnect). */
-  onChange: (address: string | null) => void;
+type ConnectAndJoinButtonProps = {
+  /**
+   * Called with the connected wallet address as soon as a fresh connection
+   * is established by the user clicking this button (not on page-load
+   * auto-reconnect).  Receives the unmodified address; normalisation and
+   * insertion happens server-side via the server action.
+   */
+  onJoinWithWallet: (address: string) => Promise<void>;
+  /** Disable the button (e.g. while a parallel submit is in flight). */
+  disabled?: boolean;
 };
 
-function WalletButton({ onChange }: Props) {
-  const { address } = useAccount();
+function ConnectAndJoinButton({
+  onJoinWithWallet,
+  disabled,
+}: ConnectAndJoinButtonProps) {
+  const { address, isConnected } = useAccount();
+  const { openConnectModal } = useConnectModal();
+  const [submitting, setSubmitting] = useState(false);
 
+  // Distinguishes "user just clicked this button" from "wallet was already
+  // connected when the page loaded."  We only auto-submit after a click.
+  const intentRef = useRef(false);
+
+  const submit = useCallback(
+    async (addr: string) => {
+      if (submitting) return;
+      setSubmitting(true);
+      try {
+        await onJoinWithWallet(addr);
+      } finally {
+        setSubmitting(false);
+      }
+    },
+    [onJoinWithWallet, submitting],
+  );
+
+  // If user clicked the button without a wallet connected, the modal opens.
+  // When `address` then transitions from undefined to defined, submit.
   useEffect(() => {
-    onChange(address ?? null);
-  }, [address, onChange]);
+    if (intentRef.current && address) {
+      intentRef.current = false;
+      submit(address);
+    }
+  }, [address, submit]);
+
+  const handleClick = () => {
+    if (disabled || submitting) return;
+    if (isConnected && address) {
+      submit(address);
+      return;
+    }
+    intentRef.current = true;
+    openConnectModal?.();
+  };
 
   return (
-    <ConnectButton.Custom>
-      {({ openConnectModal, openAccountModal, account, mounted }) => (
-        <button
-          type="button"
-          onClick={account ? openAccountModal : openConnectModal}
-          disabled={!mounted}
-          className="rounded-lg border border-border bg-card/60 px-3 py-1.5 text-xs font-medium hover:bg-card"
-        >
-          {account ? "Connected" : "Connect wallet"}
-        </button>
+    <button
+      type="button"
+      onClick={handleClick}
+      disabled={disabled || submitting}
+      className="group inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-3.5 text-sm font-medium text-foreground transition-colors hover:bg-card/70 disabled:opacity-60 disabled:hover:bg-card/40"
+    >
+      {submitting ? (
+        <>
+          <Loader2 className="h-4 w-4 animate-spin" /> Joining with wallet…
+        </>
+      ) : (
+        <>
+          Connect wallet to join
+          <span aria-hidden className="transition-transform group-hover:translate-x-0.5">
+            →
+          </span>
+        </>
       )}
-    </ConnectButton.Custom>
+    </button>
   );
 }
 
-export default function WaitlistWalletUI(props: Props) {
+export default function WaitlistWalletUI(props: ConnectAndJoinButtonProps) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <RainbowKitProvider
@@ -56,7 +112,7 @@ export default function WaitlistWalletUI(props: Props) {
           overlayBlur: "small",
         })}
       >
-        <WalletButton {...props} />
+        <ConnectAndJoinButton {...props} />
       </RainbowKitProvider>
     </WagmiProvider>
   );

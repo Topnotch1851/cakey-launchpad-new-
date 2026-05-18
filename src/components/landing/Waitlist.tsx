@@ -6,11 +6,15 @@ import { motion } from "framer-motion";
 import { CheckCircle2, Loader2, Sparkles } from "lucide-react";
 import { useJoinWaitlist } from "@/features/waitlist/hooks/useJoinWaitlist";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import type { WaitlistResult } from "@/features/waitlist/schemas";
 
 const easeCinematic = [0.22, 1, 0.36, 1] as const;
 
-// Wallet UI is heavy (Wagmi + RainbowKit ~hundreds of KB).  Defer it so initial
-// homepage paint doesn't include any wallet bytes — fetched lazily after hydration.
+const EVM_RE = /^0x[a-fA-F0-9]{40}$/u;
+const SOLANA_RE = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/u;
+
+// Wallet UI is heavy (Wagmi + RainbowKit ~hundreds of KB).  Defer it so the
+// initial homepage paint doesn't include any wallet bytes.
 const WaitlistWalletUI = dynamic(
   () => import("@/components/wallet/WaitlistWalletUI"),
   {
@@ -19,9 +23,9 @@ const WaitlistWalletUI = dynamic(
       <button
         type="button"
         disabled
-        className="rounded-lg border border-border bg-card/60 px-3 py-1.5 text-xs font-medium opacity-60"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-3.5 text-sm font-medium text-foreground opacity-60"
       >
-        Connect wallet
+        Loading wallet…
       </button>
     ),
   },
@@ -31,46 +35,58 @@ export function Waitlist() {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<"investor" | "team">("investor");
   const [wallet, setWallet] = useState<string>("");
-  // Only AUTO-FILL on connect; never auto-CLEAR.  This way a user-pasted
-  // address survives a wallet disconnect, and a connect-after-paste overrides
-  // with the live address.
-  const onWalletChange = useCallback((addr: string | null) => {
-    if (addr) setWallet(addr);
-  }, []);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const track = useAnalytics();
   const joinMutation = useJoinWaitlist();
 
-  // Inline format check.  Same regexes the server uses — keeps client + server
-  // in agreement and lets the user fix a mistyped address before they submit.
+  // Inline format check on the paste field — uses the same regexes as the
+  // server schema so users see the mismatch before clicking submit.
   const walletInvalid =
-    wallet.length > 0 &&
-    !/^0x[a-fA-F0-9]{40}$/u.test(wallet) &&
-    !/^[1-9A-HJ-NP-Za-km-z]{32,44}$/u.test(wallet);
+    wallet.length > 0 && !EVM_RE.test(wallet) && !SOLANA_RE.test(wallet);
+
+  const emailLooksValid = email.length > 0 && email.includes("@");
+  const canSubmit = !submitting && (emailLooksValid || (wallet.length > 0 && !walletInvalid));
+
+  const finishSuccess = (result: WaitlistResult, source: string) => {
+    if (result.ok) {
+      setSubmitted(true);
+      track("waitlist_form_submit", { role, source });
+    } else {
+      setError(result.error);
+    }
+  };
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
-    if (!email.includes("@")) {
+
+    const hasEmail = email.length > 0;
+    const hasWallet = wallet.length > 0;
+
+    if (!hasEmail && !hasWallet) {
+      setError("Enter an email, or paste / connect a wallet.");
+      return;
+    }
+    if (hasEmail && !emailLooksValid) {
       setError("Please enter a valid email.");
       return;
     }
+    if (hasWallet && walletInvalid) {
+      setError("Wallet format doesn't look right. Use 0x… or a Solana base58 address.");
+      return;
+    }
+
     setSubmitting(true);
     try {
       const res = await joinMutation.mutateAsync({
-        email,
+        email: hasEmail ? email : null,
         role,
-        walletAddress: wallet || null,
-        source: "landing_hero",
+        walletAddress: hasWallet ? wallet : null,
+        source: "landing_form",
       });
-      if (res.ok) {
-        setSubmitted(true);
-        track("waitlist_form_submit", { role });
-      } else {
-        setError("error" in res ? String((res as { error?: unknown }).error) : "Submission failed.");
-      }
+      finishSuccess(res, "form");
     } catch (err) {
       if (process.env.NODE_ENV !== "production") {
         // eslint-disable-next-line no-console
@@ -81,6 +97,32 @@ export function Waitlist() {
       setSubmitting(false);
     }
   };
+
+  // One-click "Connect wallet to join" path.  Sends ONLY the connected
+  // wallet — no email, no manual fields.  Shares the success/error state
+  // with the main form so both surfaces flip to the same confirmation UI.
+  const onJoinWithWallet = useCallback(
+    async (address: string) => {
+      setError(null);
+      try {
+        const res = await joinMutation.mutateAsync({
+          email: null,
+          role,
+          walletAddress: address,
+          source: "landing_connect",
+        });
+        finishSuccess(res, "connect");
+      } catch (err) {
+        if (process.env.NODE_ENV !== "production") {
+          // eslint-disable-next-line no-console
+          console.error(err);
+        }
+        setError("Something went wrong. Please try again.");
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [role, joinMutation],
+  );
 
   return (
     <section id="waitlist" className="relative isolate overflow-hidden pt-20 pb-16 sm:pt-28 sm:pb-20">
@@ -122,7 +164,6 @@ export function Waitlist() {
           transition={{ duration: 0.7, delay: 0.12, ease: easeCinematic }}
           className="relative mt-10"
         >
-          {/* Gradient border frame — softened so it reads as a refined edge, not a flare */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 rounded-2xl p-px"
@@ -143,57 +184,52 @@ export function Waitlist() {
               </div>
               <h3 className="mt-5 font-display text-2xl font-semibold">You&apos;re on the list</h3>
               <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-                Check your inbox for confirmation. Founding members get priority.
+                We&apos;ll be in touch. Founding members get priority.
               </p>
             </div>
           ) : (
-            <form
-              onSubmit={onSubmit}
-              className="relative flex flex-col gap-4 rounded-2xl border border-border bg-card/40 p-5 backdrop-blur-xl sm:p-6"
-            >
-              {/* Role pills */}
-              <div className="flex flex-wrap items-center gap-2">
-                {(["investor", "team"] as const).map((r) => (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => setRole(r)}
-                    className={`rounded-full border px-3 py-1 text-xs font-medium capitalize transition-colors ${
-                      role === r
-                        ? "border-accent/50 bg-accent/10 text-accent"
-                        : "border-border bg-background/40 text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {r === "team" ? "Project team" : r}
-                  </button>
-                ))}
-              </div>
+            <div className="relative flex flex-col gap-5 rounded-2xl border border-border bg-card/40 p-5 backdrop-blur-xl sm:p-6">
+              {/*
+                MAIN FORM
+                Email + manual wallet paste both live here, both optional,
+                handled together by the single Join Waitlist button.
+              */}
+              <form onSubmit={onSubmit} className="flex flex-col gap-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  {(["investor", "team"] as const).map((r) => (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => setRole(r)}
+                      className={`rounded-full border px-3 py-1 text-xs font-medium capitalize transition-colors ${
+                        role === r
+                          ? "border-accent/50 bg-accent/10 text-accent"
+                          : "border-border bg-background/40 text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {r === "team" ? "Project team" : r}
+                    </button>
+                  ))}
+                </div>
 
-              {/* Email — own row, full width */}
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="email-input" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Email
-                </label>
-                <input
-                  id="email-input"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@protocol.xyz"
-                  className="w-full rounded-xl border border-border bg-background/60 px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
-                />
-              </div>
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="email-input" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Email <span className="ml-1 normal-case tracking-normal text-muted-foreground/70">(optional)</span>
+                  </label>
+                  <input
+                    id="email-input"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@protocol.xyz"
+                    className="w-full rounded-xl border border-border bg-background/60 px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+                  />
+                </div>
 
-              {/* Wallet — own row, with Connect button inline.  Optional.
-                  Auto-fills from the Connect button OR accepts a manual paste.
-                  Inline format hint shows up if the entered value doesn't match
-                  either EVM or Solana before the user even hits submit. */}
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="wallet-input" className="flex items-baseline justify-between gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  <span>Wallet <span className="ml-1 normal-case tracking-normal text-muted-foreground/70">(optional)</span></span>
-                </label>
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-stretch">
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="wallet-input" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Wallet <span className="ml-1 normal-case tracking-normal text-muted-foreground/70">(optional, paste any EVM 0x… or Solana address)</span>
+                  </label>
                   <input
                     id="wallet-input"
                     type="text"
@@ -205,40 +241,61 @@ export function Waitlist() {
                     value={wallet}
                     onChange={(e) => setWallet(e.target.value.trim())}
                     placeholder="0x… or Solana address"
-                    className="min-w-0 flex-1 rounded-xl border border-border bg-background/60 px-4 py-3.5 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 sm:text-sm"
+                    className="w-full rounded-xl border border-border bg-background/60 px-4 py-3.5 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 sm:text-sm"
                   />
-                  <WaitlistWalletUI onChange={onWalletChange} />
+                  {walletInvalid && (
+                    <p className="text-[11px] text-amber-400/90">
+                      Wallet format doesn&apos;t look right. Use 0x + 40 hex chars or a Solana base58 address (32-44 chars). Or leave blank.
+                    </p>
+                  )}
                 </div>
-                {walletInvalid && (
-                  <p className="text-[11px] text-amber-400/90">
-                    Wallet format doesn&apos;t look right. Use an EVM address (0x + 40 hex chars) or a Solana base58 address (32-44 chars). Or leave blank.
-                  </p>
-                )}
+
+                <button
+                  type="submit"
+                  disabled={!canSubmit}
+                  className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_14px_40px_-22px_oklch(0.72_0.14_78/0.5)] transition-colors hover:bg-primary-glow disabled:opacity-60 disabled:hover:bg-primary"
+                >
+                  {submitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" /> Joining…
+                    </>
+                  ) : (
+                    <>
+                      Join waitlist <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+                    </>
+                  )}
+                </button>
+
+                <p className="text-center text-[11px] text-muted-foreground">
+                  Enter an email, paste a wallet, or both. We&apos;ll keep one record per signup.
+                </p>
+              </form>
+
+              {/* Visual divider — same canvas, just a typographic OR */}
+              <div className="relative flex items-center gap-3 text-[10px] uppercase tracking-[0.25em] text-muted-foreground/70">
+                <span className="h-px flex-1 bg-border/60" />
+                <span>or</span>
+                <span className="h-px flex-1 bg-border/60" />
               </div>
 
-              {/* Single submit at the bottom — handles email-only, email+pasted-wallet, and email+connected-wallet. */}
-              <button
-                type="submit"
-                disabled={submitting}
-                className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-glow px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_14px_40px_-22px_oklch(0.72_0.14_78/0.5)] transition-colors disabled:opacity-60"
-              >
-                {submitting ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" /> Joining…
-                  </>
-                ) : (
-                  <>
-                    Join waitlist <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
-                  </>
-                )}
-              </button>
+              {/*
+                SECONDARY PATH — wallet-only signup.
+                Opens the wallet modal; on a fresh connection, auto-submits
+                the address through the same server action.
+              */}
+              <div className="flex flex-col gap-2">
+                <WaitlistWalletUI onJoinWithWallet={onJoinWithWallet} disabled={submitting} />
+                <p className="text-center text-[11px] text-muted-foreground">
+                  Connect a wallet to join with one click — no email needed.
+                </p>
+              </div>
 
-              {error && <p className="text-xs text-destructive" role="alert">{error}</p>}
-
-              <p className="text-center text-[11px] text-muted-foreground">
-                No spam. Unsubscribe anytime. Wallet not required.
-              </p>
-            </form>
+              {error && (
+                <p className="text-center text-xs text-destructive" role="alert">
+                  {error}
+                </p>
+              )}
+            </div>
           )}
         </motion.div>
       </div>

@@ -30,12 +30,20 @@ const walletSchema = z
 
 const sourceSchema = z.string().trim().max(64);
 
-export const waitlistInputSchema = z.object({
-  email: emailSchema,
-  role: waitlistRoleSchema.nullish(),
-  walletAddress: walletSchema.nullish(),
-  source: sourceSchema.nullish(),
-});
+export const waitlistInputSchema = z
+  .object({
+    // Both identifiers are individually optional now.  The refinement below
+    // enforces that at least one is present, matching the DB check constraint
+    // `waitlist_signups_email_or_wallet`.
+    email: emailSchema.nullish(),
+    role: waitlistRoleSchema.nullish(),
+    walletAddress: walletSchema.nullish(),
+    source: sourceSchema.nullish(),
+  })
+  .refine(
+    (data) => Boolean(data.email) || Boolean(data.walletAddress),
+    { message: "Provide an email or a wallet address.", path: ["email"] },
+  );
 
 export type WaitlistInput = z.infer<typeof waitlistInputSchema>;
 
