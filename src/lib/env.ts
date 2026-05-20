@@ -8,7 +8,7 @@ const emptyToUndefined = (v: unknown) =>
   typeof v === "string" && v.trim() === "" ? undefined : v;
 
 /**
- * Public env (NEXT_PUBLIC_*) — ships to the browser.
+ * Public env (NEXT_PUBLIC_*). ships to the browser.
  * Never put secrets here.
  */
 const publicEnvSchema = z.object({
@@ -34,15 +34,15 @@ if (!parsedPublic.success) {
 export const env = parsedPublic.data;
 
 /**
- * Server env — secrets and server-only config.
+ * Server env. secrets and server-only config.
  * Accessing `serverEnv` from a client bundle will throw at build time because
  * these names don't have `NEXT_PUBLIC_` prefix and so are stripped from the client.
  */
 const serverEnvSchema = z.object({
-  SUPABASE_URL: z.string().url(),
-  SUPABASE_ANON_KEY: z.string().min(1),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1).optional(),
-  WAITLIST_IP_SALT: z.string().min(16).optional(),
+  SUPABASE_URL: z.preprocess(emptyToUndefined, z.string().url()),
+  SUPABASE_ANON_KEY: z.preprocess(emptyToUndefined, z.string().min(1)),
+  SUPABASE_SERVICE_ROLE_KEY: z.preprocess(emptyToUndefined, z.string().min(1).optional()),
+  WAITLIST_IP_SALT: z.preprocess(emptyToUndefined, z.string().min(16).optional()),
 });
 
 type ServerEnv = z.infer<typeof serverEnvSchema>;
@@ -57,10 +57,15 @@ let cachedServerEnv: ServerEnv | null = null;
 function readServerEnv(): ServerEnv {
   if (cachedServerEnv) return cachedServerEnv;
 
+  const pick = (...vals: (string | undefined)[]) =>
+    vals.find((v) => typeof v === "string" && v.trim() !== "");
+
   const raw = {
-    SUPABASE_URL: process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL,
-    SUPABASE_ANON_KEY:
-      process.env.SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    SUPABASE_URL: pick(process.env.SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_URL),
+    SUPABASE_ANON_KEY: pick(
+      process.env.SUPABASE_ANON_KEY,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    ),
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
     WAITLIST_IP_SALT: process.env.WAITLIST_IP_SALT,
   };

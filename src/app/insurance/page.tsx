@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ShieldCheck, Coins, FileWarning, ArrowRight, AlertCircle } from "lucide-react";
+import { ShieldCheck, Coins, FileWarning, AlertCircle } from "lucide-react";
 import { Nav } from "@/components/landing/Nav";
 import { Footer } from "@/components/landing/Footer";
 
-// Pool isn't live yet (see PRD §6.3 — design is still open).  Showing fake
+// Pool isn't live yet (see PRD §6.3. design is still open).  Showing fake
 // dollar reserves with a disclaimer is still misleading.  Describe how the
 // pool is designed to work instead, and swap in real figures once the
 // contract is deployed and audited.
@@ -51,7 +51,7 @@ export default function InsurancePage() {
               className="max-w-3xl"
             >
               <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-accent">
-                <ShieldCheck className="h-3 w-3" /> Protection layer
+                Protection layer
               </span>
               <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
                 A safety net for <span className="text-gradient">every launch.</span>
@@ -59,7 +59,7 @@ export default function InsurancePage() {
               <p className="mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
                 The Cakey Insurance Pool is a shared protection layer funded by
                 platform fees. It compensates investors when a vetted project
-                still suffers a covered failure — turning a personal loss into a
+                still suffers a covered failure. turning a personal loss into a
                 shared, bounded one.
               </p>
             </motion.div>
@@ -80,7 +80,7 @@ export default function InsurancePage() {
               ))}
             </div>
             <p className="mt-3 text-[11px] text-muted-foreground">
-              The protection pool is in design (PRD §6.3) — not yet live. Final
+              The protection pool is in design (PRD §6.3). not yet live. Final
               parameters, audited contract, and reserve figures will be published
               before launch.
             </p>
@@ -128,22 +128,22 @@ export default function InsurancePage() {
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
                   Smart-contract pool vs. managed treasury. Automated payouts
                   vs. multisig review. Facilitator scope vs. guarantor scope.
-                  These choices shape risk, speed, and accountability — and
+                  These choices shape risk, speed, and accountability. and
                   they&apos;re being shaped in the open before the protection layer
                   goes live.
                 </p>
                 <div className="mt-5 flex flex-wrap items-center gap-3">
                   <Link
                     href="/disclosures"
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-background/40 px-4 py-2 text-sm font-medium text-foreground hover:border-accent/40 hover:text-accent"
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-background/40 px-4 py-2 text-sm font-medium text-foreground transition-[transform,color,border-color,background-color] duration-[180ms] ease-[var(--ease-out-strong)] hover:border-accent/40 hover:text-accent active:scale-[0.98]"
                   >
-                    Read disclosures <ArrowRight className="h-3.5 w-3.5" />
+                    Read disclosures
                   </Link>
                   <Link
                     href="/waitlist"
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-glow"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-[transform,background-color] duration-[180ms] ease-[var(--ease-out-strong)] hover:bg-primary-glow active:scale-[0.98]"
                   >
-                    Get notified when live <ArrowRight className="h-3.5 w-3.5" />
+                    Get notified when live
                   </Link>
                   <span
                     aria-disabled="true"

@@ -15,7 +15,7 @@ import { wagmiConfig } from "@/lib/wagmi";
  * Self-contained wallet "Connect & Join" button.
  *
  * Lives BELOW the main waitlist form as a separate one-click signup path.
- * The main form (email + pasted wallet) is unrelated — they share no state.
+ * The main form (email + pasted wallet) is unrelated. they share no state.
  *
  * Heavy deps (Wagmi + RainbowKit, ~hundreds of KB) are owned by this island
  * so marketing pages that don't render `<Waitlist>` still ship zero wallet
@@ -83,19 +83,14 @@ function ConnectAndJoinButton({
       type="button"
       onClick={handleClick}
       disabled={disabled || submitting}
-      className="group inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-3.5 text-sm font-medium text-foreground transition-colors hover:bg-card/70 disabled:opacity-60 disabled:hover:bg-card/40"
+      className="group inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-3.5 text-sm font-medium text-foreground transition-[transform,background-color,box-shadow,border-color] duration-[180ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-card/70 hover:scale-[1.02] hover:shadow-[0_8px_30px_-12px_oklch(0.72_0.14_78/0.25)] active:scale-[0.98] active:shadow-none focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background disabled:opacity-60 disabled:hover:bg-card/40 disabled:hover:scale-100 disabled:hover:shadow-none disabled:active:scale-100"
     >
       {submitting ? (
         <>
           <Loader2 className="h-4 w-4 animate-spin" /> Joining with wallet…
         </>
       ) : (
-        <>
-          Connect wallet to join
-          <span aria-hidden className="transition-transform group-hover:translate-x-0.5">
-            →
-          </span>
-        </>
+        <>Connect wallet to join</>
       )}
     </button>
   );

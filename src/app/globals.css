@@ -104,8 +104,9 @@
   --shadow-cyan: 0 0 28px -12px oklch(0.78 0.12 82 / 0.25);
 
   /* Premium motion tokens — reused by Tailwind arbitrary values and inline styles. */
-  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);   /* ease-out-quint, subtle settle */
-  --ease-soft:      cubic-bezier(0.32, 0.72, 0, 1);    /* gentle, no overshoot */
+  --ease-cinematic:   cubic-bezier(0.22, 1, 0.36, 1);   /* ease-out-quint, subtle settle */
+  --ease-soft:        cubic-bezier(0.32, 0.72, 0, 1);    /* gentle, no overshoot */
+  --ease-out-strong:  cubic-bezier(0.23, 1, 0.32, 1);    /* punchier ease-out for press/UI feedback */
   --dur-fast:   180ms;
   --dur-base:   320ms;
   --dur-slow:   600ms;

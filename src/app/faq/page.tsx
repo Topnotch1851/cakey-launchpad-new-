@@ -13,7 +13,7 @@ const FAQS: Array<{ question: string; answer: string }> = [
   {
     question: "What is Cakey AI?",
     answer:
-      "Cakey AI is a Web3 launchpad that adds intelligence and protection to token launches. Every project is vetted with behavioral trust scoring, stress-tested against thousands of simulated scenarios, and backed by an on-chain insurance pool — so retail investors aren't carrying all the risk.",
+      "Cakey AI is a Web3 launchpad that adds intelligence and protection to token launches. Every project is vetted with behavioral trust scoring, stress-tested against thousands of simulated scenarios, and backed by an on-chain insurance pool. so retail investors aren't carrying all the risk.",
   },
   {
     question: "How does Cakey prevent rug pulls?",
@@ -43,7 +43,7 @@ const FAQS: Array<{ question: string; answer: string }> = [
   {
     question: "When does Cakey launch?",
     answer:
-      "Phase 01 (Foundation) is shipping now — public site, manual vetting, MVP launchpad. Phase 02 brings AI integration, automated audit, and a behavioral wallet engine. Phase 03 adds the insurance pool, cross-chain rollout, and institutional partnerships.",
+      "Phase 01 (Foundation) is shipping now. public site, manual vetting, MVP launchpad. Phase 02 brings AI integration, automated audit, and a behavioral wallet engine. Phase 03 adds the insurance pool, cross-chain rollout, and institutional partnerships.",
   },
   {
     question: "How do I get priority access?",
@@ -55,10 +55,10 @@ const FAQS: Array<{ question: string; answer: string }> = [
 export const metadata: Metadata = {
   title: "FAQ",
   description:
-    "Common questions about Cakey AI — how the launchpad works, what protects investors, supported chains, and how to join the waitlist.",
+    "Common questions about Cakey AI. how the launchpad works, what protects investors, supported chains, and how to join the waitlist.",
   alternates: { canonical: "/faq" },
   openGraph: {
-    title: "FAQ — Cakey AI",
+    title: "FAQ. Cakey AI",
     description: "Common questions about the Cakey AI launchpad and waitlist.",
     url: "/faq",
     type: "article",
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
 
 const pageSchema = combinedGraph(
   webPageSchema({
-    name: "Cakey AI — FAQ",
+    name: "Cakey AI. FAQ",
     description: metadata.description as string,
     url: "/faq",
   }),
@@ -107,7 +107,7 @@ export default function FaqPage() {
                   </span>
                   <span
                     aria-hidden
-                    className="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-card/40 text-muted-foreground transition-transform group-open:rotate-45"
+                    className="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-card/40 text-muted-foreground transition-transform duration-[200ms] ease-[var(--ease-out-strong)] group-open:rotate-45"
                   >
                     +
                   </span>

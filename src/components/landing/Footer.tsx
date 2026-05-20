@@ -26,7 +26,7 @@ const legal: { label: string; to: string }[] = [
 ];
 
 const socials: { label: string; href: string; external: boolean }[] = [
-  { label: "X / Twitter", href: "https://x.com/tokencakey?s=21", external: true },
+  { label: "Twitter", href: "https://x.com/tokencakey?s=21", external: true },
   { label: "Telegram", href: "https://t.me/CAKEYTOKENCOMMUNITY", external: true },
   { label: "Website", href: "https://cakey-crypto-website-ww45.bolt.host", external: true },
 ];
@@ -43,7 +43,7 @@ const chains: { name: string; color: string }[] = [
 export function Footer() {
   return (
     <footer className="relative isolate overflow-hidden border-t border-border/60">
-      {/* Ambient glow — barely-there gold accent against pure-black floor */}
+      {/* Ambient glow. barely-there gold accent against pure-black floor */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 -top-32 -z-10 h-56 opacity-[0.08] blur-3xl"
@@ -79,10 +79,9 @@ export function Footer() {
             </div>
             <Link
               href="/#waitlist"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-glow px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_14px_40px_-22px_oklch(0.72_0.14_78/0.5)] transition-transform hover:scale-[1.02] sm:w-auto"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-glow px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_14px_40px_-22px_oklch(0.72_0.14_78/0.5)] transition-[transform,background-color,box-shadow] duration-[180ms] ease-[var(--ease-out-strong)] hover:scale-[1.02] active:scale-[0.98] sm:w-auto"
             >
               Join the waitlist
-              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </Link>
           </div>
         </motion.div>
@@ -170,7 +169,7 @@ export function Footer() {
 
         {/* Base bar */}
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-border/60 py-8 text-xs text-muted-foreground sm:flex-row sm:items-center">
-          <div>© {new Date().getFullYear()} Cakey AI — Intelligent trust for token launches.</div>
+          <div>© {new Date().getFullYear()} Cakey AI. Intelligent trust for token launches.</div>
           <div className="flex items-center gap-5">
             <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>

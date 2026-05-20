@@ -46,7 +46,7 @@ export class ErrorBoundary extends Component<Props, State> {
           <button
             type="button"
             onClick={this.reset}
-            className="rounded-xl border border-border bg-card/60 px-4 py-2 text-sm font-medium hover:bg-card"
+            className="rounded-xl border border-border bg-card/60 px-4 py-2 text-sm font-medium transition-[transform,background-color] duration-[160ms] ease-[var(--ease-out-strong)] hover:bg-card active:scale-[0.97]"
           >
             Try again
           </button>
@@ -55,7 +55,7 @@ export class ErrorBoundary extends Component<Props, State> {
             onClick={() => {
               if (typeof window !== "undefined") window.location.reload();
             }}
-            className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-glow"
+            className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-[transform,background-color] duration-[160ms] ease-[var(--ease-out-strong)] hover:bg-primary-glow active:scale-[0.97]"
           >
             Reload
           </button>

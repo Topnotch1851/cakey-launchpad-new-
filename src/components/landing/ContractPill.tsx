@@ -25,7 +25,7 @@ export function ContractPill({ symbol, address, status = "TBA" }: Props) {
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1500);
     } catch {
-      // ignore — clipboard may be blocked in some contexts
+      // ignore. clipboard may be blocked in some contexts
     }
   };
 
@@ -44,7 +44,7 @@ export function ContractPill({ symbol, address, status = "TBA" }: Props) {
         onClick={onCopy}
         aria-label={copied ? "Copied" : "Copy contract address"}
         title={copied ? "Copied" : "Copy address"}
-        className="ml-1 inline-flex h-6 w-6 items-center justify-center rounded-md border border-border bg-card/60 text-muted-foreground transition-colors hover:bg-card hover:text-foreground"
+        className="ml-1 inline-flex h-6 w-6 items-center justify-center rounded-md border border-border bg-card/60 text-muted-foreground transition-[transform,background-color,color] duration-[140ms] ease-[var(--ease-out-strong)] hover:bg-card hover:text-foreground active:scale-[0.92]"
       >
         {copied ? (
           <Check className="h-3 w-3 text-accent" />

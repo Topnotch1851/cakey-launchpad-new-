@@ -12,10 +12,10 @@ import {
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Cakey AI is the launchpad ending rug pulls — behavioral trust scoring, pre-launch simulation, and an on-chain insurance pool. Read the mission, the pillars, and the roadmap.",
+    "Cakey AI is the launchpad ending rug pulls. behavioral trust scoring, pre-launch simulation, and an on-chain insurance pool. Read the mission, the pillars, and the roadmap.",
   alternates: { canonical: "/about" },
   openGraph: {
-    title: "About Cakey AI — The launchpad ending rug pulls",
+    title: "About Cakey AI. The launchpad ending rug pulls",
     description:
       "Behavioral trust scoring, pre-launch simulation, and an on-chain insurance pool. Built for retail.",
     url: "/about",
@@ -46,7 +46,7 @@ const pillars = [
   },
   {
     title: "Simulation before launch",
-    body: "Liquidity curves, whale concentration, vesting cliffs, and slippage are stress-tested across many scenarios per launch — a public simulation report is attached to every approved listing.",
+    body: "Liquidity curves, whale concentration, vesting cliffs, and slippage are stress-tested across many scenarios per launch. a public simulation report is attached to every approved listing.",
   },
   {
     title: "Protection after launch",
@@ -100,20 +100,19 @@ export default function AboutPage() {
           <div className="mt-10 flex flex-wrap items-center gap-3">
             <Link
               href="/#waitlist"
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-glow"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-[transform,background-color] duration-[180ms] ease-[var(--ease-out-strong)] hover:bg-primary-glow active:scale-[0.98]"
             >
               Join the waitlist
-              <span aria-hidden>→</span>
             </Link>
             <Link
               href="/faq"
-              className="inline-flex items-center gap-2 rounded-xl border border-border bg-card/40 px-5 py-3.5 text-sm font-medium text-foreground/90 transition-colors hover:bg-card/70"
+              className="inline-flex items-center gap-2 rounded-xl border border-border bg-card/40 px-5 py-3.5 text-sm font-medium text-foreground/90 transition-[transform,background-color,border-color] duration-[180ms] ease-[var(--ease-out-strong)] hover:bg-card/70 active:scale-[0.98]"
             >
               Read the FAQ
             </Link>
             <Link
               href="/#roadmap"
-              className="inline-flex items-center gap-2 rounded-xl border border-border bg-card/40 px-5 py-3.5 text-sm font-medium text-foreground/90 transition-colors hover:bg-card/70"
+              className="inline-flex items-center gap-2 rounded-xl border border-border bg-card/40 px-5 py-3.5 text-sm font-medium text-foreground/90 transition-[transform,background-color,border-color] duration-[180ms] ease-[var(--ease-out-strong)] hover:bg-card/70 active:scale-[0.98]"
             >
               See the roadmap
             </Link>

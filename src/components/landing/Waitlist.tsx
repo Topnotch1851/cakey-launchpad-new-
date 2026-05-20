@@ -3,7 +3,7 @@
 import { useCallback, useState, type FormEvent } from "react";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import { CheckCircle2, Loader2, Sparkles } from "lucide-react";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import { useJoinWaitlist } from "@/features/waitlist/hooks/useJoinWaitlist";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import {
@@ -24,7 +24,7 @@ const WaitlistWalletUI = dynamic(
       <button
         type="button"
         disabled
-        className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-3.5 text-sm font-medium text-foreground opacity-60"
+        className="group inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-3.5 text-sm font-medium text-foreground opacity-60"
       >
         Loading wallet…
       </button>
@@ -43,7 +43,7 @@ export function Waitlist() {
   const track = useAnalytics();
   const joinMutation = useJoinWaitlist();
 
-  // Inline format check on the paste field — uses the same regexes as the
+  // Inline format check on the paste field. uses the same regexes as the
   // server schema so users see the mismatch before clicking submit.
   const walletInvalid =
     wallet.length > 0 &&
@@ -56,7 +56,7 @@ export function Waitlist() {
   const finishSuccess = (result: WaitlistResult, source: string) => {
     if (result.ok) {
       setSubmitted(true);
-      // `position` is nullish in the schema — guard so we don't render "#null".
+      // `position` is nullish in the schema. guard so we don't render "#null".
       setPosition(typeof result.position === "number" ? result.position : null);
       track("waitlist_form_submit", {
         role,
@@ -109,7 +109,7 @@ export function Waitlist() {
   };
 
   // One-click "Connect wallet to join" path.  Sends ONLY the connected
-  // wallet — no email, no manual fields.  Shares the success/error state
+  // wallet. no email, no manual fields.  Shares the success/error state
   // with the main form so both surfaces flip to the same confirmation UI.
   const onJoinWithWallet = useCallback(
     async (address: string) => {
@@ -154,8 +154,7 @@ export function Waitlist() {
           className="text-center"
         >
           <span className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-accent backdrop-blur sm:text-xs sm:tracking-[0.2em]">
-            <Sparkles className="h-3 w-3 shrink-0" />
-            <span className="whitespace-nowrap">Early access — 500 spots</span>
+            <span className="whitespace-nowrap">Early access. 500 spots</span>
           </span>
           <h2 className="mt-6 text-balance font-display text-4xl font-semibold leading-[1.05] sm:text-5xl lg:text-6xl">
             Join the{" "}
@@ -211,10 +210,9 @@ export function Waitlist() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => track("waitlist_share_click", { channel: "twitter" })}
-                className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background/40 px-5 py-2.5 text-xs font-medium text-foreground transition-colors hover:bg-card/60"
+                className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background/40 px-5 py-2.5 text-xs font-medium text-foreground transition-[transform,background-color,box-shadow,border-color] duration-[180ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-card/60 hover:scale-[1.02] hover:shadow-[0_4px_20px_-8px_oklch(0.72_0.14_78/0.15)] active:scale-[0.98] active:shadow-none focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background"
               >
                 Share &amp; move up the list
-                <span aria-hidden>→</span>
               </a>
             </div>
           ) : (
@@ -231,10 +229,10 @@ export function Waitlist() {
                       key={r}
                       type="button"
                       onClick={() => setRole(r)}
-                      className={`rounded-full border px-3 py-1 text-xs font-medium capitalize transition-colors ${
+                      className={`rounded-full border px-3 py-1 text-xs font-medium capitalize transition-[transform,background-color,color,border-color,box-shadow] duration-[180ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
                         role === r
-                          ? "border-accent/50 bg-accent/10 text-accent"
-                          : "border-border bg-background/40 text-muted-foreground hover:text-foreground"
+                          ? "border-accent/50 bg-accent/10 text-accent shadow-[0_0_20px_-8px_oklch(0.72_0.14_78/0.3)]"
+                          : "border-border bg-background/40 text-muted-foreground hover:text-foreground hover:bg-background/60 hover:scale-[1.05] active:scale-[0.95] focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background"
                       }`}
                     >
                       {r === "team" ? "Project team" : r}
@@ -252,7 +250,7 @@ export function Waitlist() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@protocol.xyz"
-                    className="w-full rounded-xl border border-border bg-background/60 px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+                    className="w-full rounded-xl border border-border bg-background/60 px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground transition-[background-color,border-color,box-shadow] duration-[180ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background focus:border-accent/30"
                   />
                 </div>
 
@@ -271,7 +269,7 @@ export function Waitlist() {
                     value={wallet}
                     onChange={(e) => setWallet(e.target.value.trim())}
                     placeholder="0x… or Solana address"
-                    className="w-full rounded-xl border border-border bg-background/60 px-4 py-3.5 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 sm:text-sm"
+                    className="w-full rounded-xl border border-border bg-background/60 px-4 py-3.5 font-mono text-xs text-foreground placeholder:text-muted-foreground transition-[background-color,border-color,box-shadow] duration-[180ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background focus:border-accent/30 sm:text-sm"
                   />
                   {walletInvalid && (
                     <p className="text-[11px] text-amber-400/90">
@@ -283,16 +281,14 @@ export function Waitlist() {
                 <button
                   type="submit"
                   disabled={!canSubmit}
-                  className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_14px_40px_-22px_oklch(0.72_0.14_78/0.5)] transition-colors hover:bg-primary-glow disabled:opacity-60 disabled:hover:bg-primary"
+                  className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_14px_40px_-22px_oklch(0.72_0.14_78/0.5)] transition-[transform,background-color,box-shadow] duration-[180ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-primary-glow hover:scale-[1.02] hover:shadow-[0_18px_50px_-20px_oklch(0.72_0.14_78/0.4)] active:scale-[0.98] active:shadow-[0_8px_25px_-15px_oklch(0.72_0.14_78/0.3)] focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background disabled:opacity-60 disabled:hover:bg-primary disabled:hover:scale-100 disabled:hover:shadow-[0_14px_40px_-22px_oklch(0.72_0.14_78/0.5)] disabled:active:scale-100"
                 >
                   {submitting ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" /> Joining…
                     </>
                   ) : (
-                    <>
-                      Join waitlist <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
-                    </>
+                    <>Join waitlist</>
                   )}
                 </button>
 
@@ -301,7 +297,7 @@ export function Waitlist() {
                 </p>
               </form>
 
-              {/* Visual divider — same canvas, just a typographic OR */}
+              {/* Visual divider. same canvas, just a typographic OR */}
               <div className="relative flex items-center gap-3 text-[10px] uppercase tracking-[0.25em] text-muted-foreground/70">
                 <span className="h-px flex-1 bg-border/60" />
                 <span>or</span>
@@ -309,14 +305,14 @@ export function Waitlist() {
               </div>
 
               {/*
-                SECONDARY PATH — wallet-only signup.
+                SECONDARY PATH. wallet-only signup.
                 Opens the wallet modal; on a fresh connection, auto-submits
                 the address through the same server action.
               */}
               <div className="flex flex-col gap-2">
                 <WaitlistWalletUI onJoinWithWallet={onJoinWithWallet} disabled={submitting} />
                 <p className="text-center text-[11px] text-muted-foreground">
-                  Connect a wallet to join with one click — no email needed.
+                  Connect a wallet to join with one click. no email needed.
                 </p>
               </div>
 

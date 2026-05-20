@@ -114,14 +114,14 @@ export function Nav() {
               {moreOpen && (
                 <div
                   role="menu"
-                  className="glass-strong absolute right-0 top-[calc(100%+8px)] w-64 rounded-2xl p-2 shadow-[0_20px_60px_-12px_oklch(0_0_0/0.8)]"
+                  className="glass-strong absolute right-0 top-[calc(100%+8px)] w-64 origin-top-right rounded-2xl p-2 shadow-[0_20px_60px_-12px_oklch(0_0_0/0.8)] animate-in fade-in-0 zoom-in-95 duration-150 ease-[var(--ease-out-strong)]"
                 >
                   {desktopMore.map((l) => (
                     <Link
                       key={l.href}
                       href={l.href}
                       onClick={() => setMoreOpen(false)}
-                      className="flex flex-col rounded-lg px-3 py-2 hover:bg-card/60"
+                      className="flex flex-col rounded-lg px-3 py-2 transition-colors duration-[150ms] hover:bg-card/60"
                     >
                       <span className="text-sm font-medium text-foreground">{l.label}</span>
                       <span className="text-xs text-muted-foreground">{l.description}</span>
@@ -135,10 +135,9 @@ export function Nav() {
           <div className="flex items-center gap-2">
             <Link
               href="/#waitlist"
-              className="group relative hidden sm:inline-flex items-center gap-2 rounded-xl bg-primary hover:bg-primary-glow px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_6px_20px_-12px_oklch(0.72_0.14_78/0.55)] transition-transform hover:scale-[1.02]"
+              className="group relative hidden sm:inline-flex items-center gap-2 rounded-xl bg-primary hover:bg-primary-glow px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_6px_20px_-12px_oklch(0.72_0.14_78/0.55)] transition-[transform,background-color,box-shadow] duration-[160ms] ease-[var(--ease-out-strong)] hover:scale-[1.02] active:scale-[0.98]"
             >
               Join waitlist
-              <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
             </Link>
             <button
               type="button"
@@ -152,14 +151,14 @@ export function Nav() {
         </div>
 
         {open && (
-          <div className="relative z-50 mt-2 rounded-2xl border border-border bg-popover p-4 shadow-[0_20px_60px_-12px_oklch(0_0_0/0.8)] md:hidden">
+          <div className="relative z-50 mt-2 origin-top rounded-2xl border border-border bg-popover p-4 shadow-[0_20px_60px_-12px_oklch(0_0_0/0.8)] animate-in fade-in-0 slide-in-from-top-2 duration-200 ease-[var(--ease-out-strong)] md:hidden">
             <div className="flex flex-col gap-1">
               {links.map((l) => (
                 <Link
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-sm text-muted-foreground hover:bg-card/60 hover:text-foreground"
+                  className="rounded-lg px-3 py-2.5 text-sm text-muted-foreground transition-colors duration-[150ms] hover:bg-card/60 hover:text-foreground"
                 >
                   {l.label}
                 </Link>
@@ -167,9 +166,9 @@ export function Nav() {
               <Link
                 href="/#waitlist"
                 onClick={() => setOpen(false)}
-                className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-glow px-4 py-3 text-sm font-semibold text-primary-foreground"
+                className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-glow px-4 py-3 text-sm font-semibold text-primary-foreground transition-[transform,background-color] duration-[160ms] ease-[var(--ease-out-strong)] active:scale-[0.98]"
               >
-                Join waitlist →
+                Join waitlist
               </Link>
             </div>
           </div>

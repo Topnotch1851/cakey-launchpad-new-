@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, Check } from "lucide-react";
+import { ArrowLeft, Check } from "lucide-react";
 import { Nav } from "@/components/landing/Nav";
 import { Footer } from "@/components/landing/Footer";
 import { StructuredData } from "@/components/StructuredData";
@@ -42,7 +42,7 @@ const FEATURES: Record<string, FeatureContent> = {
     bullets: [
       "On-chain history analyzed across major EVM chains and Solana",
       "Composite score combining liquidity behavior, holding patterns, and prior project history",
-      "Score updates as wallets move funds — not a one-time snapshot",
+      "Score updates as wallets move funds. not a one-time snapshot",
       "Public scorecard planned for every project team wallet",
     ],
   },
@@ -51,7 +51,7 @@ const FEATURES: Record<string, FeatureContent> = {
     title: "Stress-test launches",
     titleAccent: "before any token moves.",
     description:
-      "The simulation engine models whale behavior, slippage shocks, and liquidity drains across many scenarios — surfacing fragile launches before they go live.",
+      "The simulation engine models whale behavior, slippage shocks, and liquidity drains across many scenarios. surfacing fragile launches before they go live.",
     hero: "https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=1600&q=80",
     highlights: [
       { label: "Method", value: "Scenario-based" },
@@ -70,7 +70,7 @@ const FEATURES: Record<string, FeatureContent> = {
     title: "On-chain locks",
     titleAccent: "that punish early exits.",
     description:
-      "Project teams commit collateral and accept lock periods enforced by smart contracts. Early exits trigger automatic penalties — making rug pulls financially irrational.",
+      "Project teams commit collateral and accept lock periods enforced by smart contracts. Early exits trigger automatic penalties. making rug pulls financially irrational.",
     hero: "https://images.unsplash.com/photo-1620207418302-439b387441b0?auto=format&fit=crop&w=1600&q=80",
     highlights: [
       { label: "Custody", value: "Non-custodial" },
@@ -89,7 +89,7 @@ const FEATURES: Record<string, FeatureContent> = {
     title: "Cross-chain",
     titleAccent: "post-launch surveillance.",
     description:
-      "After launch, Cakey watches liquidity flows and suspicious wallet activity. Anomalies are designed to surface fast — giving investors a real chance to react.",
+      "After launch, Cakey watches liquidity flows and suspicious wallet activity. Anomalies are designed to surface fast. giving investors a real chance to react.",
     hero: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80",
     highlights: [
       { label: "Mode", value: "Continuous" },
@@ -119,14 +119,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description: f.description,
     alternates: { canonical },
     openGraph: {
-      title: `${f.eyebrow} — Cakey AI`,
+      title: `${f.eyebrow}. Cakey AI`,
       description: f.description,
       url: canonical,
       type: "article",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${f.eyebrow} — Cakey AI`,
+      title: `${f.eyebrow}. Cakey AI`,
       description: f.description,
     },
   };
@@ -140,7 +140,7 @@ export default async function FeaturePage({ params }: { params: Promise<{ slug: 
   const canonical = `/features/${slug}`;
   const pageSchema = combinedGraph(
     webPageSchema({
-      name: `${feature.eyebrow} — Cakey AI`,
+      name: `${feature.eyebrow}. Cakey AI`,
       description: feature.description,
       url: canonical,
     }),
@@ -217,14 +217,13 @@ export default async function FeaturePage({ params }: { params: Promise<{ slug: 
           <div className="mt-14 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
             <Link
               href="/#waitlist"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_20px_60px_-20px_var(--primary)] transition-transform hover:scale-[1.02] sm:w-auto"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_20px_60px_-20px_var(--primary)] transition-[transform,box-shadow] duration-[180ms] ease-[var(--ease-out-strong)] hover:scale-[1.02] active:scale-[0.98] sm:w-auto"
             >
               Join the waitlist
-              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </Link>
             <Link
               href="/#features"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-3.5 text-sm font-medium text-foreground hover:bg-card/60 sm:w-auto"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-3.5 text-sm font-medium text-foreground transition-[transform,background-color,border-color] duration-[180ms] ease-[var(--ease-out-strong)] hover:bg-card/60 active:scale-[0.98] sm:w-auto"
             >
               See all features
             </Link>

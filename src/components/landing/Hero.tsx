@@ -15,13 +15,13 @@ export function Hero() {
       className="relative isolate min-h-[100svh] w-full overflow-hidden bg-black/[0.96]"
     >
       {/*
-        Robot canvas — one transparent layer, no wrapper background.
+        Robot canvas. one transparent layer, no wrapper background.
 
         Mobile  : canvas anchored to the bottom and extended ~22% below the viewport.
                   Robot sits in the lower 2/3 of the screen with breathing room above for text.
         Desktop : canvas extended ~40% past the right edge while remaining left-anchored at 0.
                   Visible canvas spans the whole hero (so cursor events reach the robot anywhere),
-                  but the canvas-center (where the robot lives) lands at ~70% of the viewport — clearly right of the 55% text column.
+                  but the canvas-center (where the robot lives) lands at ~70% of the viewport. clearly right of the 55% text column.
       */}
       <div
         aria-hidden="true"
@@ -38,7 +38,7 @@ export function Hero() {
       </div>
 
       {/*
-        Text layer — sits directly on the same canvas. No background, no surface.
+        Text layer. sits directly on the same canvas. No background, no surface.
         pointer-events-none allows the robot to receive cursor input through the text on desktop;
         CTAs re-enable pointer-events to stay clickable.
       */}
@@ -68,7 +68,7 @@ export function Hero() {
             className="mt-5 max-w-xl text-pretty text-sm text-muted-foreground sm:text-lg"
           >
             On-chain trust scoring, commitment locks, real-time monitoring, and
-            an insurance pool — built into every launch. No rugs. No noise.
+            an insurance pool. built into every launch. No rugs. No noise.
           </motion.p>
 
           <motion.div
@@ -80,14 +80,13 @@ export function Hero() {
             <a
               href="#waitlist"
               onClick={() => track("hero_cta_click", { target: "waitlist" })}
-              className="pointer-events-auto group inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-glow sm:text-base"
+              className="pointer-events-auto group inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-[transform,background-color,box-shadow] duration-[180ms] ease-[var(--ease-out-strong)] hover:bg-primary-glow active:scale-[0.98] sm:text-base"
             >
               Join the waitlist
-              <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
             </a>
             <a
               href="#how"
-              className="pointer-events-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-5 py-3.5 text-sm font-medium text-foreground/90 backdrop-blur transition-colors hover:bg-white/[0.08] sm:text-base"
+              className="pointer-events-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-5 py-3.5 text-sm font-medium text-foreground/90 backdrop-blur transition-[transform,background-color,border-color] duration-[180ms] ease-[var(--ease-out-strong)] hover:bg-white/[0.08] active:scale-[0.98] sm:text-base"
             >
               How it works
             </a>
