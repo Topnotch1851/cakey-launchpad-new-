@@ -9,7 +9,7 @@ import {
 } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { Loader2 } from "lucide-react";
-import { wagmiConfig, isWalletConnectConfigured } from "@/lib/wagmi";
+import { wagmiConfig } from "@/lib/wagmi";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 /**
@@ -116,16 +116,9 @@ function WalletUnavailable() {
 }
 
 export default function WaitlistWalletUI(props: ConnectAndJoinButtonProps) {
-  // Short-circuit: don't even mount Wagmi/RainbowKit if the project ID is
-  // missing. Trying to open the connect modal without a real ID throws inside
-  // RainbowKit, which used to propagate to the page-level ErrorBoundary.
-  if (!isWalletConnectConfigured) {
-    return <WalletUnavailable />;
-  }
-
-  // Even with a configured ID, fence the wallet UI behind a local
-  // ErrorBoundary so a runtime fault inside RainbowKit/Wagmi (network, relay
-  // outage, etc.) only knocks out the button — not the whole page.
+  // Fence the wallet UI behind a local ErrorBoundary so a runtime fault
+  // inside RainbowKit/Wagmi (network, relay outage, etc.) only knocks out
+  // the button — not the whole page.
   return (
     <ErrorBoundary fallback={<WalletUnavailable />}>
       <WagmiProvider config={wagmiConfig}>
