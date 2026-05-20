@@ -121,7 +121,15 @@ export default function WaitlistWalletUI(props: ConnectAndJoinButtonProps) {
   // the button — not the whole page.
   return (
     <ErrorBoundary fallback={<WalletUnavailable />}>
-      <WagmiProvider config={wagmiConfig}>
+      {/*
+        reconnectOnMount={false}: stops Wagmi from trying to restore a
+        previous wallet session on every page load. Without this, if a user
+        ever connected MetaMask on this domain and later uninstalled the
+        extension (or just visits on a different machine), the page boots
+        with a console error "Failed to connect to MetaMask / extension not
+        found." New connections via the Connect button are unaffected.
+      */}
+      <WagmiProvider config={wagmiConfig} reconnectOnMount={false}>
         <RainbowKitProvider
           theme={darkTheme({
             accentColor: "oklch(0.72 0.14 78)",
