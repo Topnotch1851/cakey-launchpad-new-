@@ -24,10 +24,11 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: { componentStack?: string | null }): void {
-    if (process.env.NODE_ENV !== "production") {
-       
-      console.error("[ErrorBoundary]", error, info.componentStack);
-    }
+    // Always log to the browser console — silent in prod made it impossible
+    // for a user reporting a bug to capture the underlying error. The message
+    // and stack are not sensitive.
+
+    console.error("[ErrorBoundary]", error, info.componentStack);
   }
 
   reset = () => this.setState({ hasError: false, error: null });

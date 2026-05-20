@@ -9,7 +9,8 @@ import {
 } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { Loader2 } from "lucide-react";
-import { wagmiConfig } from "@/lib/wagmi";
+import { wagmiConfig, isWalletConnectConfigured } from "@/lib/wagmi";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 /**
  * Self-contained wallet "Connect & Join" button.
@@ -96,19 +97,49 @@ function ConnectAndJoinButton({
   );
 }
 
-export default function WaitlistWalletUI(props: ConnectAndJoinButtonProps) {
+/**
+ * Static fallback shown when wallet connection cannot be initialized
+ * (missing WC project ID, or an unexpected RainbowKit/Wagmi crash). The
+ * surrounding form still works — users can join with email alone.
+ */
+function WalletUnavailable() {
   return (
-    <WagmiProvider config={wagmiConfig}>
-      <RainbowKitProvider
-        theme={darkTheme({
-          accentColor: "oklch(0.72 0.14 78)",
-          accentColorForeground: "white",
-          borderRadius: "large",
-          overlayBlur: "small",
-        })}
-      >
-        <ConnectAndJoinButton {...props} />
-      </RainbowKitProvider>
-    </WagmiProvider>
+    <button
+      type="button"
+      disabled
+      title="Wallet connection is temporarily unavailable. Use email above to join."
+      className="group inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card/30 px-6 py-3.5 text-sm font-medium text-muted-foreground opacity-70"
+    >
+      Wallet connection unavailable
+    </button>
+  );
+}
+
+export default function WaitlistWalletUI(props: ConnectAndJoinButtonProps) {
+  // Short-circuit: don't even mount Wagmi/RainbowKit if the project ID is
+  // missing. Trying to open the connect modal without a real ID throws inside
+  // RainbowKit, which used to propagate to the page-level ErrorBoundary.
+  if (!isWalletConnectConfigured) {
+    return <WalletUnavailable />;
+  }
+
+  // Even with a configured ID, fence the wallet UI behind a local
+  // ErrorBoundary so a runtime fault inside RainbowKit/Wagmi (network, relay
+  // outage, etc.) only knocks out the button — not the whole page.
+  return (
+    <ErrorBoundary fallback={<WalletUnavailable />}>
+      <WagmiProvider config={wagmiConfig}>
+        <RainbowKitProvider
+          theme={darkTheme({
+            accentColor: "oklch(0.72 0.14 78)",
+            accentColorForeground: "white",
+            borderRadius: "large",
+            overlayBlur: "small",
+          })}
+        >
+          <ConnectAndJoinButton {...props} />
+        </RainbowKitProvider>
+      </WagmiProvider>
+    </ErrorBoundary>
   );
 }
