@@ -12,6 +12,7 @@ const links = [
   { href: "/#how", label: "How it works" },
   { href: "/#features", label: "Features" },
   { href: "/#roadmap", label: "Roadmap" },
+  { href: "/#problem", label: "The problem" },
   { href: "/faq", label: "FAQ" },
   { href: "/waitlist", label: "Join waitlist" },
 ];
@@ -21,11 +22,12 @@ type DesktopItem = { href: string; label: string; description?: string };
 const desktopPrimary: DesktopItem[] = [
   { href: "/about", label: "About" },
   { href: "/#features", label: "Features" },
-  { href: "/#roadmap", label: "Roadmap" },
   { href: "/faq", label: "FAQ" },
 ];
 
 const desktopMore: DesktopItem[] = [
+  { href: "/#roadmap", label: "Roadmap", description: "Our development milestones" },
+  { href: "/#problem", label: "The problem", description: "Why launchpads are broken" },
   { href: "/insurance", label: "Insurance", description: "On-chain protection pool" },
   { href: "/privacy", label: "Privacy", description: "How we handle your data" },
   { href: "/terms", label: "Terms", description: "Terms of service" },
