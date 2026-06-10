@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 
 // Lazy reference: the Spline runtime + react wrapper (~hundreds of KB) plus
 // the .splinecode binary (~1.3 MB) are only fetched when this component is
@@ -29,9 +29,6 @@ function SplineFallback({ className }: { className?: string }) {
 function shouldUseSpline(): boolean {
   if (typeof window === "undefined") return false;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
-  if (!window.matchMedia("(min-width: 768px)").matches) return false;
-  if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return false;
-  if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) return false;
   return true;
 }
 
@@ -52,20 +49,97 @@ function whenIdle(cb: () => void): () => void {
 }
 
 export function SplineScene({ scene, className }: SplineSceneProps) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const mountedRef = useRef(false);
   const [shouldMount, setShouldMount] = useState(false);
 
   useEffect(() => {
     if (!shouldUseSpline()) return;
-    return whenIdle(() => setShouldMount(true));
+
+    let isVisible = false;
+    let hasLoaded = document.readyState === "complete";
+    let hasUserIntent = false;
+    let cancelIdle: (() => void) | undefined;
+    let fallbackTimer: number | undefined;
+    let cancelled = false;
+
+    const tryMount = () => {
+      if (cancelled || mountedRef.current || !isVisible || !hasLoaded || !hasUserIntent) return;
+      cancelIdle = whenIdle(() => {
+        if (!cancelled && isVisible && document.visibilityState === "visible") {
+          mountedRef.current = true;
+          setShouldMount(true);
+        }
+      });
+    };
+
+    const onLoad = () => {
+      hasLoaded = true;
+      tryMount();
+    };
+
+    const onUserIntent = () => {
+      hasUserIntent = true;
+      tryMount();
+    };
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        mountedRef.current = false;
+        setShouldMount(false);
+        return;
+      }
+      tryMount();
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (!isVisible) {
+          mountedRef.current = false;
+          setShouldMount(false);
+          return;
+        }
+        tryMount();
+      },
+      { rootMargin: "160px 0px", threshold: 0.01 },
+    );
+
+    const node = rootRef.current;
+    if (node) observer.observe(node);
+
+    window.addEventListener("load", onLoad, { once: true });
+    window.addEventListener("pointermove", onUserIntent, { once: true, passive: true });
+    window.addEventListener("pointerdown", onUserIntent, { once: true, passive: true });
+    window.addEventListener("touchstart", onUserIntent, { once: true, passive: true });
+    window.addEventListener("scroll", onUserIntent, { once: true, passive: true });
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    fallbackTimer = window.setTimeout(onUserIntent, 4500);
+    tryMount();
+
+    return () => {
+      cancelled = true;
+      cancelIdle?.();
+      if (fallbackTimer) window.clearTimeout(fallbackTimer);
+      observer.disconnect();
+      window.removeEventListener("load", onLoad);
+      window.removeEventListener("pointermove", onUserIntent);
+      window.removeEventListener("pointerdown", onUserIntent);
+      window.removeEventListener("touchstart", onUserIntent);
+      window.removeEventListener("scroll", onUserIntent);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
   }, []);
 
   if (!shouldMount) {
-    return <SplineFallback className={className} />;
+    return <div ref={rootRef} className={className} aria-hidden />;
   }
 
   return (
-    <Suspense fallback={<SplineFallback className={className} />}>
-      <Spline scene={scene} className={className} />
-    </Suspense>
+    <div ref={rootRef} className={className} aria-hidden>
+      <Suspense fallback={<SplineFallback className="h-full w-full" />}>
+        <Spline scene={scene} className="h-full w-full" renderOnDemand />
+      </Suspense>
+    </div>
   );
 }
