@@ -5,7 +5,7 @@ import { serverEnv } from "@/lib/env";
  * Anonymous server-side Supabase client.
  *
  * Use this from server actions / route handlers for public writes (e.g. waitlist signup).
- * RLS protects everything else — the anon key cannot SELECT/UPDATE/DELETE the waitlist table.
+ * RLS protects everything else. the anon key cannot SELECT/UPDATE/DELETE the waitlist table.
  *
  * Do NOT cache the client across cold-start contexts; cheap to instantiate.
  */

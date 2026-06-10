@@ -11,7 +11,7 @@
  */
 
 const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://cakey.ai"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://cakeylaunch.com"
 ).replace(/\/$/, "");
 
 const SAME_AS = [
@@ -46,27 +46,21 @@ export function organizationSchema(): JsonLd {
       height: 512,
     },
     description:
-      "AI-powered Web3 launchpad with behavioral trust scoring, pre-launch simulation, and an insurance pool — built to end rug pulls.",
+      "AI-powered Web3 launchpad with behavioral trust scoring, pre-launch simulation, and an insurance pool. built to end rug pulls.",
     sameAs: SAME_AS,
   };
 }
 
 export function webSiteSchema(): JsonLd {
-  // NOTE on `potentialAction` / SearchAction:
-  // Google only renders the sitelinks search box when the target URL really
-  // resolves to a search results page.  We don't have site search yet, so we
-  // intentionally omit it — a broken SearchAction is worse than none.
-  // When `/search?q=` exists, add:
-  //   potentialAction: {
-  //     "@type": "SearchAction",
-  //     target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}` },
-  //     "query-input": "required name=search_term_string",
-  //   }
+  // The waitlist site itself has no search surface — that lives on the app
+  // (cakey-platform). We intentionally OMIT potentialAction here. Adding a
+  // SearchAction that resolves to a 404 is worse than none.
   return {
     "@type": "WebSite",
     "@id": WEBSITE_ID,
     url: SITE_URL,
     name: "Cakey AI Launchpad",
+    alternateName: ["Cakey", "Cakey AI"],
     description:
       "Launch tokens with intelligent trust. AI risk scoring, simulation, and an insurance pool.",
     publisher: { "@id": ORG_ID },

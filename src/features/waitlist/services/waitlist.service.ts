@@ -8,8 +8,8 @@ type Meta = {
 
 /**
  * Normalise a wallet for storage.
- *   - EVM (`0x...`) is case-insensitive — lowercase for dedup.
- *   - Solana base58 is case-sensitive — preserve casing.
+ *   - EVM (`0x...`) is case-insensitive. lowercase for dedup.
+ *   - Solana base58 is case-sensitive. preserve casing.
  * Returns null when there's no wallet to store.
  */
 function normaliseWallet(wallet: string | null | undefined): string | null {
@@ -22,7 +22,7 @@ function normaliseWallet(wallet: string | null | undefined): string | null {
 /**
  * Pure waitlist service: takes a Supabase client + validated input + meta, returns a result.
  *
- * The service is transport-agnostic — server actions, route handlers, edge functions,
+ * The service is transport-agnostic. server actions, route handlers, edge functions,
  * and tests can all reuse it.
  */
 export async function insertWaitlistSignup(
@@ -51,7 +51,7 @@ export async function insertWaitlistSignup(
   //   23505 = unique_violation.  Disambiguate email vs wallet via the failing
   //           constraint name in `details`/`message`.
   //   P0001 = our custom rate-limit signal raised inside join_waitlist().
-  //   22023 = "email_or_wallet_required" — should be caught client-side first,
+  //   22023 = "email_or_wallet_required". should be caught client-side first,
   //           but surfaced cleanly if the form somehow lets a blank through.
   const err = error as
     | { code?: string; message?: string; details?: string; hint?: string }

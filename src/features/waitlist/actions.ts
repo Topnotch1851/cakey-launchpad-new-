@@ -7,7 +7,7 @@ import { waitlistInputSchema, type WaitlistInput, type WaitlistResult } from "./
 import { insertWaitlistSignup } from "./services/waitlist.service";
 
 // Dev-only fallback so local `next dev` runs without a .env.local entry.
-// In production, missing salt throws — a deterministic constant salt would
+// In production, missing salt throws. a deterministic constant salt would
 // make every submitter's IP hash predictable and useless for rate-limit dedup.
 const DEV_FALLBACK_SALT = "cakey-waitlist-dev-only-salt";
 

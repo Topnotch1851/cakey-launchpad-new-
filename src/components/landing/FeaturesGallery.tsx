@@ -28,7 +28,7 @@ const items: GalleryItem[] = [
     id: "proof-of-commitment",
     title: "Proof of Commitment",
     summary:
-      "On-chain liquidity locks and optional collateral staking with penalty logic for early exits. Non-custodial by design — Cakey never holds your funds.",
+      "On-chain liquidity locks and optional collateral staking with penalty logic for early exits. Non-custodial by design. Cakey never holds your funds.",
     url: "/features/proof-of-commitment",
     image:
       "https://images.unsplash.com/photo-1620207418302-439b387441b0?auto=format&fit=crop&w=900&q=80",
@@ -63,7 +63,7 @@ export function FeaturesGallery() {
           What makes Cakey <span className="text-accent">different.</span>
         </>
       }
-      description="Every system works together — intelligence, enforcement, and protection in a single launch stack."
+      description="Every system works together. intelligence, enforcement, and protection in a single launch stack."
       demoUrl="/#features"
       demoLabel="Explore the full stack"
       items={items}

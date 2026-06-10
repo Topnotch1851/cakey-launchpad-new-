@@ -6,7 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 /**
- * Lightweight root providers — QueryClient + Toaster + ErrorBoundary.
+ * Lightweight root providers. QueryClient + Toaster + ErrorBoundary.
  *
  * Wagmi + RainbowKit are NOT mounted here on purpose.  Marketing pages
  * (privacy, terms, features, etc.) never need a wallet, so their bundle

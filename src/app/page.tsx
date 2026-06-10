@@ -20,6 +20,7 @@ export default function Home() {
         rel="prefetch"
         as="fetch"
         href="/scene.splinecode"
+        media="(min-width: 768px) and (hover: hover) and (pointer: fine)"
         crossOrigin="anonymous"
       />
       <Nav />

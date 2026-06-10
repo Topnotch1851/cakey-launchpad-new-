@@ -29,6 +29,9 @@ function SplineFallback({ className }: { className?: string }) {
 function shouldUseSpline(): boolean {
   if (typeof window === "undefined") return false;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+  if (!window.matchMedia("(min-width: 768px)").matches) return false;
+  if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return false;
+  if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) return false;
   return true;
 }
 

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "A shared safety net funded by protocol fees, with transparent on-chain claim logic and auto-replenishing reserves.",
   alternates: { canonical: "/insurance" },
   openGraph: {
-    title: "Cakey Insurance Pool — Protocol-funded protection for launches",
+    title: "Cakey Insurance Pool. Protocol-funded protection for launches",
     description:
       "On-chain insurance reserves with transparent claim logic. Built into every Cakey launch.",
     url: "/insurance",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 const pageSchema = combinedGraph(
   webPageSchema({
-    name: "Insurance Pool — Cakey AI",
+    name: "Insurance Pool. Cakey AI",
     description: metadata.description as string,
     url: "/insurance",
   }),

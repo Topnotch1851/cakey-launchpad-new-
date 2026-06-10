@@ -104,10 +104,14 @@ src/
 │   ├── seo/structured-data.ts    ← JSON-LD builders (Org, WebSite, FAQPage, ...)
 │   └── supabase/server.ts        ← Anon + service-role clients
 └── providers/AppProviders.tsx    ← QueryClient + Toaster + ErrorBoundary (no wallet at root)
-
-supabase/migrations/
-└── 0001_waitlist_signups.sql     ← Table + RPC + RLS + rate limit
 ```
+
+> **Schema lives elsewhere.** All Supabase migrations — including the
+> `waitlist_signups` table and `join_waitlist` RPC this app depends on — are
+> owned by `cakey-platform/supabase/migrations/`. The waitlist app is a pure
+> client: it calls the RPC via the Supabase JS client and does not own any
+> SQL. When the waitlist is decommissioned, deleting this folder leaves the
+> schema (and the platform's auth foundation) untouched.
 
 ---
 
@@ -119,21 +123,11 @@ entry point.
 
 ### Apply to a fresh Supabase project
 
-**Option A — Supabase dashboard:**
-
-1. Open SQL Editor in your Supabase project.
-2. Paste the contents of [`supabase/migrations/0001_waitlist_signups.sql`](supabase/migrations/0001_waitlist_signups.sql).
-3. Run it.
-
-**Option B — Supabase MCP (from Claude Code with the Supabase MCP wired):**
-
-```
-mcp__claude_ai_Supabase__apply_migration {
-  project_id: "<your-project-ref>",
-  name: "waitlist_signups",
-  query: "<contents of 0001_waitlist_signups.sql>"
-}
-```
+The migrations have moved. Apply them from
+[`cakey-platform/supabase/migrations/`](../cakey-platform/supabase/migrations/)
+in numerical order (`0001` through the latest). The waitlist app only needs
+`0001` + `0002` to function, but applying the full set keeps the database
+ready for the platform and admin apps as well.
 
 ### Verify
 

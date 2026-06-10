@@ -21,7 +21,7 @@ jobs:
     # Real production values are set per-environment on Vercel; this build is
     # only validating that the code compiles, not that it can talk to Supabase.
     env:
-      NEXT_PUBLIC_SITE_URL: https://cakey.ai
+      NEXT_PUBLIC_SITE_URL: https://cakeylaunch.com
       NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
       # Used by the server action's salt validator.  16+ chars satisfies the prod check.

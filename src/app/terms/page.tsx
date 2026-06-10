@@ -2,14 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Nav } from "@/components/landing/Nav";
 import { Footer } from "@/components/landing/Footer";
-import { ShieldCheck } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — Cakey AI",
+  title: "Terms of Service. Cakey AI",
   description:
-    "The terms governing your use of Cakey AI — accounts, eligibility, prohibited conduct, and liability.",
+    "The terms governing your use of Cakey AI. accounts, eligibility, prohibited conduct, and liability.",
   openGraph: {
-    title: "Terms of Service — Cakey AI",
+    title: "Terms of Service. Cakey AI",
     description: "The terms governing your use of Cakey AI.",
   },
 };
@@ -23,14 +22,13 @@ export default function TermsPage() {
       <main className="mx-auto max-w-3xl px-6 pt-32 pb-24">
         <header className="space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/40 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-            <ShieldCheck className="h-3.5 w-3.5 text-accent" />
             Legal
           </div>
           <h1 className="font-display text-4xl font-semibold leading-tight md:text-5xl">
             Terms of Service
           </h1>
           <p className="max-w-2xl text-base text-muted-foreground md:text-lg">
-            By using Cakey AI you agree to these terms. Read them carefully — they
+            By using Cakey AI you agree to these terms. Read them carefully. they
             cover eligibility, conduct, risk, and what we owe each other.
           </p>
         </header>
@@ -110,8 +108,8 @@ export default function TermsPage() {
           <Section title="10. Contact">
             <p>
               Questions?{" "}
-              <a className="text-accent underline-offset-4 hover:underline" href="mailto:legal@cakey.ai">
-                legal@cakey.ai
+              <a className="text-accent underline-offset-4 hover:underline" href="mailto:legal@cakeylaunch.com">
+                legal@cakeylaunch.com
               </a>
             </p>
           </Section>

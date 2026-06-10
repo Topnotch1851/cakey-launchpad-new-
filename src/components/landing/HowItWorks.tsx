@@ -71,7 +71,7 @@ export function HowItWorks() {
             From application to <span className="text-accent">protected launch.</span>
           </h2>
           <p className="max-w-xl text-pretty text-base text-muted-foreground md:text-lg">
-            Every investor asks the same questions before aping in. Cakey answers them — on-chain,
+            Every investor asks the same questions before aping in. Cakey answers them. on-chain,
             before any project goes live.
           </p>
         </motion.div>

@@ -20,7 +20,7 @@ const emailSchema = z
 // behavioural scoring.  Casing is preserved (Solana is case-sensitive).
 //
 // Exported so the client form can validate inline without re-declaring the
-// regexes (single source of truth — server and client can never drift).
+// regexes (single source of truth. server and client can never drift).
 export const EVM_ADDRESS_RE = /^0x[a-fA-F0-9]{40}$/u;
 export const SOLANA_BASE58_RE = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/u;
 

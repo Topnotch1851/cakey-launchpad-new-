@@ -24,7 +24,7 @@ const WaitlistWalletUI = dynamic(
       <button
         type="button"
         disabled
-        className="group inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-3.5 text-sm font-medium text-foreground opacity-60"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card/40 px-6 py-3.5 text-sm font-medium text-foreground opacity-60"
       >
         Loading wallet…
       </button>
@@ -206,11 +206,11 @@ export function Waitlist() {
                 early insurance-pool allocation.
               </p>
               <a
-                href="https://twitter.com/intent/tweet?text=I%20just%20joined%20the%20%40cakey_ai%20waitlist%20%E2%80%94%20launchpad%20with%20on-chain%20trust%20scoring%2C%20commitment%20locks%2C%20and%20an%20insurance%20pool.%20Join%20me%3A&url=https%3A%2F%2Fcakey.ai"
+                href="https://twitter.com/intent/tweet?text=I%20just%20joined%20the%20%40cakey_ai%20waitlist%20%E2%80%94%20launchpad%20with%20on-chain%20trust%20scoring%2C%20commitment%20locks%2C%20and%20an%20insurance%20pool.%20Join%20me%3A&url=https%3A%2F%2Fcakeylaunch.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => track("waitlist_share_click", { channel: "twitter" })}
-                className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background/40 px-5 py-2.5 text-xs font-medium text-foreground transition-[transform,background-color,box-shadow,border-color] duration-[180ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-card/60 hover:scale-[1.02] hover:shadow-[0_4px_20px_-8px_oklch(0.72_0.14_78/0.15)] active:scale-[0.98] active:shadow-none focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background"
+                className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background/40 px-5 py-2.5 text-xs font-medium text-foreground transition-colors hover:bg-card/60"
               >
                 Share &amp; move up the list
               </a>
@@ -229,10 +229,10 @@ export function Waitlist() {
                       key={r}
                       type="button"
                       onClick={() => setRole(r)}
-                      className={`rounded-full border px-3 py-1 text-xs font-medium capitalize transition-[transform,background-color,color,border-color,box-shadow] duration-[180ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                      className={`rounded-full border px-3 py-1 text-xs font-medium capitalize transition-colors ${
                         role === r
-                          ? "border-accent/50 bg-accent/10 text-accent shadow-[0_0_20px_-8px_oklch(0.72_0.14_78/0.3)]"
-                          : "border-border bg-background/40 text-muted-foreground hover:text-foreground hover:bg-background/60 hover:scale-[1.05] active:scale-[0.95] focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background"
+                          ? "border-accent/50 bg-accent/10 text-accent"
+                          : "border-border bg-background/40 text-muted-foreground hover:text-foreground"
                       }`}
                     >
                       {r === "team" ? "Project team" : r}
@@ -250,7 +250,7 @@ export function Waitlist() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@protocol.xyz"
-                    className="w-full rounded-xl border border-border bg-background/60 px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground transition-[background-color,border-color,box-shadow] duration-[180ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background focus:border-accent/30"
+                    className="w-full rounded-xl border border-border bg-background/60 px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
                   />
                 </div>
 
@@ -269,7 +269,7 @@ export function Waitlist() {
                     value={wallet}
                     onChange={(e) => setWallet(e.target.value.trim())}
                     placeholder="0x… or Solana address"
-                    className="w-full rounded-xl border border-border bg-background/60 px-4 py-3.5 font-mono text-xs text-foreground placeholder:text-muted-foreground transition-[background-color,border-color,box-shadow] duration-[180ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background focus:border-accent/30 sm:text-sm"
+                    className="w-full rounded-xl border border-border bg-background/60 px-4 py-3.5 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 sm:text-sm"
                   />
                   {walletInvalid && (
                     <p className="text-[11px] text-amber-400/90">
@@ -281,7 +281,7 @@ export function Waitlist() {
                 <button
                   type="submit"
                   disabled={!canSubmit}
-                  className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_14px_40px_-22px_oklch(0.72_0.14_78/0.5)] transition-[transform,background-color,box-shadow] duration-[180ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-primary-glow hover:scale-[1.02] hover:shadow-[0_18px_50px_-20px_oklch(0.72_0.14_78/0.4)] active:scale-[0.98] active:shadow-[0_8px_25px_-15px_oklch(0.72_0.14_78/0.3)] focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background disabled:opacity-60 disabled:hover:bg-primary disabled:hover:scale-100 disabled:hover:shadow-[0_14px_40px_-22px_oklch(0.72_0.14_78/0.5)] disabled:active:scale-100"
+                  className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_14px_40px_-22px_oklch(0.72_0.14_78/0.5)] transition-colors hover:bg-primary-glow disabled:opacity-60 disabled:hover:bg-primary"
                 >
                   {submitting ? (
                     <>

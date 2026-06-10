@@ -105,7 +105,7 @@ const Carousel = React.forwardRef<
     api.on("select", onSelect);
 
     return () => {
-      // queueMicrotask returns void; nothing to cancel — but if the effect
+      // queueMicrotask returns void; nothing to cancel. but if the effect
       // re-runs before the microtask fires, `onSelect` will simply read the
       // (still valid) latest api.  The `api.off` cleanup is what matters.
       void handle;

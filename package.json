@@ -40,5 +40,9 @@
     "eslint-config-next": "16.2.4",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@paulmillr/qr": "^0.3.0",
+    "qr": "~0.5.5"
   }
 }

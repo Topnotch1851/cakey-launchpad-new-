@@ -2,14 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Nav } from "@/components/landing/Nav";
 import { Footer } from "@/components/landing/Footer";
-import { ShieldCheck } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Cakey AI",
+  title: "Privacy Policy. Cakey AI",
   description:
     "How Cakey AI collects, uses, stores and protects your information when you use our token launch trust platform.",
   openGraph: {
-    title: "Privacy Policy — Cakey AI",
+    title: "Privacy Policy. Cakey AI",
     description: "How Cakey AI collects, uses, stores and protects your information.",
   },
 };
@@ -23,14 +22,13 @@ export default function PrivacyPage() {
       <main className="mx-auto max-w-3xl px-6 pt-32 pb-24">
         <header className="space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/40 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-            <ShieldCheck className="h-3.5 w-3.5 text-accent" />
             Legal
           </div>
           <h1 className="font-display text-4xl font-semibold leading-tight md:text-5xl">
             Privacy Policy
           </h1>
           <p className="max-w-2xl text-base text-muted-foreground md:text-lg">
-            We treat your data the way we&apos;d want ours treated — minimally collected, tightly scoped, never sold.
+            We treat your data the way we&apos;d want ours treated. minimally collected, tightly scoped, never sold.
           </p>
         </header>
 
@@ -71,8 +69,8 @@ export default function PrivacyPage() {
             <p>
               You may request access, correction, export, or deletion of your personal
               data at any time. Contact{" "}
-              <a className="text-accent underline-offset-4 hover:underline" href="mailto:privacy@cakey.ai">
-                privacy@cakey.ai
+              <a className="text-accent underline-offset-4 hover:underline" href="mailto:privacy@cakeylaunch.com">
+                privacy@cakeylaunch.com
               </a>
               .
             </p>
@@ -81,9 +79,9 @@ export default function PrivacyPage() {
           <Section title="6. Security">
             <p>
               We use encryption in transit and at rest, role‑based access, and routine
-              audits. No system is perfectly secure — report concerns to{" "}
-              <a className="text-accent underline-offset-4 hover:underline" href="mailto:security@cakey.ai">
-                security@cakey.ai
+              audits. No system is perfectly secure. report concerns to{" "}
+              <a className="text-accent underline-offset-4 hover:underline" href="mailto:security@cakeylaunch.com">
+                security@cakeylaunch.com
               </a>
               .
             </p>

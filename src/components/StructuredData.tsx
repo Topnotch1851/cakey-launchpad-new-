@@ -3,7 +3,7 @@ import type { JsonLd } from "@/lib/seo/structured-data";
 /**
  * Server-renderable JSON-LD <script>.
  *
- * Use one per "page intent" — root layout emits the global Org + WebSite +
+ * Use one per "page intent". root layout emits the global Org + WebSite +
  * SoftwareApplication graph; individual pages add their own (FAQPage,
  * BreadcrumbList, etc.).  Google merges all visible nodes into one entity.
  */

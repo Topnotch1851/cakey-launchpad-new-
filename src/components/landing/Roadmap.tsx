@@ -103,7 +103,7 @@ export function Roadmap() {
               Shipping the <span className="text-accent">trust stack.</span>
             </h2>
             <p className="mt-5 max-w-xl text-pretty text-base text-muted-foreground sm:text-lg">
-              Three product phases — each backed by concrete build milestones.
+              Three product phases. each backed by concrete build milestones.
             </p>
           </div>
           <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">

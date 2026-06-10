@@ -2,14 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Nav } from "@/components/landing/Nav";
 import { Footer } from "@/components/landing/Footer";
-import { AlertTriangle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Disclosures — Cakey AI",
+  title: "Disclosures. Cakey AI",
   description:
     "Risk, regulatory, conflict, and operational disclosures for Cakey AI and the token launches listed on our platform.",
   openGraph: {
-    title: "Disclosures — Cakey AI",
+    title: "Disclosures. Cakey AI",
     description: "Risk and regulatory disclosures for Cakey AI.",
   },
 };
@@ -23,7 +22,6 @@ export default function DisclosuresPage() {
       <main className="mx-auto max-w-3xl px-6 pt-32 pb-24">
         <header className="space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-amber-300">
-            <AlertTriangle className="h-3.5 w-3.5" />
             Important
           </div>
           <h1 className="font-display text-4xl font-semibold leading-tight md:text-5xl">
@@ -63,7 +61,7 @@ export default function DisclosuresPage() {
           <Section title="3. Listing process">
             <p>
               Projects apply, undergo automated checks, and where applicable manual
-              review. A listing reflects passage of those checks at a point in time —
+              review. A listing reflects passage of those checks at a point in time 
               it is not an endorsement, guarantee of performance, or warranty of
               legality in your jurisdiction.
             </p>
@@ -90,7 +88,7 @@ export default function DisclosuresPage() {
             <p>
               Cakey AI never takes custody of user funds. All on‑chain actions are
               executed from your self‑custody wallet. Loss of keys means loss of
-              assets — we cannot recover them.
+              assets. we cannot recover them.
             </p>
           </Section>
 
@@ -105,8 +103,8 @@ export default function DisclosuresPage() {
           <Section title="8. Reporting concerns">
             <p>
               Suspect a scam, exploit, or compliance issue? Email{" "}
-              <a className="text-accent underline-offset-4 hover:underline" href="mailto:abuse@cakey.ai">
-                abuse@cakey.ai
+              <a className="text-accent underline-offset-4 hover:underline" href="mailto:abuse@cakeylaunch.com">
+                abuse@cakeylaunch.com
               </a>
               . We investigate every report.
             </p>
