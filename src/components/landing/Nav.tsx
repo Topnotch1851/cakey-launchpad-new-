@@ -83,7 +83,7 @@ export function Nav() {
               <img src={logo} alt="Cakey" className="logo-coin h-9 w-9 object-contain" />
             </span>
             <span className="font-display text-base font-semibold tracking-tight">
-              Cakey<span className="text-accent">.ai</span>
+              Cakey <span className="text-accent">AI</span>
             </span>
           </Link>
 

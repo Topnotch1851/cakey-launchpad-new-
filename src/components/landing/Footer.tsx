@@ -93,7 +93,7 @@ export function Footer() {
               {/* eslint-disable-next-line @next/next/no-img-element -- small static logo, next/image optimisation is overkill for a 96×96 PNG that's already in /public */}
               <img src={logo} alt="Cakey" className="h-12 w-12 object-contain" />
               <span className="font-display text-xl font-semibold tracking-tight">
-                Cakey<span className="text-accent">.ai</span>
+                Cakey <span className="text-accent">AI</span>
               </span>
             </Link>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
