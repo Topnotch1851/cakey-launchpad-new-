@@ -41,9 +41,7 @@ export function Problem() {
             transition={{ duration: 0.7, ease: easeCinematic }}
             className="max-w-xl"
           >
-            <span className="inline-flex items-center gap-2 rounded-full border border-warn/30 bg-warn/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-warn backdrop-blur">
-              The trust crisis
-            </span>
+            <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-foreground/45">The trust crisis</div>
             <h2 className="mt-5 text-balance font-display text-4xl font-semibold leading-[1.05] sm:text-5xl lg:text-6xl">
               Launchpads are <span className="text-warn">broken.</span>
             </h2>

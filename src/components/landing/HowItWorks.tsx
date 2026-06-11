@@ -64,9 +64,7 @@ export function HowItWorks() {
           transition={{ duration: 0.7, ease: easeCinematic }}
           className="flex max-w-3xl flex-col items-start space-y-5 text-left"
         >
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent backdrop-blur">
-            How it works
-          </span>
+          <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-foreground/45">How it works</div>
           <h2 className="text-balance font-display text-4xl font-semibold leading-[1.05] sm:text-5xl lg:text-6xl">
             From application to <span className="text-accent">protected launch.</span>
           </h2>

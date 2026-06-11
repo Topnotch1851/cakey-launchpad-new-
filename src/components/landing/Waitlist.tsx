@@ -153,9 +153,7 @@ export function Waitlist() {
           transition={{ duration: 0.7, ease: easeCinematic }}
           className="text-center"
         >
-          <span className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-accent backdrop-blur sm:text-xs sm:tracking-[0.2em]">
-            <span className="whitespace-nowrap">Early access. 500 spots</span>
-          </span>
+          <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-foreground/45">Early access. 500 spots</div>
           <h2 className="mt-6 text-balance font-display text-4xl font-semibold leading-[1.05] sm:text-5xl lg:text-6xl">
             Join the{" "}
             <span className="text-accent">trust layer</span> waitlist.

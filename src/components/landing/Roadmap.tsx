@@ -96,9 +96,7 @@ export function Roadmap() {
           className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
         >
           <div className="max-w-3xl text-left">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent backdrop-blur">
-              Roadmap
-            </span>
+            <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-foreground/45">Roadmap</div>
             <h2 className="mt-5 text-balance font-display text-4xl font-semibold leading-[1.05] sm:text-5xl lg:text-6xl">
               Shipping the <span className="text-accent">trust stack.</span>
             </h2>

@@ -121,9 +121,7 @@ export function Gallery6({
             transition={{ duration: 0.7, ease: easeCinematic }}
             className="max-w-3xl text-left"
           >
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent backdrop-blur">
-              {eyebrow}
-            </span>
+            <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-foreground/45">{eyebrow}</div>
             <h2 className="mt-5 text-balance font-display text-4xl font-semibold leading-[1.05] sm:text-5xl">
               {heading}
             </h2>

@@ -67,7 +67,7 @@ export function Footer() {
           />
           <div className="relative flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
             <div className="max-w-xl">
-              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-accent">
+              <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-foreground/45">
                 Limited spots
               </div>
               <h2 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
@@ -145,11 +145,6 @@ export function Footer() {
                   key={c.name}
                   className="inline-flex items-center gap-2 rounded-full border border-border bg-card/50 px-3 py-1.5 text-xs text-foreground/90 backdrop-blur"
                 >
-                  <span
-                    aria-hidden
-                    className="h-2 w-2 rounded-full"
-                    style={{ background: c.color, boxShadow: `0 0 10px ${c.color}` }}
-                  />
                   {c.name}
                 </span>
               ))}
