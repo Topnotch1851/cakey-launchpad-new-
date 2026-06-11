@@ -21,7 +21,7 @@ export default function TermsPage() {
       <Nav />
       <main className="mx-auto max-w-3xl px-6 pt-32 pb-24">
         <header className="space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/40 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-foreground/45">
             Legal
           </div>
           <h1 className="font-display text-4xl font-semibold leading-tight md:text-5xl">

@@ -50,9 +50,9 @@ export default function InsurancePage() {
               transition={{ duration: 0.5 }}
               className="max-w-3xl"
             >
-              <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-accent">
+              <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-foreground/45">
                 Protection layer
-              </span>
+              </div>
               <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
                 A safety net for <span className="text-gradient">every launch.</span>
               </h1>

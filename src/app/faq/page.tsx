@@ -85,9 +85,9 @@ export default function FaqPage() {
       <Nav />
       <section className="relative isolate pt-32 pb-20 sm:pt-40 sm:pb-28">
         <div className="mx-auto max-w-3xl px-6 lg:px-8">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent backdrop-blur">
+          <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-foreground/45">
             FAQ
-          </span>
+          </div>
           <h1 className="mt-5 text-balance font-display text-4xl font-semibold leading-[1.05] sm:text-5xl">
             Questions, answered.
           </h1>
