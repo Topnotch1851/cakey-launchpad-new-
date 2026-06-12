@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useAnalytics } from "@/hooks/useAnalytics";
-import { SplineScene } from "@/components/ui/splite";
+import { HeroVisual } from "@/components/landing/HeroVisual";
 
 const easeCinematic = [0.22, 1, 0.36, 1] as const;
 
@@ -31,10 +31,7 @@ export function Hero() {
           md:inset-y-0 md:right-[-40%]
         "
       >
-        <SplineScene
-          scene="/scene.splinecode"
-          className="h-full w-full"
-        />
+        <HeroVisual className="h-full w-full" />
       </div>
 
       {/*
